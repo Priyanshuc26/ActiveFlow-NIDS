@@ -3,3 +3,8 @@ numpy
 pandas
 matplotlib
 scikit-learn
+setuptools
+pymongo
+certifi
+
+#-e .

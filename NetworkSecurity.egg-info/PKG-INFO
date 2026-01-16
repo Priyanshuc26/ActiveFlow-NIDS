@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: NetworkSecurity
+Version: 1.0.0
+Summary: Network Security Project
+Author: Priyanshu
+Requires-Dist: python-dotenv
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Requires-Dist: setuptools
+Requires-Dist: pymongo
+Requires-Dist: certifi
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary
