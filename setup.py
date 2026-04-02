@@ -32,10 +32,10 @@ def get_requirements() -> List[str]:
 # print(get_requirements())
 
 setup(
-    name='NetworkSecurity',
-    description='Network Security Project',
-    version='1.0.0',
-    author='Priyanshu',
+    name='ActiveFlow-NIDS',
+    description='Version 2 of end-to-end Network Security Classification Pipeline',
+    version='2.0.0',
+    author='Priyanshu Chauhan',
     packages=find_packages(),
     install_requires=get_requirements(),
 )

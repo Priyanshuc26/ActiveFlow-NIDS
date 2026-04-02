@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: ActiveFlow-NIDS
+Version: 2.0.0
+Summary: Version 2 of end-to-end Network Security Classification Pipeline
+Author: Priyanshu Chauhan
+Requires-Dist: python-dotenv
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Requires-Dist: setuptools
+Requires-Dist: pymongo
+Requires-Dist: certifi
+Requires-Dist: pymongo[srv]
+Requires-Dist: scipy
+Requires-Dist: pyaml
+Requires-Dist: dill
+Requires-Dist: mlflow
+Requires-Dist: dagshub
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: starlette
+Requires-Dist: python-multipart
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary
