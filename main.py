@@ -1,11 +1,11 @@
-from networksecurity.components.data_ingestion import DataIngestion
-from networksecurity.components.data_validation import DataValidation
-from networksecurity.components.data_transformation import DataTransformation
-from networksecurity.components.model_trainer import ModelTrainer
+from legacy_code.data_ingestion import DataIngestion
+from IDS_Pipeline.components.data_validation import DataValidation
+from IDS_Pipeline.components.data_transformation import DataTransformation
+from IDS_Pipeline.components.model_trainer import ModelTrainer
 
-from networksecurity.exception.exception import NetworkSecurityException
-from networksecurity.logging.logger import logging
-from networksecurity.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig, DataTransformationConfig, ModelTrainerConfig
+from IDS_Pipeline.exception.exception import NetworkSecurityException
+from IDS_Pipeline.logging.logger import logging
+from IDS_Pipeline.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig, DataTransformationConfig, ModelTrainerConfig
 import sys
 
 if __name__ == "__main__":
