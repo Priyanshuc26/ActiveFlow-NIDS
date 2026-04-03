@@ -10,6 +10,7 @@ class TrainingPipelineConfig:
     def __init__(self,timestamp = datetime.now()):
         timestamp = timestamp.strftime("%m_%d_%Y_%H_%M_%S")
         self.pipeline_name = training_pipeline.PIPELINE_NAME
+        self.raw_data_file_path = training_pipeline.RAW_DATA_FILE_PATH
         self.artifact_name = training_pipeline.ARTIFACT_DIR
         self.artifact_dir = os.path.join(self.artifact_name, timestamp)
         self.timestamp: str = timestamp
@@ -17,6 +18,8 @@ class TrainingPipelineConfig:
 
 class DataIngestionConfig:
     def __init__(self,training_pipeline_config: TrainingPipelineConfig):
+        self.raw_data_file_path = training_pipeline_config.raw_data_file_path
+        
         self.data_ingestion_dir:str = os.path.join(training_pipeline_config.artifact_dir,"data_ingestion")
 
         self.feature_store_file_path: str = os.path.join(self.data_ingestion_dir, training_pipeline.DATA_INGESTION_FEATURE_STORE_DIR, training_pipeline.FILE_NAME)

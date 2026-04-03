@@ -6,8 +6,9 @@ import pandas as pd
 """
 defining common constant variable for training pipeline
 """
-TARGET_COLUMN = "Result"
+TARGET_COLUMN: str = "Result"
 PIPELINE_NAME: str = "Intrusion_Detection_System"
+RAW_DATA_FILE_PATH: str = "raw_data/MachineLearningCSV.zip"
 ARTIFACT_DIR: str = "Artifacts"
 FILE_NAME: str = "master_dataset.csv"
 TRAIN_FILE_NAME: str = "train.csv"
