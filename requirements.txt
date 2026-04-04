@@ -16,5 +16,6 @@ fastapi
 uvicorn
 starlette
 python-multipart
+dvc
 
 # -e .
