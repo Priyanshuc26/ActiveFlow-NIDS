@@ -17,5 +17,6 @@ uvicorn
 starlette
 python-multipart
 dvc
+dvc-gdrive
 
 # -e .

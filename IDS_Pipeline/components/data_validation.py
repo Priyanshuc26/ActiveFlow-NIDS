@@ -1,6 +1,6 @@
 from IDS_Pipeline.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
 from IDS_Pipeline.entity.config_entity import DataValidationConfig
-from IDS_Pipeline.exception.exception import NetworkSecurityException
+from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.constant.training_pipeline import SCHEMA_FILE_PATH
 from IDS_Pipeline.logging.logger import logging
 from IDS_Pipeline.utils.main_utils.utils import read_yaml_file, write_yaml_file
@@ -19,7 +19,7 @@ class DataValidation:
             self._schema_config = read_yaml_file(SCHEMA_FILE_PATH)
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
 
     @staticmethod
@@ -27,7 +27,7 @@ class DataValidation:
         try:
             return pd.read_csv(file_path)
         except Exception as e:
-            raise NetworkSecurityException(e, sys)
+            raise CustomException(e, sys)
 
     def validate_number_of_columns(self,dataframe:pd.DataFrame) -> bool:
         try:
@@ -40,7 +40,7 @@ class DataValidation:
             return False
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
     def detect_dataset_drift(self, base_df, current_df, threshold = 0.05) -> bool:
         try:
@@ -72,7 +72,7 @@ class DataValidation:
             write_yaml_file(file_path= drift_report_file_path, content=report)
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
 
     def initiate_data_validation(self) -> DataValidationArtifact:
@@ -112,5 +112,5 @@ class DataValidation:
 
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
