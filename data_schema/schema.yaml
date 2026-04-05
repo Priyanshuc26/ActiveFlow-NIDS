@@ -1,66 +1,79 @@
-columns:
-  - having_IP_Address: int64
-  - URL_Length: int64
-  - Shortining_Service: int64
-  - having_At_Symbol: int64
-  - double_slash_redirecting: int64
-  - Prefix_Suffix: int64
-  - having_Sub_Domain: int64
-  - SSLfinal_State: int64
-  - Domain_registeration_length: int64
-  - Favicon: int64
-  - port: int64
-  - HTTPS_token: int64
-  - Request_URL: int64
-  - URL_of_Anchor: int64
-  - Links_in_tags: int64
-  - SFH: int64
-  - Submitting_to_email: int64
-  - Abnormal_URL: int64
-  - Redirect: int64
-  - on_mouseover: int64
-  - RightClick: int64
-  - popUpWidnow: int64
-  - Iframe: int64
-  - age_of_domain: int64
-  - DNSRecord: int64 
-  - web_traffic: int64
-  - Page_Rank: int64
-  - Google_Index: int64
-  - Links_pointing_to_page: int64
-  - Statistical_report: int64
-  - Result: int64
-
-
-numerical_columns:
-  - having_IP_Address
-  - URL_Length
-  - Shortining_Service
-  - having_At_Symbol
-  - double_slash_redirecting
-  - Prefix_Suffix
-  - having_Sub_Domain
-  - SSLfinal_State
-  - Domain_registeration_length
-  - Favicon
-  - port
-  - HTTPS_token
-  - Request_URL
-  - URL_of_Anchor
-  - Links_in_tags 
-  - SFH
-  - Submitting_to_email
-  - Abnormal_URL
-  - Redirect
-  - on_mouseover
-  - RightClick
-  - popUpWidnow
-  - Iframe
-  - age_of_domain
-  - DNSRecord 
-  - web_traffic
-  - Page_Rank
-  - Google_Index
-  - Links_pointing_to_page
-  - Statistical_report
-  - Result
+' ACK Flag Count': int64
+' Active Max': int64
+' Active Min': int64
+' Active Std': float64
+' Average Packet Size': float64
+' Avg Bwd Segment Size': float64
+' Avg Fwd Segment Size': float64
+' Bwd Avg Bytes/Bulk': int64
+' Bwd Avg Packets/Bulk': int64
+' Bwd Header Length': int64
+' Bwd IAT Max': int64
+' Bwd IAT Mean': float64
+' Bwd IAT Min': int64
+' Bwd IAT Std': float64
+' Bwd PSH Flags': int64
+' Bwd Packet Length Mean': float64
+' Bwd Packet Length Min': int64
+' Bwd Packet Length Std': float64
+' Bwd Packets/s': float64
+' Bwd URG Flags': int64
+' CWE Flag Count': int64
+' Destination Port': int64
+' Down/Up Ratio': int64
+' ECE Flag Count': int64
+' Flow Duration': int64
+' Flow IAT Max': int64
+' Flow IAT Mean': float64
+' Flow IAT Min': int64
+' Flow IAT Std': float64
+' Flow Packets/s': float64
+' Fwd Avg Bulk Rate': int64
+' Fwd Avg Packets/Bulk': int64
+' Fwd Header Length': int64
+' Fwd Header Length.1': int64
+' Fwd IAT Max': int64
+' Fwd IAT Mean': float64
+' Fwd IAT Min': int64
+' Fwd IAT Std': float64
+' Fwd Packet Length Max': int64
+' Fwd Packet Length Mean': float64
+' Fwd Packet Length Min': int64
+' Fwd Packet Length Std': float64
+' Fwd URG Flags': int64
+' Idle Max': int64
+' Idle Min': int64
+' Idle Std': float64
+' Init_Win_bytes_backward': int64
+' Label': object
+' Max Packet Length': int64
+' Min Packet Length': int64
+' PSH Flag Count': int64
+' Packet Length Mean': float64
+' Packet Length Std': float64
+' Packet Length Variance': float64
+' RST Flag Count': int64
+' SYN Flag Count': int64
+' Subflow Bwd Bytes': int64
+' Subflow Bwd Packets': int64
+' Subflow Fwd Bytes': int64
+' Total Backward Packets': int64
+' Total Fwd Packets': int64
+' Total Length of Bwd Packets': int64
+' URG Flag Count': int64
+' act_data_pkt_fwd': int64
+' min_seg_size_forward': int64
+Active Mean: float64
+Bwd Avg Bulk Rate: int64
+Bwd IAT Total: int64
+Bwd Packet Length Max: int64
+FIN Flag Count: int64
+Flow Bytes/s: float64
+Fwd Avg Bytes/Bulk: int64
+Fwd IAT Total: int64
+Fwd PSH Flags: int64
+Fwd Packets/s: float64
+Idle Mean: float64
+Init_Win_bytes_forward: int64
+Subflow Fwd Packets: int64
+Total Length of Fwd Packets: int64
