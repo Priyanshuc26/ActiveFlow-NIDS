@@ -86,6 +86,9 @@ class DataIngestion:
         try:
             #Saving Master Data into local storage(feature store)
             feature_store_file_path = self.data_ingestion_config.feature_store_file_path
+            target_colum = self.data_ingestion_config.target_column
+            random_state = self.data_ingestion_config.random_state
+            
             dir_path = os.path.dirname(feature_store_file_path)
             os.makedirs(dir_path, exist_ok=True)
             master_dataset.to_csv(feature_store_file_path, index=False, header=True)
@@ -93,7 +96,10 @@ class DataIngestion:
             
             #Splitting Master data into train and test data
             train_set, test_set = train_test_split(
-                master_dataset, test_size=self.data_ingestion_config.train_test_split_ratio
+                master_dataset,
+                test_size=self.data_ingestion_config.train_test_split_ratio,
+                stratify=master_dataset[target_colum],
+                random_state=random_state
             )
 
             logging.info("Performed train test split on the dataframe")
@@ -120,7 +126,7 @@ class DataIngestion:
             self.save_and_split_data(df)
             
             logging.info("Data ingestion final step: Storing Data Ingestion Artifact")
-            dataingestionartifact = DataIngestionArtifact(trained_file_path=self.data_ingestion_config.training_file_path,
+            dataingestionartifact = DataIngestionArtifact(train_file_path=self.data_ingestion_config.training_file_path,
                                                           test_file_path=self.data_ingestion_config.testing_file_path)
             return dataingestionartifact
 
