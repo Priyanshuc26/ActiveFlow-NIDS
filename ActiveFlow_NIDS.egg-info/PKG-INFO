@@ -21,6 +21,9 @@ Requires-Dist: fastapi
 Requires-Dist: uvicorn
 Requires-Dist: starlette
 Requires-Dist: python-multipart
+Requires-Dist: dvc
+Requires-Dist: dvc-gdrive
+Requires-Dist: evidently
 Dynamic: author
 Dynamic: requires-dist
 Dynamic: summary

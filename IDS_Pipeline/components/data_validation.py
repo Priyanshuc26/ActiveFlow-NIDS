@@ -7,7 +7,14 @@ from IDS_Pipeline.logging.logger import logging
 
 from IDS_Pipeline.utils.main_utils.utils import read_yaml_file, write_yaml_file
 
-from scipy.stats import ks_2samp #Check two samples of data to find data drift occured or not
+# from scipy.stats import ks_2samp #Check two samples of data to find data drift occured or not
+from evidently import Dataset
+from evidently import DataDefinition
+from evidently import Report
+from evidently.presets.drift import DataDriftPreset
+from evidently.metrics import *
+from evidently.presets import *
+
 import pandas as pd
 import os,sys
 
@@ -33,56 +40,56 @@ class DataValidation:
 
     def validate_columns(self,dataframe:pd.DataFrame) -> bool:
         try:
-            valid_columns_status = False
             schema_dict = self._schema_config
             df_column_dtype = {feature: f'{dataframe[feature].dtype}' for feature in dataframe.columns}
             if schema_dict == df_column_dtype:
-                valid_columns_status = True
                 logging.info("Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful")
+                return True
             else:
                 logging.info("Columns of Dataframe and Schema mismatched")
                 raise Exception("Columns mismatched. Column Validation Failed!")
-                
-            return valid_columns_status
-            
-            # number_of_columns = len(self._schema_config)
-            # logging.info(f"Required number of columns: {number_of_columns}")
-            # logging.info(f"dataframe has {len(dataframe.columns)} columns")
-            # if len(dataframe.columns) == number_of_columns:
-                # return True
-            # return False
 
         except Exception as e:
             raise CustomException(e,sys)
 
-    def detect_dataset_drift(self, base_df, current_df, threshold = 0.05) -> bool:
+    def detect_dataset_drift(self, base_df, current_df) -> bool:
         try:
-            status = True
-            report = {}
-            for column in base_df.columns:
-                d1 = base_df[column]
-                d2 = current_df[column]
+            ## Using Dataset and DataDefinition for automatically mapping columns to numerical or categorical
+            base_data = Dataset.from_pandas(
+                        base_df,
+                        data_definition=DataDefinition()
+                    )
+            
+            current_data = Dataset.from_pandas(
+                        current_df,
+                        data_definition=DataDefinition()
+                    )
+            
+            report = Report([
+                        DataDriftPreset()
+                        ])
 
-                is_sample_dist = ks_2samp(d1, d2)
-                if threshold <= is_sample_dist.pvalue:
-                    is_found = False
-                else:
-                    is_found = True
-                    status = False
+            ## Getting Detailed drift report
+            my_eval = report.run(current_data=current_data, reference_data=base_data)
+            
+            data_drift_report = my_eval.dict()       #exporting report as dictionrary
 
-                report.update({
-                    column: {
-                    "p_value": float(is_sample_dist.pvalue),
-                    "drift_status": is_found,
-                }
-                })
 
-            drift_report_file_path = self.data_validation_config.drift_report_file_path
-            # Create directory
+            ## Creating directory for storing report.yaml
+            drift_report_file_path = self.data_validation_config.drift_report_file_path  # Create directory
             dir_path = os.path.dirname(drift_report_file_path)
             os.makedirs(dir_path, exist_ok=True)
 
-            write_yaml_file(file_path= drift_report_file_path, content=report)
+            write_yaml_file(file_path= drift_report_file_path, content=data_drift_report)
+            
+            ## Getting Drift Status
+            drift_threshold = data_drift_report["metrics"][0]["config"]["drift_share"]
+            actual_drift_share = data_drift_report["metrics"][0]["value"]["share"]
+            if actual_drift_share >= drift_threshold:
+                raise Exception("Data Drift Occured")
+            else:
+                logging.info("No Data Drift Detected")
+                return False
 
         except Exception as e:
             raise CustomException(e,sys)
@@ -101,7 +108,7 @@ class DataValidation:
             if not status:
                 error_msg = f"Train Dataframe does not contain all required columns"
 
-            status = self.validate_number_of_columns(test_dataframe)
+            status = self.validate_columns(test_dataframe)
             if not status:
                 error_msg = f"Train Dataframe does not contain all required columns"
 
@@ -149,3 +156,4 @@ if __name__ == "__main__":
     test_dataframe =DataValidation.read_data(data_ingestion_artifact.test_file_path)
 
     data_validation.validate_columns(train_dataframe)
+    data_validation.detect_dataset_drift(base_df=train_dataframe,current_df=test_dataframe)
