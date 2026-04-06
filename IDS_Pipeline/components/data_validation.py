@@ -1,8 +1,10 @@
 from IDS_Pipeline.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
-from IDS_Pipeline.entity.config_entity import DataValidationConfig
-from IDS_Pipeline.exception.exception import CustomException
+from IDS_Pipeline.entity.config_entity import DataValidationConfig, TrainingPipelineConfig
 from IDS_Pipeline.constant.training_pipeline import SCHEMA_FILE_PATH
+
+from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
+
 from IDS_Pipeline.utils.main_utils.utils import read_yaml_file, write_yaml_file
 
 from scipy.stats import ks_2samp #Check two samples of data to find data drift occured or not
@@ -29,15 +31,26 @@ class DataValidation:
         except Exception as e:
             raise CustomException(e, sys)
 
-    def validate_number_of_columns(self,dataframe:pd.DataFrame) -> bool:
+    def validate_columns(self,dataframe:pd.DataFrame) -> bool:
         try:
-            print(self._schema_config)
-            number_of_columns = len(self._schema_config)
-            logging.info(f"Required number of columns: {number_of_columns}")
-            logging.info(f"dataframe has {len(dataframe.columns)} columns")
-            if len(dataframe.columns) == number_of_columns:
-                return True
-            return False
+            valid_columns_status = False
+            schema_dict = self._schema_config
+            df_column_dtype = {feature: f'{dataframe[feature].dtype}' for feature in dataframe.columns}
+            if schema_dict == df_column_dtype:
+                valid_columns_status = True
+                logging.info("Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful")
+            else:
+                logging.info("Columns of Dataframe and Schema mismatched")
+                raise Exception("Columns mismatched. Column Validation Failed!")
+                
+            return valid_columns_status
+            
+            # number_of_columns = len(self._schema_config)
+            # logging.info(f"Required number of columns: {number_of_columns}")
+            # logging.info(f"dataframe has {len(dataframe.columns)} columns")
+            # if len(dataframe.columns) == number_of_columns:
+                # return True
+            # return False
 
         except Exception as e:
             raise CustomException(e,sys)
@@ -84,7 +97,7 @@ class DataValidation:
             train_dataframe =DataValidation.read_data(train_file_path)
             test_dataframe =DataValidation.read_data(test_file_path)
 
-            status = self.validate_number_of_columns(train_dataframe)
+            status = self.validate_columns(train_dataframe)
             if not status:
                 error_msg = f"Train Dataframe does not contain all required columns"
 
@@ -114,3 +127,25 @@ class DataValidation:
         except Exception as e:
             raise CustomException(e,sys)
 
+
+
+if __name__ == "__main__":
+    mock_train_path = "Artifacts/data_ingestion/ingested/train.csv" 
+    mock_test_path = "Artifacts/data_ingestion/ingested/test.csv"  
+    
+    ## Inputs for Data Validation
+    data_ingestion_artifact = DataIngestionArtifact(
+        train_file_path=mock_train_path,
+        test_file_path=mock_test_path
+    ) 
+    #input required for data validation config
+    data_validation_config = DataValidationConfig(training_pipeline_config=TrainingPipelineConfig())
+
+
+    data_validation = DataValidation(data_ingestion_artifact,data_validation_config)
+
+    #Read data the data from train and test
+    train_dataframe =DataValidation.read_data(data_ingestion_artifact.train_file_path)
+    test_dataframe =DataValidation.read_data(data_ingestion_artifact.test_file_path)
+
+    data_validation.validate_columns(train_dataframe)
