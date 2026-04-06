@@ -6,7 +6,7 @@ import pandas as pd
 """
 defining common constant variable for training pipeline
 """
-TARGET_COLUMN: str = "Result"
+TARGET_COLUMN: str = ' Label'
 PIPELINE_NAME: str = "Intrusion_Detection_System"
 RAW_DATA_FILE_PATH: str = "raw_data/MachineLearningCSV.zip"
 ARTIFACT_DIR: str = "Artifacts"
@@ -16,6 +16,7 @@ TEST_FILE_NAME: str = "test.csv"
 
 SAVED_MODEL_DIR =os.path.join("saved_models")
 MODEL_FILE_NAME = "model.pkl"
+MANUAL_SEED = 42
 
 
 

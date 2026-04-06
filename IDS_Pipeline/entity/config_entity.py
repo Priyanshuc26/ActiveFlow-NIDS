@@ -12,6 +12,8 @@ class TrainingPipelineConfig:
         self.pipeline_name = training_pipeline.PIPELINE_NAME
         self.raw_data_file_path = training_pipeline.RAW_DATA_FILE_PATH
         self.artifact_dir = training_pipeline.ARTIFACT_DIR
+        self.target_column = training_pipeline.TARGET_COLUMN
+        self.manual_seed = training_pipeline.MANUAL_SEED
         # self.artifact_dir = os.path.join(self.artifact_name, timestamp)
         self.timestamp: str = timestamp
 
@@ -19,6 +21,10 @@ class TrainingPipelineConfig:
 class DataIngestionConfig:
     def __init__(self,training_pipeline_config: TrainingPipelineConfig):
         self.raw_data_file_path = training_pipeline_config.raw_data_file_path
+        
+        self.target_column = training_pipeline_config.target_column
+        
+        self.random_state = training_pipeline_config.manual_seed
         
         self.data_ingestion_dir:str = os.path.join(training_pipeline_config.artifact_dir,"data_ingestion")
 
@@ -30,6 +36,7 @@ class DataIngestionConfig:
 
         self.train_test_split_ratio: float = training_pipeline.DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
         
+        
         # self.collection_name: str = training_pipeline.DATA_INGESTION_COLLECTION_NAME
         
         # self.database_name: str = training_pipeline.DATA_INGESTION_DATABASE_NAME
@@ -38,12 +45,16 @@ class DataIngestionConfig:
 class DataValidationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.data_validation_dir: str = os.path.join( training_pipeline_config.artifact_dir, training_pipeline.DATA_VALIDATION_DIR_NAME)
+        
         self.valid_data_dir: str = os.path.join(self.data_validation_dir, training_pipeline.DATA_VALIDATION_VALID_DIR)
         self.invalid_data_dir: str = os.path.join(self.data_validation_dir, training_pipeline.DATA_VALIDATION_INVALID_DIR)
+        
         self.valid_train_file_path: str = os.path.join(self.valid_data_dir, training_pipeline.TRAIN_FILE_NAME)
         self.valid_test_file_path: str = os.path.join(self.valid_data_dir, training_pipeline.TEST_FILE_NAME)
+        
         self.invalid_train_file_path: str = os.path.join(self.invalid_data_dir, training_pipeline.TRAIN_FILE_NAME)
         self.invalid_test_file_path: str = os.path.join(self.invalid_data_dir, training_pipeline.TEST_FILE_NAME)
+        
         self.drift_report_file_path: str = os.path.join(
             self.data_validation_dir,
             training_pipeline.DATA_VALIDATION_DRIFT_REPORT_DIR,
