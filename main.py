@@ -1,6 +1,6 @@
 from legacy_code.data_ingestion import DataIngestion
 from IDS_Pipeline.components.data_validation import DataValidation
-from IDS_Pipeline.components.data_transformation import DataTransformation
+from legacy_code.data_transformation import DataTransformation
 from IDS_Pipeline.components.model_trainer import ModelTrainer
 
 from IDS_Pipeline.exception.exception import NetworkSecurityException

@@ -34,6 +34,7 @@ DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO: float = 0.25
 
 
 SCHEMA_FILE_PATH = os.path.join("data_schema", "schema.yaml")
+TOP_FEATURE_SCHEMA_FILE_PATH = os.path.join("data_schema", "top_features.yaml")
 
 
 
