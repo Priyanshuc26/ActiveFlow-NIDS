@@ -34,12 +34,14 @@ class DataValidation:
     @staticmethod
     def read_data(file_path) -> pd.DataFrame:
         try:
+            logging.info(f"Reading csv file from path: {file_path}")
             return pd.read_csv(file_path)
         except Exception as e:
             raise CustomException(e, sys)
 
     def validate_columns(self,dataframe:pd.DataFrame) -> bool:
         try:
+            logging.info(f"Validating Column Name and Datatype of {dataframe}")
             schema_dict = self._schema_config
             df_column_dtype = {feature: f'{dataframe[feature].dtype}' for feature in dataframe.columns}
             if schema_dict == df_column_dtype:
@@ -51,9 +53,11 @@ class DataValidation:
 
         except Exception as e:
             raise CustomException(e,sys)
+        
 
     def detect_dataset_drift(self, base_df, current_df) -> bool:
         try:
+            logging.info("Calculating and Detecting Data Drift")
             ## Using Dataset and DataDefinition for automatically mapping columns to numerical or categorical
             base_data = Dataset.from_pandas(
                         base_df,
@@ -71,16 +75,9 @@ class DataValidation:
 
             ## Getting Detailed drift report
             my_eval = report.run(current_data=current_data, reference_data=base_data)
-            
             data_drift_report = my_eval.dict()       #exporting report as dictionrary
 
-
-            ## Creating directory for storing report.yaml
-            drift_report_file_path = self.data_validation_config.drift_report_file_path  # Create directory
-            dir_path = os.path.dirname(drift_report_file_path)
-            os.makedirs(dir_path, exist_ok=True)
-
-            write_yaml_file(file_path= drift_report_file_path, content=data_drift_report)
+            
             
             ## Getting Drift Status
             drift_threshold = data_drift_report["metrics"][0]["config"]["drift_share"]
@@ -88,7 +85,16 @@ class DataValidation:
             if actual_drift_share >= drift_threshold:
                 raise Exception("Data Drift Occured")
             else:
+                logging.info(f"Drift threshold: {drift_threshold} and Actual drift: {actual_drift_share}")
                 logging.info("No Data Drift Detected")
+                
+                ## Creating directory for storing report.yaml (Happens only if no data drift is detected)
+                drift_report_file_path = self.data_validation_config.drift_report_file_path  
+                dir_path = os.path.dirname(drift_report_file_path)    # Create directory
+                logging.info(f"Storing Data drift report: {dir_path}")
+                os.makedirs(dir_path, exist_ok=True)
+                write_yaml_file(file_path= drift_report_file_path, content=data_drift_report)
+                
                 return False
 
         except Exception as e:
@@ -97,7 +103,8 @@ class DataValidation:
 
     def initiate_data_validation(self) -> DataValidationArtifact:
         try:
-            train_file_path = self.data_ingestion_artifact.trained_file_path
+            logging.info("*******************Starting Data Validation Stage*******************")
+            train_file_path = self.data_ingestion_artifact.train_file_path
             test_file_path = self.data_ingestion_artifact.test_file_path
 
             #Read data the data from train and test
@@ -105,24 +112,21 @@ class DataValidation:
             test_dataframe =DataValidation.read_data(test_file_path)
 
             status = self.validate_columns(train_dataframe)
-            if not status:
-                error_msg = f"Train Dataframe does not contain all required columns"
-
             status = self.validate_columns(test_dataframe)
-            if not status:
-                error_msg = f"Train Dataframe does not contain all required columns"
 
-            #Let's check data drift
+            #Let's check data drift and store report 
             status = self.detect_dataset_drift(base_df= train_dataframe, current_df= test_dataframe)
+            
+            #Storing valid train and test csv
             dir_path = os.path.dirname(self.data_validation_config.valid_train_file_path)
             os.makedirs(dir_path, exist_ok=True)
-
             train_dataframe.to_csv(self.data_validation_config.valid_train_file_path, index=False, header=True)
             test_dataframe.to_csv(self.data_validation_config.valid_test_file_path, index=False, header=True)
 
+            logging.info("Data validation final step: Storing Data validation Artifact")
             data_validation_artifact = DataValidationArtifact(
                 validation_status=status,
-                valid_train_file_path=self.data_ingestion_artifact.trained_file_path,
+                valid_train_file_path=self.data_ingestion_artifact.train_file_path,
                 valid_test_file_path=self.data_ingestion_artifact.test_file_path,
                 invalid_train_file_path=None,
                 invalid_test_file_path=None,
@@ -151,9 +155,10 @@ if __name__ == "__main__":
 
     data_validation = DataValidation(data_ingestion_artifact,data_validation_config)
 
-    #Read data the data from train and test
-    train_dataframe =DataValidation.read_data(data_ingestion_artifact.train_file_path)
-    test_dataframe =DataValidation.read_data(data_ingestion_artifact.test_file_path)
+    data_validation.initiate_data_validation()
 
-    data_validation.validate_columns(train_dataframe)
-    data_validation.detect_dataset_drift(base_df=train_dataframe,current_df=test_dataframe)
+
+
+## Upgrades to be done in upcoming version:
+#  * Missing Values (Null) Check -> (Rejecting Column which contains na values more than threshold level)
+#  *  Value range check -> (For example: destination_port cannot mathematically be a negative number, and it cannot be greater than 65535)
