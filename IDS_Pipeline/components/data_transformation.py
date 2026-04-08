@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
+import sys
+import os
 
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS
 from IDS_Pipeline.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
 from IDS_Pipeline.entity.config_entity import DataTransformationConfig
 from IDS_Pipeline.logging.logger import logging
@@ -9,9 +11,10 @@ from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.utils.main_utils.utils import save_numpy_array_data, save_object, read_yaml_file
 
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import RobustScaler
+from sklearn.impute import  SimpleImputer
 
-from sklearn.base import BaseEstimator, TransformerMixin
-import pandas as pd
 
 class ColumnNameCleaner(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -54,3 +57,37 @@ class InfinityToNanConverter(BaseEstimator,TransformerMixin):
         df = df.copy()
         df = df.replace([np.inf, -np.inf], np.nan)
         return df
+    
+    
+class DataTransformation:
+    def __init__(self,data_validation_artifact:DataValidationArtifact,data_transformation_config:DataTransformationArtifact):
+        try:
+            self.data_validation_artifact = data_validation_artifact
+            self.data_transformation_config = data_transformation_config
+        except Exception as e:
+            raise CustomException(e, sys)
+       
+        
+    @staticmethod
+    def read_data(file_path) -> pd.DataFrame:
+        try:
+            return pd.read_csv(file_path)
+
+        except Exception as e:
+            raise CustomException(e, sys)
+        
+        
+    def get_data_transformer_object() -> Pipeline:
+        try:
+            preprocessor:Pipeline = Pipeline([
+                ('ColumnNameCleaner',ColumnNameCleaner()),
+                ('FeatureDropper',FeatureDropper()),
+                ('InfinityToNanConverter',InfinityToNanConverter()),
+                ('Imputer',SimpleImputer(**DATA_TRANSFORMATION_IMPUTER_PARAMS)),
+                ('Scaler',RobustScaler())
+            ])
+            
+            return preprocessor
+        except Exception as e:
+            raise CustomException(e,sys)
+    

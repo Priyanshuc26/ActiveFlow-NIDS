@@ -57,10 +57,27 @@ DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
 PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 
-#knn imputer to replace nan value
+# imputer to replace nan value
 DATA_TRANSFORMATION_IMPUTER_PARAMS:dict = {"missing_values": np.nan,
-                                        "n_neighbors": 3,
-                                        "weights": "uniform",}
+                                        "strategy": "median" }
+
+LABEL_MAPPING_DICT:dict = {
+    'BENIGN': 0,
+    'DDoS': 1,
+    'PortScan': 2,
+    'DoS Hulk': '3',
+    'DoS GoldenEye': 3,
+    'DoS slowloris': 3,
+    'DoS Slowhttptest': 3,
+    'FTP-Patator': 4,
+    'SSH-Patator': 4,
+    'Bot': 5,
+    'Web Attack � Brute Force': 6,
+    'Web Attack � XSS': 6,
+    'Web Attack � Sql Injection': 6,
+    'Infiltration': np.nan,
+    'Heartbleed': np.nan
+}
 
 
 
