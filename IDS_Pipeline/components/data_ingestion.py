@@ -14,6 +14,7 @@ from IDS_Pipeline.logging.logger import logging
 from IDS_Pipeline.entity.config_entity import DataIngestionConfig
 from IDS_Pipeline.entity.artifact_entity import DataIngestionArtifact
 from IDS_Pipeline.entity.config_entity import TrainingPipelineConfig
+from IDS_Pipeline.constant.training_pipeline import TARGET_COLUMN
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -86,7 +87,7 @@ class DataIngestion:
         try:
             #Saving Master Data into local storage(feature store)
             feature_store_file_path = self.data_ingestion_config.feature_store_file_path
-            target_colum = self.data_ingestion_config.target_column
+            target_column = TARGET_COLUMN
             random_state = self.data_ingestion_config.random_state
             
             dir_path = os.path.dirname(feature_store_file_path)
@@ -98,7 +99,7 @@ class DataIngestion:
             train_set, test_set = train_test_split(
                 master_dataset,
                 test_size=self.data_ingestion_config.train_test_split_ratio,
-                stratify=master_dataset[target_colum],
+                stratify=master_dataset[target_column],
                 random_state=random_state
             )
 

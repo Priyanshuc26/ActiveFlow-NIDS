@@ -65,7 +65,7 @@ LABEL_MAPPING_DICT:dict = {
     'BENIGN': 0,
     'DDoS': 1,
     'PortScan': 2,
-    'DoS Hulk': '3',
+    'DoS Hulk': 3,
     'DoS GoldenEye': 3,
     'DoS slowloris': 3,
     'DoS Slowhttptest': 3,

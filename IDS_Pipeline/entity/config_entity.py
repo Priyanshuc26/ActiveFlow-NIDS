@@ -22,8 +22,6 @@ class DataIngestionConfig:
     def __init__(self,training_pipeline_config: TrainingPipelineConfig):
         self.raw_data_file_path = training_pipeline_config.raw_data_file_path
         
-        self.target_column = training_pipeline_config.target_column
-        
         self.random_state = training_pipeline_config.manual_seed
         
         self.data_ingestion_dir:str = os.path.join(training_pipeline_config.artifact_dir,"data_ingestion")
