@@ -3,9 +3,9 @@ import numpy as np
 import sys
 import os
 
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, PREPROCESSED_TARGET_COLUMN, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, PREPROCESSED_TARGET_COLUMN_NAME, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
 from IDS_Pipeline.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
-from IDS_Pipeline.entity.config_entity import DataTransformationConfig
+from IDS_Pipeline.entity.config_entity import DataTransformationConfig,TrainingPipelineConfig
 from IDS_Pipeline.logging.logger import logging
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.utils.main_utils.utils import save_numpy_array_data, save_object, read_yaml_file
@@ -21,45 +21,74 @@ from imblearn.combine import SMOTETomek
 
 class ColumnNameCleaner(BaseEstimator, TransformerMixin):
     def __init__(self):
-        pass
-    
+        try:
+            logging.info(" Cleaning Column Name...")
+        except Exception as e:
+            raise CustomException(e,sys)
+        
     # There is nothing to learn here for fit() function(It do the mathematics like in StandardScaler, it calculates the mean ans std. deviation), so we just return the object itself (return self) and move on to the transformation.    
     def fit(self, df: pd.DataFrame, y=None):
-        return self
+        try:
+            return self
+        except Exception as e:
+            raise CustomException(e,sys)
         
     def transform(self, df: pd.DataFrame, y=None):
-        df = df.copy()    # If we manipulate the dataframe directly without copying it first, Pandas will frequently throw a massive red SettingWithCopyWarning. In somecase it can also corrupt original data
-        df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in df.columns]
-        return df
+        try:
+            df = df.copy()    # If we manipulate the dataframe directly without copying it first, Pandas will frequently throw a massive red SettingWithCopyWarning. In somecase it can also corrupt original data
+            df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in df.columns]
+            return df
+        except Exception as e:
+            raise CustomException(e,sys)
      
         
 class FeatureDropper(BaseEstimator,TransformerMixin):
     def __init__(self, top_feature_yaml_path):
-        # We are reading yaml file in init func. because we want yaml file to load only once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
-        self.top_feature_dict = read_yaml_file(file_path=top_feature_yaml_path)
+        try:
+            # We are reading yaml file in init func. because we want yaml file to load only once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
+            self.top_feature_dict = read_yaml_file(file_path=top_feature_yaml_path)
+            self.top_feature_columns = list(self.top_feature_dict.keys())
+            logging.info(f" Dropping features that are not important... Top features: {self.top_feature_columns}")
+        except Exception as e:
+            raise CustomException(e,sys)
         
     def fit(self, df: pd.DataFrame, y=None):
-        return self
+        try:
+            return self
+        except Exception as e:
+            raise CustomException(e,sys)
     
     def transform(self, df: pd.DataFrame, y=None):
-        df = df.copy()
-        top_feature_columns = self.top_feature_dict.keys()
-        df = df.loc[:,list(top_feature_columns)]
-        # df = df.drop(columns=[df.columns not in top_feature_columns],axis=1)
-        return df
+        try:
+            df = df.copy()  
+            # Finding columns that are in BOTH the YAML file AND the current dataframe
+            valid_columns = [col for col in self.top_feature_columns if col in df.columns]
+            df = df.loc[:, valid_columns]
+            return df
+        except Exception as e:
+            raise CustomException(e,sys)
    
         
 class InfinityToNanConverter(BaseEstimator,TransformerMixin):
     def __init__(self):
-        pass 
+        try:
+            logging.info(" Converting infinity values to NaN...")
+        except Exception as e:
+            raise CustomException(e,sys)
     
     def fit(self, df: pd.DataFrame, y=None):
-        return self
+        try:
+            return self
+        except Exception as e:
+            raise CustomException(e,sys)
         
     def transform(self, df: pd.DataFrame, y=None):
-        df = df.copy()
-        df = df.replace([np.inf, -np.inf], np.nan)
-        return df
+        try:
+            df = df.copy()
+            df = df.replace([np.inf, -np.inf], np.nan)
+            return df
+        except Exception as e:
+            raise CustomException(e,sys)
     
     
 class DataTransformation:
@@ -74,14 +103,16 @@ class DataTransformation:
     @staticmethod
     def read_data(file_path) -> pd.DataFrame:
         try:
+            logging.info(f"Reading csv file from path: {file_path}")
             return pd.read_csv(file_path)
 
         except Exception as e:
             raise CustomException(e, sys)
         
         
-    def get_data_transformer_object() -> Pipeline:
+    def get_data_transformer_object(self) -> Pipeline:
         try:
+            logging.info("Starting Data Preprocessing Pipeline")
             preprocessor:Pipeline = Pipeline([
                 ('ColumnNameCleaner',ColumnNameCleaner()),
                 ('FeatureDropper',FeatureDropper(top_feature_yaml_path=TOP_FEATURE_SCHEMA_FILE_PATH)),
@@ -96,61 +127,77 @@ class DataTransformation:
     
     
     def hybrid_sampling(self,X_train,y_train):
-        under_sampler = RandomUnderSampler(sampling_strategy=UNDER_SAMPLER_PARAMS,random_state=42)
-        X_under_sampled,y_under_sampled = under_sampler.fit_resample(X_train,y_train)
-        over_sampler = SMOTETomek()
-        X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
-        return X_resampled,y_resampled
+        try:
+            logging.info("Starting Hybrid Sampling")
+            
+            #Choose Hybrid sampling over simply SMOTETomek, because SMOTETomek only oversample the data based upon majority class number which can be computationally expensive if majority class is present in large number
+            under_sampler = RandomUnderSampler(sampling_strategy=UNDER_SAMPLER_PARAMS,random_state=42)
+            X_under_sampled,y_under_sampled = under_sampler.fit_resample(X_train,y_train)
+            logging.info(f"  Under sampling done.X_under_sampled shape: {X_under_sampled.shape},y_under_sampled shape: {y_under_sampled.shape}")
+            
+            over_sampler = SMOTETomek()
+            X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
+            logging.info(f"  SMOTETomek applied.X_resampled shape: {X_resampled.shape},y_resampled shape: {y_resampled.shape}")
+            
+            return X_resampled,y_resampled
+        except Exception as e:
+            raise CustomException(e,sys)
         
     
     def initiate_data_transformation(self) -> DataTransformationArtifact:
-        logging.info("Entered initiate_data_transformation method of DataTransformation class")
         try:
-            logging.info("Starting Data Transformation")
+            logging.info("*******************Starting Data Transformation Stage*******************")
             #Loading validated train and test df 
             train_df = DataTransformation.read_data(self.data_validation_artifact.valid_train_file_path)
             test_df = DataTransformation.read_data(self.data_validation_artifact.valid_test_file_path)
             
+            logging.info("Preprocessing target column name")
             # Globally cleaning all column names so TARGET_COLUMN can be extracted safely
             train_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in train_df.columns]
             test_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in test_df.columns]
 
-
+            logging.info("Splitting Train and Test Dataframe into input features(X) and target features(y)")
             #Training Dataframe
-            train_df[PREPROCESSED_TARGET_COLUMN] = train_df[PREPROCESSED_TARGET_COLUMN].replace(LABEL_MAPPING_DICT) #Mapping labels to number (encoding)
-            train_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN], inplace=True)  #droping rows with help of labels which has nan value
+            train_df[PREPROCESSED_TARGET_COLUMN_NAME] = train_df[PREPROCESSED_TARGET_COLUMN_NAME].replace(LABEL_MAPPING_DICT) #Mapping labels to number (encoding)
+            train_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN_NAME], inplace=True)  #droping rows with help of labels which has nan value
             
-            input_feature_train_df = train_df.drop(columns=[PREPROCESSED_TARGET_COLUMN], axis=1)   #Splitting into X and y
-            target_feature_train_df = train_df[PREPROCESSED_TARGET_COLUMN]
+            input_feature_train_df = train_df.drop(columns=[PREPROCESSED_TARGET_COLUMN_NAME], axis=1)   #Splitting into X and y
+            target_feature_train_df = train_df[PREPROCESSED_TARGET_COLUMN_NAME]
 
 
             # Testing dataframe
-            test_df[PREPROCESSED_TARGET_COLUMN] = test_df[PREPROCESSED_TARGET_COLUMN].replace(LABEL_MAPPING_DICT)
-            test_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN], inplace=True)
+            test_df[PREPROCESSED_TARGET_COLUMN_NAME] = test_df[PREPROCESSED_TARGET_COLUMN_NAME].replace(LABEL_MAPPING_DICT)   #label mapping
+            test_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN_NAME], inplace=True)
             
-            input_feature_test_df = test_df.drop(columns=[PREPROCESSED_TARGET_COLUMN], axis=1)   #Splitting into X and y
-            target_feature_test_df = test_df[PREPROCESSED_TARGET_COLUMN]
+            input_feature_test_df = test_df.drop(columns=[PREPROCESSED_TARGET_COLUMN_NAME], axis=1)   #Splitting into X and y
+            target_feature_test_df = test_df[PREPROCESSED_TARGET_COLUMN_NAME]
 
             ## Preprocessing the input_feature of both train and test df
             preprocessor_object = self.get_data_transformer_object()
             transformed_input_train_feature = preprocessor_object.fit_transform(input_feature_train_df)
             transformed_input_test_feature = preprocessor_object.transform(input_feature_test_df)
+            logging.info(f"Preprocessing Complete.")
 
-            
+            # Applying hybrid sampling
+            transformed_input_train_feature,transformed_target_train_feature = self.hybrid_sampling(transformed_input_train_feature,target_feature_train_df)
 
             # Concatinating input features and target features
-            train_arr = np.c_[transformed_input_train_feature, np.array(target_feature_train_df)]
+            train_arr = np.c_[transformed_input_train_feature, np.array(transformed_target_train_feature)]
             test_arr = np.c_[transformed_input_test_feature, np.array(target_feature_test_df)]
-
+            logging.info(f"final train_arr shape: {train_arr.shape} and final test_arr shape shape: {test_arr.shape}")
+            
             # save numpy array data
             save_numpy_array_data(self.data_transformation_config.transformed_train_file_path, array=train_arr)
             save_numpy_array_data(self.data_transformation_config.transformed_test_file_path, array=test_arr)
             save_object(self.data_transformation_config.transformed_object_file_path, preprocessor_object)
+            logging.info("numpy array saved")
 
             # model pusher
+            logging.info("saving preprocessor object")
             save_object("final_model/preprocessor.pkl", preprocessor_object)
 
             #Preparing Data Transformation Artifacts
+            logging.info("Data Transformation Final Step: Preparing Data Transformation Artifacts")
             data_transformation_artifact = DataTransformationArtifact(
                 transformed_object_file_path = self.data_transformation_config.transformed_object_file_path,
                 transformed_train_file_path = self.data_transformation_config.transformed_train_file_path,
@@ -161,3 +208,18 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e, sys)
+        
+        
+if __name__ == "__main__":
+    data_validation_artifact = DataValidationArtifact(
+        validation_status=True,
+        valid_train_file_path="Artifacts/data_validation/validated/train.csv",
+        valid_test_file_path="Artifacts/data_validation/validated/test.csv",
+        invalid_train_file_path= None,
+        invalid_test_file_path=None,
+        drift_report_file_path=None
+    )
+    data_transformation_config = DataTransformationConfig(training_pipeline_config=TrainingPipelineConfig())
+    
+    data_transformation = DataTransformation(data_transformation_config=data_transformation_config,data_validation_artifact=data_validation_artifact) 
+    data_transformation.initiate_data_transformation()
