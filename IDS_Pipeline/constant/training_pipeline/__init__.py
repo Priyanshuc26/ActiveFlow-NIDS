@@ -57,9 +57,14 @@ DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
 PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 
+PREPROCESSED_TARGET_COLUMN:str = 'label'
 # imputer to replace nan value
 DATA_TRANSFORMATION_IMPUTER_PARAMS:dict = {"missing_values": np.nan,
                                         "strategy": "median" }
+
+UNDER_SAMPLER_PARAMS:dict = {
+    0 : 400000
+}
 
 LABEL_MAPPING_DICT:dict = {
     'BENIGN': 0,

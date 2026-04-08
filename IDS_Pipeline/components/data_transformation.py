@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import os
 
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, TARGET_COLUMN, LABEL_MAPPING_DICT
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, PREPROCESSED_TARGET_COLUMN, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
 from IDS_Pipeline.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
 from IDS_Pipeline.entity.config_entity import DataTransformationConfig
 from IDS_Pipeline.logging.logger import logging
@@ -14,6 +14,8 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import RobustScaler
 from sklearn.impute import  SimpleImputer
+
+from imblearn.under_sampling import RandomUnderSampler
 from imblearn.combine import SMOTETomek
 
 
@@ -33,7 +35,7 @@ class ColumnNameCleaner(BaseEstimator, TransformerMixin):
         
 class FeatureDropper(BaseEstimator,TransformerMixin):
     def __init__(self, top_feature_yaml_path):
-        # We are reading yaml file init func. because we want yaml file to load once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
+        # We are reading yaml file in init func. because we want yaml file to load only once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
         self.top_feature_dict = read_yaml_file(file_path=top_feature_yaml_path)
         
     def fit(self, df: pd.DataFrame, y=None):
@@ -82,16 +84,24 @@ class DataTransformation:
         try:
             preprocessor:Pipeline = Pipeline([
                 ('ColumnNameCleaner',ColumnNameCleaner()),
-                ('FeatureDropper',FeatureDropper()),
+                ('FeatureDropper',FeatureDropper(top_feature_yaml_path=TOP_FEATURE_SCHEMA_FILE_PATH)),
                 ('InfinityToNanConverter',InfinityToNanConverter()),
-                ('Imputer',SimpleImputer(**DATA_TRANSFORMATION_IMPUTER_PARAMS)),
-                ('Scaler',RobustScaler())
+                ('Imputer',SimpleImputer(**DATA_TRANSFORMATION_IMPUTER_PARAMS)),  # using simple imputer to reduce bottleneck (avoid repitative calculations done in KNNImputer)
+                ('Scaler',RobustScaler())   # robust scaler ignores outliers and calculate mean and std. deviation between Q1 & Q3
             ])
             
             return preprocessor
         except Exception as e:
             raise CustomException(e,sys)
     
+    
+    def hybrid_sampling(self,X_train,y_train):
+        under_sampler = RandomUnderSampler(sampling_strategy=UNDER_SAMPLER_PARAMS,random_state=42)
+        X_under_sampled,y_under_sampled = under_sampler.fit_resample(X_train,y_train)
+        over_sampler = SMOTETomek()
+        X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
+        return X_resampled,y_resampled
+        
     
     def initiate_data_transformation(self) -> DataTransformationArtifact:
         logging.info("Entered initiate_data_transformation method of DataTransformation class")
@@ -100,30 +110,42 @@ class DataTransformation:
             #Loading validated train and test df 
             train_df = DataTransformation.read_data(self.data_validation_artifact.valid_train_file_path)
             test_df = DataTransformation.read_data(self.data_validation_artifact.valid_test_file_path)
+            
+            # Globally cleaning all column names so TARGET_COLUMN can be extracted safely
+            train_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in train_df.columns]
+            test_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in test_df.columns]
+
 
             #Training Dataframe
-            input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN], axis=1)
-            target_feature_train_df = train_df[TARGET_COLUMN]
-            target_feature_train_df = target_feature_train_df.replace()
+            train_df[PREPROCESSED_TARGET_COLUMN] = train_df[PREPROCESSED_TARGET_COLUMN].replace(LABEL_MAPPING_DICT) #Mapping labels to number (encoding)
+            train_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN], inplace=True)  #droping rows with help of labels which has nan value
+            
+            input_feature_train_df = train_df.drop(columns=[PREPROCESSED_TARGET_COLUMN], axis=1)   #Splitting into X and y
+            target_feature_train_df = train_df[PREPROCESSED_TARGET_COLUMN]
+
 
             # Testing dataframe
-            input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN], axis=1)
-            target_feature_test_df = test_df[TARGET_COLUMN]
-            target_feature_test_df = target_feature_test_df.replace(-1, 0)
-
-            preprocessor = self.get_data_trnasformer_object()
-            preprocessor_object = preprocessor.fit(input_feature_train_df, target_feature_train_df)
+            test_df[PREPROCESSED_TARGET_COLUMN] = test_df[PREPROCESSED_TARGET_COLUMN].replace(LABEL_MAPPING_DICT)
+            test_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN], inplace=True)
             
-            transformed_input_train_feature = preprocessor_object.transform(input_feature_train_df)
+            input_feature_test_df = test_df.drop(columns=[PREPROCESSED_TARGET_COLUMN], axis=1)   #Splitting into X and y
+            target_feature_test_df = test_df[PREPROCESSED_TARGET_COLUMN]
+
+            ## Preprocessing the input_feature of both train and test df
+            preprocessor_object = self.get_data_transformer_object()
+            transformed_input_train_feature = preprocessor_object.fit_transform(input_feature_train_df)
             transformed_input_test_feature = preprocessor_object.transform(input_feature_test_df)
 
+            
+
+            # Concatinating input features and target features
             train_arr = np.c_[transformed_input_train_feature, np.array(target_feature_train_df)]
             test_arr = np.c_[transformed_input_test_feature, np.array(target_feature_test_df)]
 
             # save numpy array data
-            save_numpy_array_data(self.data_transformation_config.transformed_train_file_path, array=train_arr, )
-            save_numpy_array_data(self.data_transformation_config.transformed_test_file_path, array=test_arr, )
-            save_object(self.data_transformation_config.transformed_object_file_path, preprocessor_object, )
+            save_numpy_array_data(self.data_transformation_config.transformed_train_file_path, array=train_arr)
+            save_numpy_array_data(self.data_transformation_config.transformed_test_file_path, array=test_arr)
+            save_object(self.data_transformation_config.transformed_object_file_path, preprocessor_object)
 
             # model pusher
             save_object("final_model/preprocessor.pkl", preprocessor_object)
