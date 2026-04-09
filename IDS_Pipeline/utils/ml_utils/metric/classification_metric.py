@@ -1,19 +1,20 @@
 from IDS_Pipeline.entity.artifact_entity import ClassificationMetricArtifact
-from IDS_Pipeline.exception.exception import NetworkSecurityException
+from IDS_Pipeline.exception.exception import CustomException
+from IDS_Pipeline.logging.logger import logging
 from sklearn.metrics import f1_score,precision_score,recall_score
 import sys
 
 
 def get_classification_score(y_true,y_pred) -> ClassificationMetricArtifact:
     try:
-        model_f1_score = f1_score(y_true, y_pred)
-        model_recall_score = recall_score(y_true, y_pred)
-        model_precision_score=precision_score(y_true,y_pred)
+        model_f1_score = f1_score(y_true, y_pred, average='macro')
+        model_recall_score = recall_score(y_true, y_pred, average='macro')
+        model_precision_score=precision_score(y_true,y_pred, average='macro')
         classification_metric = ClassificationMetricArtifact(f1_score=model_f1_score,
                                                              precision_score=model_precision_score,
                                                              recall_score=model_recall_score)
         return classification_metric
     except Exception as e:
-        raise NetworkSecurityException(e,sys)
+        raise CustomException(e,sys)
 
 

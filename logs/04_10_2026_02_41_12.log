@@ -1,0 +1,40 @@
+[ 2026-04-10 02:41:21,738 ] 143 root - INFO - *******************Starting Model Training and Evaluation Stage*******************
+[ 2026-04-10 02:41:21,743 ] 147 root - INFO - Loading Train and Test array
+[ 2026-04-10 02:41:22,640 ] 152 root - INFO - Dividing Train and Test array into X_train, y_train, X_test, y_test
+[ 2026-04-10 02:41:22,640 ] 56 root - INFO - Starting Model Training
+[ 2026-04-10 02:41:22,640 ] 89 root - INFO - Starting Hyperparameter Tuning
+[ 2026-04-10 02:41:22,640 ] 88 root - INFO - Running Hyperparameter Tuning for: LightGBM
+[ 2026-04-10 03:07:07,220 ] 96 root - INFO - Best Parameter for LightGBM are: LGBMClassifier(learning_rate=0.05, n_estimators=200, n_jobs=-1, num_leaves=127,
+               random_state=42)
+[ 2026-04-10 03:07:20,890 ] 101 root - INFO - f1_score of LightGBM is 0.9416410535196996
+[ 2026-04-10 03:07:20,890 ] 88 root - INFO - Running Hyperparameter Tuning for: XGBoost
+[ 2026-04-10 03:27:55,366 ] 96 root - INFO - Best Parameter for XGBoost are: XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=1.0, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              feature_weights=None, gamma=None, grow_policy=None,
+              importance_type=None, interaction_constraints=None,
+              learning_rate=0.1, max_bin=None, max_cat_threshold=None,
+              max_cat_to_onehot=None, max_delta_step=None, max_depth=15,
+              max_leaves=None, min_child_weight=None, missing=nan,
+              monotone_constraints=None, multi_strategy=None, n_estimators=200,
+              n_jobs=-1, num_parallel_tree=None, ...)
+[ 2026-04-10 03:27:59,762 ] 101 root - INFO - f1_score of XGBoost is 0.9362128343633496
+[ 2026-04-10 03:27:59,762 ] 100 root - INFO - Best Model is LightGBM with score 0.9416410535196996
+[ 2026-04-10 03:29:42,265 ] 105 root - INFO - Classfication metrics based on X_train: ClassificationMetricArtifact(f1_score=0.9998424424682982, precision_score=0.9998425141963744, recall_score=0.9998424396327434)
+[ 2026-04-10 03:29:42,265 ] 108 root - INFO - Tracking Model using MLflow
+[ 2026-04-10 03:29:43,744 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-10 03:29:43,781 ] 107 dagshub - INFO - Accessing as Priyanshuc26
+[ 2026-04-10 03:29:44,782 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/Priyanshuc26/ActiveFlow_IDS "HTTP/1.1 200 OK"
+[ 2026-04-10 03:29:45,631 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-10 03:29:45,647 ] 107 dagshub - INFO - Initialized MLflow to track repo "Priyanshuc26/ActiveFlow_IDS"
+[ 2026-04-10 03:29:45,647 ] 107 dagshub - INFO - Repository Priyanshuc26/ActiveFlow_IDS initialized!
+[ 2026-04-10 03:30:34,799 ] 113 root - INFO - Classfication metrics based on X_test: ClassificationMetricArtifact(f1_score=0.9416410535196996, precision_score=0.9052762923264395, recall_score=0.9990795045537654)
+[ 2026-04-10 03:30:34,799 ] 115 root - INFO - Loading Preprocessor Object
+[ 2026-04-10 03:30:34,799 ] 120 root - INFO - Saving Preprocessor and model in NetworkModel object
+[ 2026-04-10 03:30:34,799 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-10 03:30:35,102 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-10 03:30:35,103 ] 125 root - INFO - Pushing final model
+[ 2026-04-10 03:30:35,103 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-10 03:30:35,374 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-10 03:30:35,374 ] 134 root - INFO - Model Trainer Final Step. Model Trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9998424424682982, precision_score=0.9998425141963744, recall_score=0.9998424396327434), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.9416410535196996, precision_score=0.9052762923264395, recall_score=0.9990795045537654))

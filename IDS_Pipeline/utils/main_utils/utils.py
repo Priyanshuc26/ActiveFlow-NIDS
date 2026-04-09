@@ -89,7 +89,7 @@ def evaluate_models(X_train, y_train,X_test,y_test,models,param):
             model = list(models.values())[i]
             para = param[model_name]
 
-            rs = RandomizedSearchCV(estimator=model, param_distributions=para, cv=3, n_iter=3, n_jobs=-1, random_state=42)     # RandomizedSearchCV does not train original model. It creates an internal clone of the model, trains the clone, and evaluates it. 
+            rs = RandomizedSearchCV(estimator=model, param_distributions=para, cv=3, n_iter=3, n_jobs=2, random_state=42)     # RandomizedSearchCV does not train original model. It creates an internal clone of the model, trains the clone, and evaluates it. 
             rs.fit(X_train,y_train)
 
             best_model = rs.best_estimator_

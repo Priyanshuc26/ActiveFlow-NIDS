@@ -7,16 +7,17 @@ from IDS_Pipeline.logging.logger import logging
 from IDS_Pipeline.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact
 from IDS_Pipeline.entity.config_entity import ModelTrainerConfig, TrainingPipelineConfig
 
+from IDS_Pipeline.components.data_transformation import ColumnNameCleaner, FeatureDropper, InfinityToNanConverter
+#Importing our custom transformer classes, so that pickle file can map the variable present in transformer pipeline with actual pipeline's code
+#When pickle saves an object like StandardScaler, it saves its absolute library path (e.g., sklearn.preprocessing._data.StandardScaler).
+# When loading the file later, pickle automatically looks inside the installed sklearn library, follows that exact directory path, and imports it under the hood. we don't need to import it manually because its location is statically mapped in your environment.
+#For standard tools like StandardScaler, Python already knows where to find the code inside the installed sklearn library. For custom transfomer class like ColumnNameCleaner, Python has no idea where the code is until you explicitly provide it by using an import statement.
+
 from IDS_Pipeline.utils.ml_utils.model.estimator import NetworkModel
 from IDS_Pipeline.utils.main_utils.utils import save_object, load_object, evaluate_models
 from IDS_Pipeline.utils.main_utils.utils import load_numpy_array_data
 from IDS_Pipeline.utils.ml_utils.metric.classification_metric import get_classification_score
 
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.tree import DecisionTreeClassifier
-# from sklearn.svm import SVC
-# from sklearn.neighbors import KNeighborsClassifier
-# from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
@@ -54,9 +55,10 @@ class ModelTrainer:
         try:
             logging.info("Starting Model Training")
             models = {
-                "LightGBM": LGBMClassifier(n_jobs=-1, random_state=42),
+                "LightGBM": LGBMClassifier(n_jobs=-1, random_state=42), #Use all the core
                 "XGBoost": XGBClassifier(n_jobs=-1, random_state=42, tree_method='hist'),
-                "RandomForestClassifier": RandomForestClassifier(n_jobs=-1,verbose=1)
+                # During Intial testing Random Forest performed worst among all with 88.07% f1 score, so we will not use it
+                # "RandomForestClassifier": RandomForestClassifier(n_jobs=2,verbose=1) #use only 2 cores
             }
 
             params = {
@@ -74,14 +76,14 @@ class ModelTrainer:
                     'max_depth': [5, 10, 15], # XGBoost grows depth-wise, so we cap it lower than Random Forest
                     'subsample': [0.8, 0.9, 1.0],
                     'colsample_bytree': [0.8, 1.0] # Randomly drops features per tree to find hidden patterns
-                },
+                }
                 
-                "RandomForestClassifier": {
-                'n_estimators': [100, 200, 300],
-                'max_depth': [15, 25, None],
-                'min_samples_split': [2, 5, 10],
-                'criterion': ['gini', 'entropy']
-                },
+                # "RandomForestClassifier": {
+                # 'n_estimators': [100, 200, 300],
+                # 'max_depth': [15, 25, None],
+                # 'min_samples_split': [2, 5, 10],
+                # 'criterion': ['gini', 'entropy']
+                # },
             }
 
             logging.info("Starting Hyperparameter Tuning")
@@ -100,13 +102,15 @@ class ModelTrainer:
 
             y_train_pred = best_model.predict(x_train)
             classification_train_metric = get_classification_score(y_train, y_train_pred)
-
+            logging.info(f'Classfication metrics based on X_train: {classification_train_metric}')
+            
             ## Tracking mlflow
             logging.info("Tracking Model using MLflow")
             self.track_mlflow(best_model, classification_train_metric) #To track it by using UI, write mlflow ui on terminal
 
             y_test_pred = best_model.predict(x_test)
             classification_test_metric = get_classification_score(y_test, y_test_pred)
+            logging.info(f'Classfication metrics based on X_test: {classification_test_metric}')
 
             logging.info("Loading Preprocessor Object")
             preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
@@ -164,7 +168,7 @@ if __name__ == "__main__":
     data_transformation_artifact = DataTransformationArtifact(
         transformed_object_file_path= "Artifacts/data_transformation/transformed_object/preprocessing.pkl",
         transformed_train_file_path= "Artifacts/data_transformation/transformed/train.npy",
-        transformed_train_file_path= "Artifacts/data_transformation/transformed/test.npy"
+        transformed_test_file_path= "Artifacts/data_transformation/transformed/test.npy"
     )
     
     model_trainer = ModelTrainer(model_trainer_config=model_trainer_config,data_transformation_artifact=data_transformation_artifact)
