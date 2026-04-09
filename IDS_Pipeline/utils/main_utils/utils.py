@@ -80,25 +80,30 @@ def load_object(file_path: str,) -> object:
 
 def evaluate_models(X_train, y_train,X_test,y_test,models,param):
     try:
-        report = {}
+        model_report = {}
+        fitted_models = {} #returns a dictionarary of already fitted and trained model from hyperparameter tuning
 
         for i in range(len(list(models))):
+            model_name = list(models.keys())[i]
+            logging.info(f"Running Hyperparameter Tuning for: {model_name}")
             model = list(models.values())[i]
-            para=param[list(models.keys())[i]]
+            para = param[model_name]
 
-            rs = RandomizedSearchCV(model,para,cv=3)
+            rs = RandomizedSearchCV(estimator=model, param_distributions=para, cv=3, n_iter=3, n_jobs=-1, random_state=42)     # RandomizedSearchCV does not train original model. It creates an internal clone of the model, trains the clone, and evaluates it. 
             rs.fit(X_train,y_train)
 
-            #model.fit(X_train, y_train)  # Train model
+            best_model = rs.best_estimator_
+            logging.info(f"Best Parameter for {model_name} are: {best_model}")
+            y_test_pred = best_model.predict(X_test)
+            
+            
+            test_model_score = f1_score(y_test, y_test_pred, average='macro')     #calculates the F1-score for each class and averages them equally, regardless of size
+            logging.info(f"f1_score of {model_name} is {test_model_score}")
 
-            y_train_pred = rs.predict(X_train)
+            model_report[model_name] = test_model_score
+            fitted_models[model_name] = rs.best_estimator_
 
-            y_test_pred = rs.predict(X_test)
-            test_model_score = f1_score(y_test, y_test_pred, average='macro')
-
-            report[list(models.keys())[i]] = test_model_score
-
-        return report
+        return model_report,fitted_models
 
     except Exception as e:
         raise CustomException(e, sys)
