@@ -4,9 +4,9 @@ import sys
 from IDS_Pipeline.exception.exception import NetworkSecurityException
 from IDS_Pipeline.logging.logger import logging
 
-from legacy_code.data_ingestion import DataIngestion
+from IDS_Pipeline.components.data_ingestion import DataIngestion
 from IDS_Pipeline.components.data_validation import DataValidation
-from legacy_code.data_transformation import DataTransformation
+from IDS_Pipeline.components.data_transformation import DataTransformation
 from IDS_Pipeline.components.model_trainer import ModelTrainer
 
 from IDS_Pipeline.entity.config_entity import(
