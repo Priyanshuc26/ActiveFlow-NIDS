@@ -22,5 +22,6 @@ evidently
 imblearn
 xgboost
 lightgbm
+# pyflowmeter
 
 # -e .
