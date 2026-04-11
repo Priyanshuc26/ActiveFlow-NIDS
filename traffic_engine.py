@@ -6,20 +6,20 @@ from pyflowmeter.sniffer import create_sniffer
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
 
-from IDS_Pipeline.constant.training_pipeline import PCAP_FILE_PATH, PCAP_CSV_FILE_PATH, CONNECTION_NAME
+from IDS_Pipeline.constant.training_pipeline import  CONNECTION_NAME
 
 
 class NetworkTrafficEngine:
     def __init__(self):
         pass
     
-    def process_pcap_file(self, pcap_file_path:str, pcap_csv_file_path:str):
+    def process_pcap_file(self, pcap_file_path:str):
+        # python traffic_engine.py --pcap pcap_file_path/name
         try:
             #Converting pcap file to csv file
             sniffer = create_sniffer(
             input_file= pcap_file_path,
-            to_csv=True,
-            output_file= pcap_csv_file_path,
+            server_endpoint = "http://127.0.0.1:8000/predict"
             )
             
             sniffer.start()   #Starts the sniffing process
@@ -42,7 +42,7 @@ class NetworkTrafficEngine:
         try:
             live_sniffer = create_sniffer(
                 input_interface= network_input_interface,
-                to_csv= True
+                server_endpoint = "http://127.0.0.1:8000/predict"
             )
             live_sniffer.start()
             
@@ -61,7 +61,7 @@ class NetworkTrafficEngine:
             raise CustomException(e,sys)
 
 
-if __name__ == "__main __":
+if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser()
         parser.add_argument("--pcap", help="Flag used when pcap file is needed for real life simulation. Include file pcap file path")
@@ -71,6 +71,13 @@ if __name__ == "__main __":
         print(args)
         if (args.pcap and args.live == True):
             raise Exception("Two arguments added. Please add only one")
+        
+        traffic_engine = NetworkTrafficEngine()
+        
+        if args.pcap:
+            traffic_engine.process_pcap_file(pcap_file_path=args.pcap)
+        if args.live:
+            traffic_engine.process_live_sniffing(network_input_interface=CONNECTION_NAME)
         
     except Exception as e:
         raise CustomException(e,sys)
