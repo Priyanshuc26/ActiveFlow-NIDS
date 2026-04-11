@@ -1,8 +1,8 @@
 venv
 .env
 sniffer_env
-/raw_data
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+/raw_data
