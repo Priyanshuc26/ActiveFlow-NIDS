@@ -19,7 +19,7 @@ class NetworkTrafficEngine:
             #Converting pcap file to csv file
             sniffer = create_sniffer(
             input_file= pcap_file_path,
-            server_endpoint = "http://127.0.0.1:8000/predict"
+            server_endpoint = "http://192.168.29.83:8000/predict"
             )
             
             sniffer.start()   #Starts the sniffing process
