@@ -1,7 +1,8 @@
 import os
 import sys
+from datetime import datetime
 
-from IDS_Pipeline.exception.exception import NetworkSecurityException
+from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
 
 from IDS_Pipeline.components.data_ingestion import DataIngestion
@@ -39,7 +40,7 @@ class TrainingPipeline:
             return data_ingestion_artifact
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
 
     def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact):
@@ -52,7 +53,7 @@ class TrainingPipeline:
             return data_validation_artifact
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
 
     def start_data_transformation(self, data_validation_artifact: DataValidationArtifact):
@@ -65,7 +66,7 @@ class TrainingPipeline:
             return data_transformation_artifact
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
 
     def start_model_training(self, data_transformation_artifact: DataTransformationArtifact):
@@ -77,7 +78,7 @@ class TrainingPipeline:
             logging.info(f"Model training completed and artifacts are: {model_trainer_artifact}")
             return model_trainer_artifact
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
 
     def run_pipeline(self):
         try:
@@ -88,4 +89,13 @@ class TrainingPipeline:
             return model_training_artifact
 
         except Exception as e:
-            raise NetworkSecurityException(e,sys)
+            raise CustomException(e,sys)
+        
+        
+if __name__ == "__main__":
+    logging.info("\t\t\t\tStarting Training Pipeline\t\t\t\t")
+    start_time = datetime.now()
+    training_pipeline = TrainingPipeline()
+    training_pipeline.run_pipeline()
+    end_time = datetime.now()
+    logging.info(f"Training Pipeline Completed. Time taken by whole pipeline to train: {end_time - start_time}")

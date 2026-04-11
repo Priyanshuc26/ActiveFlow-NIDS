@@ -1,0 +1,170 @@
+[ 2026-04-11 06:31:57,409 ] 96 root - INFO - 				Starting Training Pipeline				
+[ 2026-04-11 06:31:57,410 ] 36 root - INFO - Starting data ingestion
+[ 2026-04-11 06:31:57,410 ] 123 root - INFO - *******************Starting Data Ingestion Stage*******************
+[ 2026-04-11 06:31:57,410 ] 38 root - INFO - Checking for Data Integrity
+[ 2026-04-11 06:31:57,801 ] 44 root - INFO - Raw Data Integrity Checked
+[ 2026-04-11 06:31:57,802 ] 58 root - INFO - 
+
+ --------------Raw Data All CSV file information-----------------
+[ 2026-04-11 06:31:57,802 ] 60 root - INFO - Filename: MachineLearningCVE/
+[ 2026-04-11 06:31:57,802 ] 61 root - INFO - Modified: 2018-06-07 16:30:42
+[ 2026-04-11 06:31:57,802 ] 62 root - INFO - Normal size: 0 bytes
+[ 2026-04-11 06:31:57,803 ] 63 root - INFO - Compressed size: 0 bytes
+[ 2026-04-11 06:31:57,803 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,803 ] 60 root - INFO - Filename: MachineLearningCVE/Wednesday-workingHours.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,803 ] 61 root - INFO - Modified: 2018-06-07 16:26:40
+[ 2026-04-11 06:31:57,803 ] 62 root - INFO - Normal size: 225166395 bytes
+[ 2026-04-11 06:31:57,803 ] 63 root - INFO - Compressed size: 59764995 bytes
+[ 2026-04-11 06:31:57,803 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,803 ] 60 root - INFO - Filename: MachineLearningCVE/Tuesday-WorkingHours.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,803 ] 61 root - INFO - Modified: 2018-06-07 14:31:12
+[ 2026-04-11 06:31:57,803 ] 62 root - INFO - Normal size: 135078995 bytes
+[ 2026-04-11 06:31:57,803 ] 63 root - INFO - Compressed size: 39026474 bytes
+[ 2026-04-11 06:31:57,803 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,803 ] 60 root - INFO - Filename: MachineLearningCVE/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,803 ] 61 root - INFO - Modified: 2018-06-07 14:22:46
+[ 2026-04-11 06:31:57,803 ] 62 root - INFO - Normal size: 52023263 bytes
+[ 2026-04-11 06:31:57,803 ] 63 root - INFO - Compressed size: 14922144 bytes
+[ 2026-04-11 06:31:57,803 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,804 ] 60 root - INFO - Filename: MachineLearningCVE/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,804 ] 61 root - INFO - Modified: 2018-06-07 14:19:24
+[ 2026-04-11 06:31:57,804 ] 62 root - INFO - Normal size: 83102436 bytes
+[ 2026-04-11 06:31:57,804 ] 63 root - INFO - Compressed size: 20407406 bytes
+[ 2026-04-11 06:31:57,804 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,804 ] 60 root - INFO - Filename: MachineLearningCVE/Monday-WorkingHours.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,804 ] 61 root - INFO - Modified: 2018-06-07 14:13:44
+[ 2026-04-11 06:31:57,804 ] 62 root - INFO - Normal size: 176927918 bytes
+[ 2026-04-11 06:31:57,804 ] 63 root - INFO - Compressed size: 52891939 bytes
+[ 2026-04-11 06:31:57,804 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,804 ] 60 root - INFO - Filename: MachineLearningCVE/Friday-WorkingHours-Morning.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,804 ] 61 root - INFO - Modified: 2018-06-07 13:51:46
+[ 2026-04-11 06:31:57,804 ] 62 root - INFO - Normal size: 58316725 bytes
+[ 2026-04-11 06:31:57,804 ] 63 root - INFO - Compressed size: 16599123 bytes
+[ 2026-04-11 06:31:57,804 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,804 ] 60 root - INFO - Filename: MachineLearningCVE/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,804 ] 61 root - INFO - Modified: 2018-06-07 13:42:28
+[ 2026-04-11 06:31:57,804 ] 62 root - INFO - Normal size: 76906168 bytes
+[ 2026-04-11 06:31:57,804 ] 63 root - INFO - Compressed size: 13281038 bytes
+[ 2026-04-11 06:31:57,804 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,804 ] 60 root - INFO - Filename: MachineLearningCVE/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
+[ 2026-04-11 06:31:57,804 ] 61 root - INFO - Modified: 2018-06-07 13:37:00
+[ 2026-04-11 06:31:57,804 ] 62 root - INFO - Normal size: 77123859 bytes
+[ 2026-04-11 06:31:57,805 ] 63 root - INFO - Compressed size: 18207604 bytes
+[ 2026-04-11 06:31:57,805 ] 64 root - INFO - --------------------
+[ 2026-04-11 06:31:57,805 ] 65 root - INFO - ------------------------------------------------------------------ 
+
+
+[ 2026-04-11 06:32:18,447 ] 78 root - INFO - Shape of Master Dataset: (2830743, 79)
+[ 2026-04-11 06:33:47,362 ] 96 root - INFO - Master Dataset stored at file path: Artifacts\data_ingestion\feature_store\master_dataset.csv
+[ 2026-04-11 06:33:54,770 ] 106 root - INFO - Performed train test split on the dataframe
+[ 2026-04-11 06:33:54,784 ] 108 root - INFO - Train set shape: (2123057, 79) and Test set shape: (707686, 79)
+[ 2026-04-11 06:33:54,784 ] 111 root - INFO - Exporting train and test file path.
+[ 2026-04-11 06:35:30,900 ] 115 root - INFO - Exported train and test file path.
+[ 2026-04-11 06:35:31,128 ] 129 root - INFO - Data ingestion final step: Storing Data Ingestion Artifact
+[ 2026-04-11 06:35:31,333 ] 39 root - INFO - Data ingestion completed and artifacts are: DataIngestionArtifact(train_file_path='Artifacts\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\data_ingestion\\ingested\\test.csv')
+[ 2026-04-11 06:35:31,345 ] 49 root - INFO - Starting data validation
+[ 2026-04-11 06:35:31,572 ] 106 root - INFO - *******************Starting Data Validation Stage*******************
+[ 2026-04-11 06:35:31,574 ] 37 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\train.csv
+[ 2026-04-11 06:35:46,089 ] 37 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\test.csv
+[ 2026-04-11 06:35:50,783 ] 44 root - INFO - Validating Column Name and Datatype of          Destination Port  Flow Duration  Total Fwd Packets  ...  Idle Max  Idle Min     Label
+0                      53            163                  2  ...         0         0    BENIGN
+1                     443      102879154                 82  ...  58700000  43300000    BENIGN
+2                     123            122                  2  ...         0         0    BENIGN
+3                      53            201                  2  ...         0         0    BENIGN
+4                     123          44292                  1  ...         0         0    BENIGN
+...                   ...            ...                ...  ...       ...       ...       ...
+2123052                53          31351                  2  ...         0         0    BENIGN
+2123053               443         147888                  7  ...         0         0    BENIGN
+2123054              1028              3                  2  ...         0         0    BENIGN
+2123055                80       97416673                  8  ...  97400000  97400000  DoS Hulk
+2123056                53            156                  2  ...         0         0    BENIGN
+
+[2123057 rows x 79 columns]
+[ 2026-04-11 06:35:50,798 ] 48 root - INFO - Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful
+[ 2026-04-11 06:35:50,851 ] 44 root - INFO - Validating Column Name and Datatype of         Destination Port  Flow Duration  Total Fwd Packets  ...  Idle Max  Idle Min     Label
+0                   1309             64                  1  ...         0         0  PortScan
+1                     53          61868                  2  ...         0         0    BENIGN
+2                     53            234                  2  ...         0         0    BENIGN
+3                     53            155                  2  ...         0         0    BENIGN
+4                  40072       99000573                  7  ...  98900000  98900000    BENIGN
+...                  ...            ...                ...  ...       ...       ...       ...
+707681               443      117452162                 18  ...  58800000  58100000    BENIGN
+707682                53         117205                  4  ...         0         0    BENIGN
+707683                53          30887                  2  ...         0         0    BENIGN
+707684                53            252                  2  ...         0         0    BENIGN
+707685             59786              1                  2  ...         0         0    BENIGN
+
+[707686 rows x 79 columns]
+[ 2026-04-11 06:35:50,865 ] 48 root - INFO - Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful
+[ 2026-04-11 06:35:50,865 ] 60 root - INFO - Calculating and Detecting Data Drift
+[ 2026-04-11 06:41:31,416 ] 88 root - INFO - Drift threshold: 0.5 and Actual drift: 0.0
+[ 2026-04-11 06:41:31,416 ] 89 root - INFO - No Data Drift Detected
+[ 2026-04-11 06:41:31,416 ] 94 root - INFO - Storing Data drift report: Artifacts\data_validation\drift_report
+[ 2026-04-11 06:43:16,581 ] 126 root - INFO - Data validation final step: Storing Data validation Artifact
+[ 2026-04-11 06:43:16,714 ] 52 root - INFO - Data validation completed and artifacts are: DataValidationArtifact(validation_status=False, valid_train_file_path='Artifacts\\data_ingestion\\ingested\\train.csv', valid_test_file_path='Artifacts\\data_ingestion\\ingested\\test.csv', invalid_train_file_path=None, invalid_test_file_path=None, drift_report_file_path='Artifacts\\data_validation\\drift_report\\report.yaml')
+[ 2026-04-11 06:43:16,714 ] 62 root - INFO - Starting data transformation
+[ 2026-04-11 06:43:16,714 ] 149 root - INFO - *******************Starting Data Transformation Stage*******************
+[ 2026-04-11 06:43:16,714 ] 106 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\train.csv
+[ 2026-04-11 06:43:31,924 ] 106 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\test.csv
+[ 2026-04-11 06:43:36,108 ] 154 root - INFO - Preprocessing target column name
+[ 2026-04-11 06:43:36,116 ] 159 root - INFO - Splitting Train and Test Dataframe into input features(X) and target features(y)
+[ 2026-04-11 06:43:40,200 ] 115 root - INFO - Starting Data Preprocessing Pipeline
+[ 2026-04-11 06:43:40,200 ] 25 root - INFO -  Cleaning Column Name...
+[ 2026-04-11 06:43:40,275 ] 51 root - INFO -  Dropping features that are not important... Top features: ['ack_flag_count', 'bwd_header_length', 'bwd_packet_length_max', 'bwd_packet_length_min', 'bwd_packets/s', 'destination_port', 'flow_bytes/s', 'flow_duration', 'flow_iat_mean', 'flow_iat_std', 'flow_packets/s', 'fwd_header_length', 'fwd_packet_length_max', 'fwd_packet_length_min', 'init_win_bytes_backward', 'init_win_bytes_forward', 'label', 'min_packet_length', 'psh_flag_count', 'total_fwd_packets', 'total_length_of_fwd_packets']
+[ 2026-04-11 06:43:40,275 ] 75 root - INFO -  Converting infinity values to NaN...
+[ 2026-04-11 06:43:55,928 ] 179 root - INFO - Preprocessing Complete.
+[ 2026-04-11 06:43:55,935 ] 131 root - INFO - Starting Hybrid Sampling
+[ 2026-04-11 06:43:56,736 ] 136 root - INFO -   Under sampling done.X_under_sampled shape: (818199, 20),y_under_sampled shape: (818199,)
+[ 2026-04-11 08:52:32,171 ] 140 root - INFO -   SMOTETomek applied.X_resampled shape: (2799596, 20),y_resampled shape: (2799596,)
+[ 2026-04-11 08:52:32,510 ] 187 root - INFO - final train_arr shape: (2799596, 21) and final test_arr shape shape: (707674, 21)
+[ 2026-04-11 08:52:33,814 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-11 08:52:33,826 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-11 08:52:33,826 ] 193 root - INFO - numpy array saved
+[ 2026-04-11 08:52:33,826 ] 196 root - INFO - saving preprocessor object
+[ 2026-04-11 08:52:33,826 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-11 08:52:33,828 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-11 08:52:33,828 ] 200 root - INFO - Data Transformation Final Step: Preparing Data Transformation Artifacts
+[ 2026-04-11 08:52:33,999 ] 65 root - INFO - Data transformation completed and artifacts are: DataTransformationArtifact(transformed_object_file_path='Artifacts\\data_transformation\\transformed_object\\preprocessing.pkl', transformed_train_file_path='Artifacts\\data_transformation\\transformed\\train.npy', transformed_test_file_path='Artifacts\\data_transformation\\transformed\\test.npy')
+[ 2026-04-11 08:52:34,002 ] 75 root - INFO - Starting model training
+[ 2026-04-11 08:52:34,006 ] 143 root - INFO - *******************Starting Model Training and Evaluation Stage*******************
+[ 2026-04-11 08:52:34,006 ] 147 root - INFO - Loading Train and Test array
+[ 2026-04-11 08:52:34,350 ] 152 root - INFO - Dividing Train and Test array into X_train, y_train, X_test, y_test
+[ 2026-04-11 08:52:34,351 ] 56 root - INFO - Starting Model Training
+[ 2026-04-11 08:52:34,370 ] 89 root - INFO - Starting Hyperparameter Tuning
+[ 2026-04-11 08:52:34,370 ] 88 root - INFO - Running Hyperparameter Tuning for: LightGBM
+[ 2026-04-11 09:18:34,855 ] 96 root - INFO - Best Parameter for LightGBM are: LGBMClassifier(learning_rate=0.05, n_estimators=200, n_jobs=-1, num_leaves=127,
+               random_state=42)
+[ 2026-04-11 09:18:50,207 ] 101 root - INFO - f1_score of LightGBM is 0.940252695125128
+[ 2026-04-11 09:18:50,207 ] 88 root - INFO - Running Hyperparameter Tuning for: XGBoost
+[ 2026-04-11 09:39:50,539 ] 96 root - INFO - Best Parameter for XGBoost are: XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=1.0, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              feature_weights=None, gamma=None, grow_policy=None,
+              importance_type=None, interaction_constraints=None,
+              learning_rate=0.1, max_bin=None, max_cat_threshold=None,
+              max_cat_to_onehot=None, max_delta_step=None, max_depth=15,
+              max_leaves=None, min_child_weight=None, missing=nan,
+              monotone_constraints=None, multi_strategy=None, n_estimators=200,
+              n_jobs=-1, num_parallel_tree=None, ...)
+[ 2026-04-11 09:39:54,978 ] 101 root - INFO - f1_score of XGBoost is 0.9370352104585492
+[ 2026-04-11 09:39:54,983 ] 100 root - INFO - Best Model is LightGBM with score 0.940252695125128
+[ 2026-04-11 09:41:37,806 ] 105 root - INFO - Classfication metrics based on X_train: ClassificationMetricArtifact(f1_score=0.9998395817955493, precision_score=0.9998396588988152, recall_score=0.9998395776557754)
+[ 2026-04-11 09:41:37,806 ] 108 root - INFO - Tracking Model using MLflow
+[ 2026-04-11 09:41:39,221 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-11 09:41:39,257 ] 107 dagshub - INFO - Accessing as Priyanshuc26
+[ 2026-04-11 09:41:40,391 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/Priyanshuc26/ActiveFlow_IDS "HTTP/1.1 200 OK"
+[ 2026-04-11 09:41:41,387 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-11 09:41:41,404 ] 107 dagshub - INFO - Initialized MLflow to track repo "Priyanshuc26/ActiveFlow_IDS"
+[ 2026-04-11 09:41:41,404 ] 107 dagshub - INFO - Repository Priyanshuc26/ActiveFlow_IDS initialized!
+[ 2026-04-11 09:42:39,305 ] 113 root - INFO - Classfication metrics based on X_test: ClassificationMetricArtifact(f1_score=0.940252695125128, precision_score=0.9029601767697419, recall_score=0.9990826140537553)
+[ 2026-04-11 09:42:39,305 ] 115 root - INFO - Loading Preprocessor Object
+[ 2026-04-11 09:42:39,331 ] 120 root - INFO - Saving Preprocessor and model in NetworkModel object
+[ 2026-04-11 09:42:39,331 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-11 09:42:39,612 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-11 09:42:39,612 ] 125 root - INFO - Pushing final model
+[ 2026-04-11 09:42:39,612 ] 60 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-11 09:42:39,926 ] 64 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-11 09:42:39,926 ] 134 root - INFO - Model Trainer Final Step. Model Trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9998395817955493, precision_score=0.9998396588988152, recall_score=0.9998395776557754), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.940252695125128, precision_score=0.9029601767697419, recall_score=0.9990826140537553))
+[ 2026-04-11 09:42:39,989 ] 78 root - INFO - Model training completed and artifacts are: ModelTrainerArtifact(trained_model_file_path='Artifacts\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.9998395817955493, precision_score=0.9998396588988152, recall_score=0.9998395776557754), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.940252695125128, precision_score=0.9029601767697419, recall_score=0.9990826140537553))
+[ 2026-04-11 09:42:39,989 ] 101 root - INFO - Training Pipeline Completed. Time taken by whole pipeline to train: 3:10:42.578590
