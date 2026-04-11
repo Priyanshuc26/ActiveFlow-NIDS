@@ -6,6 +6,8 @@ from pyflowmeter.sniffer import create_sniffer
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
 
+from IDS_Pipeline.constant.training_pipeline import PCAP_FILE_PATH, PCAP_CSV_FILE_PATH, CONNECTION_NAME
+
 
 class NetworkTrafficEngine:
     def __init__(self):
@@ -29,16 +31,32 @@ class NetworkTrafficEngine:
                 
             except KeyboardInterrupt:
                 print('Stopping the sniffer')
-                sniffer.stop()
+                sniffer.stop()      #Stops the sniffing and safely closes the output file if any
             finally:
-                sniffer.join()   #Stops the sniffing and safely closes the output file if any
+                sniffer.join() 
                 
         except Exception as e:
             raise CustomException(e,sys)
 
-    def process_live_sniffing(self):
+    def process_live_sniffing(self, network_input_interface:str):
         try:
-            pass
+            live_sniffer = create_sniffer(
+                input_interface= network_input_interface,
+                to_csv= True
+            )
+            live_sniffer.start()
+            
+            try:
+                live_sniffer.join()
+                
+            except KeyboardInterrupt:
+                print("Stopping live sniffing....")
+                live_sniffer.stop()
+                
+            finally:
+                live_sniffer.join()
+            
+            
         except Exception as e:
             raise CustomException(e,sys)
 
