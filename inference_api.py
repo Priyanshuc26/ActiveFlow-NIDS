@@ -73,6 +73,7 @@ async def get_packets(request:Request):
     try:
         packet_data = await request.json()
         
+        #Ensuring that flow is not empty
         if not packet_data.get("flows") or len(packet_data["flows"]) == 0:
             raise Exception("Empty or missing flows in packet data")
         

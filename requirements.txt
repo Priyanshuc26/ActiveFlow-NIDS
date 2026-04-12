@@ -23,5 +23,6 @@ imblearn
 xgboost
 lightgbm
 # pyflowmeter
+streamlit
 
 # -e .
