@@ -1,9 +1,0 @@
-1. https://www.unb.ca/cic/
-2. https://www.unb.ca/cic/datasets/ids-2018.html
-3. https://www.unb.ca/cic/research/applications.html#CICFlowMeter
-4. https://hal.science/hal-03775466v1/document
-5. https://ieeexplore.ieee.org/document/9474286
-6. https://biblio.ugent.be/publication/8769860
-7. https://ieeexplore.ieee.org/abstract/document/9947235
-8. https://infosecwriteups.com/network-intrusion-analysis-at-scale-733169fc29ff
-9. https://www.scitepress.org/Papers/2022/107740/pdf/index.html
