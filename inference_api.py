@@ -11,7 +11,7 @@ from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
 
 from IDS_Pipeline.components.data_transformation import ColumnNameCleaner, FeatureDropper, InfinityToNanConverter
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, NUMBER_LABEL_MAPPING_DICT
 
 from IDS_Pipeline.utils.ml_utils.model.estimator import NetworkModel
 from IDS_Pipeline.utils.main_utils.utils import load_object, read_yaml_file
@@ -51,7 +51,9 @@ mapping_dict = {
     "flow_iat_mean": "flow_iat_mean",
     "flow_iat_std": "flow_iat_std"
 }
-# top_features_list = list(read_yaml_file(file_path=TOP_FEATURE_SCHEMA_FILE_PATH).keys())
+total_packet_processed = 0
+top_features_schema = read_yaml_file(file_path=TOP_FEATURE_SCHEMA_FILE_PATH)
+expected_columns = list(top_features_schema.keys())
 
 
 # The Memory Buffer (Holds the last 100 packets for Streamlit)
@@ -82,9 +84,12 @@ async def get_packets(request:Request):
         df = pd.DataFrame([extracted_flow])
         df.rename(columns=mapping_dict, inplace=True)
         
-        
+        df = df[expected_columns]
         # print(df.columns)
-        prediction = network_model.predict(df)[0]
+        prediction = network_model.predict(df)[0]        
+        
+        #Converting Back number (from predictions) to label
+        prediction = NUMBER_LABEL_MAPPING_DICT[int(prediction)]
         
         # Attach the prediction to the packet data
         extracted_flow["prediction"] = str(prediction)
@@ -92,6 +97,9 @@ async def get_packets(request:Request):
         # Saving to  memory buffer
         traffic_buffer.append(extracted_flow)
             
+        global total_packet_processed
+        total_packet_processed=total_packet_processed + 1
+        
         return {"status": "success", "prediction": str(prediction)}
         # return {"status": "success"}
     
@@ -101,7 +109,7 @@ async def get_packets(request:Request):
     
 @app.get("/metrics")
 def get_metrics():
-    return {"live_traffic": list(traffic_buffer)}
+    return {"live_traffic": list(traffic_buffer), "total_count": total_packet_processed}
     
 
 if __name__ == "__main__":

@@ -87,7 +87,15 @@ LABEL_MAPPING_DICT:dict = {
     'Heartbleed': np.nan
 }
 
-
+NUMBER_LABEL_MAPPING_DICT = {
+    0: 'BENIGN',
+    1: 'DDoS',
+    2: 'PortScan',
+    3: 'DoS Attack',
+    4: 'Brute Force',
+    5: 'Botnet',
+    6: 'Web Attack'
+}
 
 """
 Model Trainer related constant start with MODE TRAINER VAR NAME

@@ -81,3 +81,8 @@ if __name__ == "__main__":
         
     except Exception as e:
         raise CustomException(e,sys)
+    
+    
+    
+
+# "I discovered a train-serve skew between CICFlowMeter-generated training data and PyFlowMeter live inference data, which is a known open problem in network IDS research. Investigating this is planned for v2.1.0."

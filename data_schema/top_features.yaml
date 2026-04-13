@@ -14,7 +14,6 @@ fwd_packet_length_max: int64
 fwd_packet_length_min: int64
 init_win_bytes_backward: int64
 init_win_bytes_forward: int64
-label: object
 min_packet_length: int64
 psh_flag_count: int64
 total_fwd_packets: int64

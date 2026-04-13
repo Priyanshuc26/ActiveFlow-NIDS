@@ -14,23 +14,25 @@ def fetch_data():
         response = requests.get("http://127.0.0.1:8000/metrics")
         status = "connected"
         data = response.json()
+        packets_processed = data['total_count']
         data = data['live_traffic']
         df = pd.DataFrame(data)
-        return status,df
+        return [status,df,packets_processed]
     except:
         status = "offline"
         df = pd.DataFrame()
-        return status, df
+        return [status,df,0]
 
-status,dataframe = fetch_data()
+status,dataframe,packet_processed = fetch_data()
 
 
 ## Dashboard
+header_col1, header_col2 = st.columns([3, 1],vertical_alignment="center")   
 total_packets_analyzed,threats_detected, network_health_score = st.columns(3)
 
 with st.container(width=1500):
     
-    header_col1, header_col2 = st.columns([3, 1],vertical_alignment="center")   
+    # Header
     with header_col1:
         st.header("ActiveFlow IDS Live Dashboard")
     with header_col2:
@@ -40,9 +42,15 @@ with st.container(width=1500):
         else:
             st.write("")
             st.markdown(":red-badge[:material/monitor_heart: Offline]")
+            
+    # KPIs
+    with total_packets_analyzed:
+        st.metric(label="Total Packets Analyzed",value=packet_processed, chart_data=packet_processed, chart_type="line", border=True)
+    
+            
 
-    if status == "connected":
-        st.dataframe(data=dataframe)
+    
+    st.dataframe(data=dataframe)
 
 
 
