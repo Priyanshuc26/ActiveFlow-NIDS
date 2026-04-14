@@ -1,79 +1,83 @@
-' ACK Flag Count': int64
-' Active Max': int64
-' Active Min': int64
-' Active Std': float64
-' Average Packet Size': float64
-' Avg Bwd Segment Size': float64
-' Avg Fwd Segment Size': float64
-' Bwd Avg Bytes/Bulk': int64
-' Bwd Avg Packets/Bulk': int64
-' Bwd Header Length': int64
-' Bwd IAT Max': int64
-' Bwd IAT Mean': float64
-' Bwd IAT Min': int64
-' Bwd IAT Std': float64
-' Bwd PSH Flags': int64
-' Bwd Packet Length Mean': float64
-' Bwd Packet Length Min': int64
-' Bwd Packet Length Std': float64
-' Bwd Packets/s': float64
-' Bwd URG Flags': int64
-' CWE Flag Count': int64
-' Destination Port': int64
-' Down/Up Ratio': int64
-' ECE Flag Count': int64
-' Flow Duration': int64
-' Flow IAT Max': int64
-' Flow IAT Mean': float64
-' Flow IAT Min': int64
-' Flow IAT Std': float64
-' Flow Packets/s': float64
-' Fwd Avg Bulk Rate': int64
-' Fwd Avg Packets/Bulk': int64
-' Fwd Header Length': int64
-' Fwd Header Length.1': int64
-' Fwd IAT Max': int64
-' Fwd IAT Mean': float64
-' Fwd IAT Min': int64
-' Fwd IAT Std': float64
-' Fwd Packet Length Max': int64
-' Fwd Packet Length Mean': float64
-' Fwd Packet Length Min': int64
-' Fwd Packet Length Std': float64
-' Fwd URG Flags': int64
-' Idle Max': int64
-' Idle Min': int64
-' Idle Std': float64
-' Init_Win_bytes_backward': int64
-' Label': object
-' Max Packet Length': int64
-' Min Packet Length': int64
-' PSH Flag Count': int64
-' Packet Length Mean': float64
-' Packet Length Std': float64
-' Packet Length Variance': float64
-' RST Flag Count': int64
-' SYN Flag Count': int64
-' Subflow Bwd Bytes': int64
-' Subflow Bwd Packets': int64
-' Subflow Fwd Bytes': int64
-' Total Backward Packets': int64
-' Total Fwd Packets': int64
-' Total Length of Bwd Packets': int64
-' URG Flag Count': int64
-' act_data_pkt_fwd': int64
-' min_seg_size_forward': int64
-Active Mean: float64
-Bwd Avg Bulk Rate: int64
-Bwd IAT Total: int64
-Bwd Packet Length Max: int64
-FIN Flag Count: int64
-Flow Bytes/s: float64
-Fwd Avg Bytes/Bulk: int64
-Fwd IAT Total: int64
-Fwd PSH Flags: int64
-Fwd Packets/s: float64
-Idle Mean: float64
-Init_Win_bytes_forward: int64
-Subflow Fwd Packets: int64
-Total Length of Fwd Packets: int64
+active_max: float64
+active_mean: float64
+active_min: float64
+active_std: float64
+bwd_bulk_bytes_mean: float64
+bwd_bulk_pkt_mean: float64
+bwd_bulk_rate_mean: float64
+bwd_flag_psh: int64
+bwd_flag_urg: int64
+bwd_iat_max: float64
+bwd_iat_mean: float64
+bwd_iat_min: float64
+bwd_iat_std: float64
+bwd_iat_tot: int64
+bwd_non_empty_pkt_cnt: int64
+bwd_pkt_cnt: int64
+bwd_pkt_hdr_len_min: int64
+bwd_pkt_hdr_len_tot: int64
+bwd_pkt_len_max: float64
+bwd_pkt_len_mean: float64
+bwd_pkt_len_min: float64
+bwd_pkt_len_std: float64
+bwd_pkt_len_tot: int64
+bwd_pkt_per_s: float64
+bwd_subflow_bytes_mean: float64
+bwd_subflow_pkt_mean: float64
+bwd_tcp_init_win_bytes: int64
+bytes_per_s: float64
+down_up_ratio: float64
+dst_addr: object
+dst_port: int64
+flag_SYN: int64
+flag_ack: int64
+flag_cwr: int64
+flag_ece: int64
+flag_fin: int64
+flag_psh: int64
+flag_rst: int64
+flag_urg: int64
+flow_duration: int64
+flow_id: object
+fwd_bulk_bytes_mean: float64
+fwd_bulk_pkt_mean: float64
+fwd_bulk_rate_mean: float64
+fwd_flag_psh: int64
+fwd_flag_urg: int64
+fwd_iat_max: float64
+fwd_iat_mean: float64
+fwd_iat_min: float64
+fwd_iat_std: float64
+fwd_iat_tot: int64
+fwd_non_empty_pkt_cnt: int64
+fwd_pkt_cnt: int64
+fwd_pkt_hdr_len_min: int64
+fwd_pkt_hdr_len_tot: int64
+fwd_pkt_len_max: float64
+fwd_pkt_len_mean: float64
+fwd_pkt_len_min: float64
+fwd_pkt_len_std: float64
+fwd_pkt_len_tot: int64
+fwd_pkt_per_s: float64
+fwd_subflow_bytes_mean: float64
+fwd_subflow_pkt_mean: float64
+fwd_tcp_init_win_bytes: int64
+iat_max: float64
+iat_mean: float64
+iat_min: float64
+iat_std: float64
+idle_max: float64
+idle_mean: float64
+idle_min: float64
+idle_std: float64
+ip_prot: int64
+label: object
+pkt_len_max: float64
+pkt_len_mean: float64
+pkt_len_min: float64
+pkt_len_std: float64
+pkt_len_var: float64
+pkt_per_s: float64
+src_addr: object
+src_port: int64
+timestamp: int64
