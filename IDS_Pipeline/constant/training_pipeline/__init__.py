@@ -16,6 +16,7 @@ RAW_DATA_FILE_PATH: str = "raw_data/lycos-ids2017.zip"
 PCAP_FILE_PATH: str = os.path.join("pcap_folder","Friday-WorkingHours.pcap")
 PCAP_CSV_FILE_PATH: str = os.path.join("pcap_folder","Friday-pcap.csv")
 CONNECTION_NAME:str = "Wi-Fi"
+FINAL_MODEL_DIR:str =  "final_model"
 
 SAVED_MODEL_DIR =os.path.join("saved_models")
 MODEL_FILE_NAME = "model.pkl"
@@ -58,33 +59,31 @@ Data Transformation related constant start with DATA TRANSFORMATION VAR NAME
 DATA_TRANSFORMATION_DIR_NAME: str = "data_transformation"
 DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
-PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+PREPROCESSING_OBJECT_FILE_NAME = "preprocessor.pkl"
 
-PREPROCESSED_TARGET_COLUMN_NAME:str = 'label'
 # imputer to replace nan value
 DATA_TRANSFORMATION_IMPUTER_PARAMS:dict = {"missing_values": np.nan,
                                         "strategy": "median" }
 
 UNDER_SAMPLER_PARAMS:dict = {
-    0 : 400000
+    0 : 300000
 }
 
 LABEL_MAPPING_DICT:dict = {
-    'BENIGN': 0,
-    'DDoS': 1,
-    'PortScan': 2,
-    'DoS Hulk': 3,
-    'DoS GoldenEye': 3,
-    'DoS slowloris': 3,
-    'DoS Slowhttptest': 3,
-    'FTP-Patator': 4,
-    'SSH-Patator': 4,
-    'Bot': 5,
-    'Web Attack � Brute Force': 6,
-    'Web Attack � XSS': 6,
-    'Web Attack � Sql Injection': 6,
-    'Infiltration': np.nan,
-    'Heartbleed': np.nan
+    'benign': 0,
+    'ddos': 1,
+    'portscan': 2,
+    'dos_hulk': 3,
+    'dos_goldeneye': 3,
+    'dos_slowloris': 3,
+    'dos_slowhttptest': 3,
+    'ftp_patator': 4,
+    'ssh_patator': 4,
+    'bot': 5,
+    'webattack_bruteforce': 6,
+    'webattack_xss': 6,
+    'webattack_sql_injection': 6,
+    'heartbleed': np.nan
 }
 
 NUMBER_LABEL_MAPPING_DICT = {

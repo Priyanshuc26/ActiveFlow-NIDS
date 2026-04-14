@@ -13,6 +13,7 @@ class TrainingPipelineConfig:
         self.raw_data_file_path = training_pipeline.RAW_DATA_FILE_PATH
         self.artifact_dir = training_pipeline.ARTIFACT_DIR
         self.target_column = training_pipeline.TARGET_COLUMN
+        self.final_model_dir = training_pipeline.FINAL_MODEL_DIR
         self.manual_seed = training_pipeline.MANUAL_SEED
         # self.artifact_dir = os.path.join(self.artifact_name, timestamp)
         self.timestamp: str = timestamp
@@ -73,6 +74,7 @@ class DataTransformationConfig:
         self.transformed_object_file_path: str = os.path.join(self.data_transformation_dir,
                                                               training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,
                                                               training_pipeline.PREPROCESSING_OBJECT_FILE_NAME, )
+        self.final_preprocessor_object_file_path: str = os.path.join(training_pipeline_config.final_model_dir,training_pipeline.PREPROCESSING_OBJECT_FILE_NAME)
 
 
 class ModelTrainerConfig:
@@ -85,3 +87,4 @@ class ModelTrainerConfig:
         )
         self.expected_accuracy: float = training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
         self.overfitting_underfitting_threshold = training_pipeline.MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD
+        self.final_model_file_path: str = os.path.join(training_pipeline_config.final_model_dir,training_pipeline.MODEL_TRAINER_TRAINED_MODEL_NAME)
