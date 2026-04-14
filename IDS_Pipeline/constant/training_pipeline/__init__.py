@@ -6,13 +6,13 @@ import pandas as pd
 """
 defining common constant variable for training pipeline
 """
-TARGET_COLUMN: str = ' Label'
+TARGET_COLUMN: str = 'label'
 PIPELINE_NAME: str = "Intrusion_Detection_System"
 ARTIFACT_DIR: str = "Artifacts"
 FILE_NAME: str = "master_dataset.csv"
 TRAIN_FILE_NAME: str = "train.csv"
 TEST_FILE_NAME: str = "test.csv"
-RAW_DATA_FILE_PATH: str = "raw_data/MachineLearningCSV.zip"
+RAW_DATA_FILE_PATH: str = "raw_data/lycos-ids2017.zip"
 PCAP_FILE_PATH: str = os.path.join("pcap_folder","Friday-WorkingHours.pcap")
 PCAP_CSV_FILE_PATH: str = os.path.join("pcap_folder","Friday-pcap.csv")
 CONNECTION_NAME:str = "Wi-Fi"

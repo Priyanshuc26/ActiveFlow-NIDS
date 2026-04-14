@@ -1,0 +1,51 @@
+[ 2026-04-14 23:26:27,768 ] 123 root - INFO - *******************Starting Data Ingestion Stage*******************
+[ 2026-04-14 23:26:27,770 ] 38 root - INFO - Checking for Data Integrity
+[ 2026-04-14 23:26:28,075 ] 44 root - INFO - Raw Data Integrity Checked
+[ 2026-04-14 23:26:28,075 ] 58 root - INFO - 
+
+ --------------Raw Data All CSV file information-----------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:39:04
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 0 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 0 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/Friday-WorkingHours.pcap_lycos.csv
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:40:02
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 249367364 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 49660101 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/Monday-WorkingHours.pcap_lycos.csv
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:38:54
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 178374155 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 46458586 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/readme.txt
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 02:57:36
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 30 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 32 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/Thursday-WorkingHours.pcap_lycos.csv
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:39:12
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 54222282 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 13979124 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/Tuesday-WorkingHours.pcap_lycos.csv
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:38:50
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 154548509 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 40076860 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 60 root - INFO - Filename: lycos-ids2017/Wednesday-WorkingHours.pcap_lycos.csv
+[ 2026-04-14 23:26:28,075 ] 61 root - INFO - Modified: 2026-04-14 12:39:40
+[ 2026-04-14 23:26:28,075 ] 62 root - INFO - Normal size: 248407519 bytes
+[ 2026-04-14 23:26:28,075 ] 63 root - INFO - Compressed size: 62345656 bytes
+[ 2026-04-14 23:26:28,075 ] 64 root - INFO - --------------------
+[ 2026-04-14 23:26:28,075 ] 65 root - INFO - ------------------------------------------------------------------ 
+
+
+[ 2026-04-14 23:26:44,680 ] 78 root - INFO - Shape of Master Dataset: (1837498, 83)
+[ 2026-04-14 23:28:06,923 ] 96 root - INFO - Master Dataset stored at file path: Artifacts\data_ingestion\feature_store\master_dataset.csv
+[ 2026-04-14 23:28:12,334 ] 106 root - INFO - Performed train test split on the dataframe
+[ 2026-04-14 23:28:12,361 ] 108 root - INFO - Train set shape: (1378123, 83) and Test set shape: (459375, 83)
+[ 2026-04-14 23:28:12,365 ] 111 root - INFO - Exporting train and test file path.
+[ 2026-04-14 23:29:43,532 ] 115 root - INFO - Exported train and test file path.
+[ 2026-04-14 23:29:43,739 ] 129 root - INFO - Data ingestion final step: Storing Data Ingestion Artifact
