@@ -1,0 +1,5 @@
+outs:
+- md5: e047f52ff1ee6e1d6891c23eda07539c
+  size: 249367364
+  hash: md5
+  path: Friday-WorkingHours.pcap_lycos.csv
