@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import os
 
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, PREPROCESSED_TARGET_COLUMN_NAME, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, TARGET_COLUMN, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
 from IDS_Pipeline.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
 from IDS_Pipeline.entity.config_entity import DataTransformationConfig,TrainingPipelineConfig
 from IDS_Pipeline.logging.logger import logging
@@ -45,16 +45,17 @@ class ColumnNameCleaner(BaseEstimator, TransformerMixin):
 class FeatureDropper(BaseEstimator,TransformerMixin):
     def __init__(self, top_feature_yaml_path):
         try:
-            # We are reading yaml file in init func. because we want yaml file to load only once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
-            self.top_feature_dict = read_yaml_file(file_path=top_feature_yaml_path)
-            self.top_feature_columns = list(self.top_feature_dict.keys())
-            logging.info(f" Dropping features that are not important... Top features: {self.top_feature_columns}")
+            self.top_feature_yaml_path = top_feature_yaml_path
         except Exception as e:
             raise CustomException(e,sys)
         
     def fit(self, df: pd.DataFrame, y=None):
         try:
-            return self
+            # We are reading yaml file in fit func. because we want yaml file to load only once and be saved. If we access it in transform() function it will lead to I/O crash as during every single packet transformation, it will load yaml file creating Bottleneck
+            self.top_feature_dict = read_yaml_file(file_path=self.top_feature_yaml_path)    # fix
+            self.top_feature_columns = list(self.top_feature_dict.keys())
+            logging.info(f" Dropping features that are not important... Top features: {self.top_feature_columns}")
+            return self      # The pipeline expects the fit() method to return the transformer object itself so it can instantly chain into the transform() method.
         except Exception as e:
             raise CustomException(e,sys)
     
@@ -62,8 +63,13 @@ class FeatureDropper(BaseEstimator,TransformerMixin):
         try:
             df = df.copy()  
             # Finding columns that are in BOTH the YAML file AND the current dataframe
-            valid_columns = [col for col in self.top_feature_columns if col in df.columns]
-            df = df.loc[:, valid_columns]
+            # valid_columns = [col for col in self.top_feature_columns if col in df.columns]
+            
+            # previously we checked Selectively, but now we have a strict check on the columns
+            missing = [col for col in self.top_feature_columns if col not in df.columns]
+            if missing:
+                raise ValueError(f"Missing expected columns: {missing}") 
+            df = df.loc[:, self.top_feature_columns]
             return df
         except Exception as e:
             raise CustomException(e,sys)
@@ -92,7 +98,7 @@ class InfinityToNanConverter(BaseEstimator,TransformerMixin):
     
     
 class DataTransformation:
-    def __init__(self,data_validation_artifact:DataValidationArtifact,data_transformation_config:DataTransformationArtifact):
+    def __init__(self,data_validation_artifact:DataValidationArtifact,data_transformation_config:DataTransformationConfig):
         try:
             self.data_validation_artifact = data_validation_artifact
             self.data_transformation_config = data_transformation_config
@@ -137,7 +143,7 @@ class DataTransformation:
             
             over_sampler = SMOTETomek()
             X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
-            logging.info(f"  SMOTETomek applied.X_resampled shape: {X_resampled.shape},y_resampled shape: {y_resampled.shape}")
+            logging.info(f"  SMOTETomek applied. X_resampled shape: {X_resampled.shape}, y_resampled shape: {y_resampled.shape}")
             
             return X_resampled,y_resampled
         except Exception as e:
@@ -153,24 +159,26 @@ class DataTransformation:
             
             logging.info("Preprocessing target column name")
             # Globally cleaning all column names so TARGET_COLUMN can be extracted safely
-            train_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in train_df.columns]
-            test_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in test_df.columns]
+            # train_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in train_df.columns]
+            # test_df.columns = [col.strip().lower().replace(' ', '_').replace('(', '').replace(')', '') for col in test_df.columns]
 
             logging.info("Splitting Train and Test Dataframe into input features(X) and target features(y)")
             #Training Dataframe
-            train_df[PREPROCESSED_TARGET_COLUMN_NAME] = train_df[PREPROCESSED_TARGET_COLUMN_NAME].replace(LABEL_MAPPING_DICT) #Mapping labels to number (encoding)
-            train_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN_NAME], inplace=True)  #droping rows with help of labels which has nan value
+            train_df[TARGET_COLUMN] = train_df[TARGET_COLUMN].replace(LABEL_MAPPING_DICT) #Mapping labels to number (encoding)
+            train_df.dropna(subset=[TARGET_COLUMN], inplace=True)  #droping rows with help of labels which has nan value
+            train_df.reset_index(drop=True, inplace=True)   # (Fix) Removing index because the data will be dropped from anywhere which will lead to improper index, leading to crash
             
-            input_feature_train_df = train_df.drop(columns=[PREPROCESSED_TARGET_COLUMN_NAME], axis=1)   #Splitting into X and y
-            target_feature_train_df = train_df[PREPROCESSED_TARGET_COLUMN_NAME]
+            input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN], axis=1)   #Splitting into X and y
+            target_feature_train_df = train_df[TARGET_COLUMN]
 
 
             # Testing dataframe
-            test_df[PREPROCESSED_TARGET_COLUMN_NAME] = test_df[PREPROCESSED_TARGET_COLUMN_NAME].replace(LABEL_MAPPING_DICT)   #label mapping
-            test_df.dropna(subset=[PREPROCESSED_TARGET_COLUMN_NAME], inplace=True)
+            test_df[TARGET_COLUMN] = test_df[TARGET_COLUMN].replace(LABEL_MAPPING_DICT)   #label mapping
+            test_df.dropna(subset=[TARGET_COLUMN], inplace=True)
+            test_df.reset_index(drop=True, inplace=True)
             
-            input_feature_test_df = test_df.drop(columns=[PREPROCESSED_TARGET_COLUMN_NAME], axis=1)   #Splitting into X and y
-            target_feature_test_df = test_df[PREPROCESSED_TARGET_COLUMN_NAME]
+            input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN], axis=1)   #Splitting into X and y
+            target_feature_test_df = test_df[TARGET_COLUMN]
 
             ## Preprocessing the input_feature of both train and test df
             preprocessor_object = self.get_data_transformer_object()
@@ -192,9 +200,12 @@ class DataTransformation:
             save_object(self.data_transformation_config.transformed_object_file_path, preprocessor_object)
             logging.info("numpy array saved")
 
+
             # model pusher
             logging.info("saving preprocessor object")
-            save_object("final_model/preprocessor.pkl", preprocessor_object)
+            final_model_dir_path = os.path.dirname(self.data_transformation_config.final_preprocessor_object_file_path)
+            os.makedirs(final_model_dir_path, exist_ok=True)
+            save_object(self.data_transformation_config.final_preprocessor_object_file_path, preprocessor_object)
 
             #Preparing Data Transformation Artifacts
             logging.info("Data Transformation Final Step: Preparing Data Transformation Artifacts")
