@@ -7,3 +7,5 @@ __pycache__/
 *.pyd
 /raw_data
 /pcap_folder
+
+/Artifacts  

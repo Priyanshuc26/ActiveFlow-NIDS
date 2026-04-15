@@ -1,5 +1,4 @@
 bwd_bulk_rate_mean: float64
-bwd_iat_std: float64
 bwd_pkt_hdr_len_min: int64
 bwd_pkt_per_s: float64
 bwd_tcp_init_win_bytes: int64
@@ -10,6 +9,7 @@ flag_psh: int64
 flag_rst: int64
 flag_syn: int64
 flow_duration: int64
+fwd_flag_psh: int64
 fwd_iat_min: float64
 fwd_iat_std: float64
 fwd_non_empty_pkt_cnt: int64
