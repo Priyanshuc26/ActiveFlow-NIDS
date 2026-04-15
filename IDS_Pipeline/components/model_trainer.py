@@ -56,24 +56,26 @@ class ModelTrainer:
             logging.info("Starting Model Training")
             models = {
                 "LightGBM": LGBMClassifier(n_jobs=-1, random_state=42), #Use all the core
-                "XGBoost": XGBClassifier(n_jobs=-1, random_state=42, tree_method='hist'),
-                # During Intial testing Random Forest performed worst among all with 88.07% f1 score, so we will not use it
-                # "RandomForestClassifier": RandomForestClassifier(n_jobs=2,verbose=1) #use only 2 cores
+                "XGBoost": XGBClassifier(n_jobs=-1, random_state=42, tree_method='hist')
+                
+                # During Intial testing Random Forest performed worst among all with 88.07% f1 score, so we will not use it (During Training on CIC-IDS2017 Dataset)
+                #"RandomForestClassifier": RandomForestClassifier(n_jobs=2,verbose=1) #use only 2 cores
             }
 
             params = {
                 "LightGBM": {
                     'learning_rate': [0.01, 0.05, 0.1],
                     'n_estimators': [100, 200, 300],
-                    'max_depth': [10, 20, -1],
-                    'num_leaves': [31, 63, 127], # LightGBM grows leaf-wise, this is its most powerful dial
-                    'subsample': [0.8, 0.9, 1.0] # Prevents overfitting by randomly dropping rows per tree
+                    'max_depth': [5, 8, 12],     # Fix - A max_depth of -1 means infinite depth(leading to overfitting)
+                    'num_leaves': [15, 31, 50], # LightGBM grows leaf-wise, too much high number will cause overfitting (like previously 127)
+                    'subsample': [0.8, 0.9, 1.0], # Prevents overfitting by randomly dropping rows per tree
+                    'min_child_samples': [20, 50, 100]
                 },
                 
                 "XGBoost": {
                     'learning_rate': [0.01, 0.05, 0.1],
                     'n_estimators': [100, 200, 300],
-                    'max_depth': [5, 10, 15], # XGBoost grows depth-wise, so we cap it lower than Random Forest
+                    'max_depth': [3, 5, 7], # XGBoost grows depth-wise, so we cap it lower than Random Forest. A depth of 15 will memorize the noise in your network data, leading to a massive spike in False Positives
                     'subsample': [0.8, 0.9, 1.0],
                     'colsample_bytree': [0.8, 1.0] # Randomly drops features per tree to find hidden patterns
                 }
@@ -103,14 +105,15 @@ class ModelTrainer:
             y_train_pred = best_model.predict(x_train)
             classification_train_metric = get_classification_score(y_train, y_train_pred)
             logging.info(f'Classfication metrics based on X_train: {classification_train_metric}')
-            
-            ## Tracking mlflow
-            logging.info("Tracking Model using MLflow")
-            self.track_mlflow(best_model, classification_train_metric) #To track it by using UI, write mlflow ui on terminal
+
 
             y_test_pred = best_model.predict(x_test)
             classification_test_metric = get_classification_score(y_test, y_test_pred)
             logging.info(f'Classfication metrics based on X_test: {classification_test_metric}')
+            
+            ## Tracking mlflow
+            logging.info("Tracking Model using MLflow")
+            self.track_mlflow(best_model, classification_test_metric) #To track it by using UI, write mlflow ui on terminal
 
             logging.info("Loading Preprocessor Object")
             preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
@@ -120,10 +123,14 @@ class ModelTrainer:
             logging.info("Saving Preprocessor and model in NetworkModel object")
             Network_Model = NetworkModel(preprocessor=preprocessor,model= best_model)
             save_object(self.model_trainer_config.trained_model_file_path, obj=Network_Model)
+            #here network_model is being stored in artifacts folder and not in the final_model folder, may need review again
+
 
             # model pusher
             logging.info("Pushing final model")
-            save_object("final_model/model.pkl", best_model)
+            final_model_dir_path = os.path.dirname(self.model_trainer_config.final_model_file_path)
+            os.makedirs(final_model_dir_path, exist_ok=True)
+            save_object(self.model_trainer_config.final_model_file_path, best_model)
 
             ## Model Trainer Artifact
             
