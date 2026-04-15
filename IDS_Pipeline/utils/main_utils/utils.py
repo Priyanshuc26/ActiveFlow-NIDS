@@ -4,8 +4,9 @@ from IDS_Pipeline.logging.logger import logging
 # import dill
 import os,sys
 import numpy as np
+import pandas as pd
 import pickle
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.metrics import f1_score
 
 def read_yaml_file(file_path: str) -> dict:
@@ -77,6 +78,55 @@ def load_object(file_path: str,) -> object:
     except Exception as e:
         raise CustomException(e, sys) from e
 
+
+def custom_train_test_split(master_df: pd.DataFrame,random_state:int):
+    try:
+        day_col = master_df["day"].str.lower()
+
+        monday_to_thursday = master_df[
+            day_col.isin(["monday", "tuesday", "wednesday", "thursday"])
+        ].copy()
+        logging.info(f"Shape of dataframe containing days as Monday to Thursday: {monday_to_thursday.shape}")
+        friday_data = master_df[day_col == "friday"].copy()
+        logging.info(f"Shape of dataframe containing days as Friday: {friday_data.shape}")
+
+        # Flow-level labels
+        flow_labels = friday_data.groupby("flow_id")["label"].first().reset_index()
+        logging.info(f"flow labels: {flow_labels.head(10)}")
+
+        # Safety check
+        label_counts = flow_labels["label"].value_counts()
+        rare_classes = label_counts[label_counts < 2]
+
+        if not rare_classes.empty:
+            raise ValueError(f"Classes too small for stratified split: {rare_classes.to_dict()}")
+
+        # Stratified split
+        train_flows, test_flows = train_test_split(
+            flow_labels,
+            test_size=0.35,
+            stratify=flow_labels["label"],
+            random_state=random_state
+        )
+
+        # Map back
+        train_friday = friday_data[friday_data["flow_id"].isin(train_flows["flow_id"])]
+        test_friday  = friday_data[friday_data["flow_id"].isin(test_flows["flow_id"])]
+        logging.info(f"Train friday shape: {train_friday.shape} and Test friday shape: {test_friday.shape}")
+
+        train_set = pd.concat([monday_to_thursday, train_friday])
+        test_set  = test_friday
+
+        # Shuffle
+        # train_set = train_set.sample(frac=1, random_state=42)
+        # test_set = test_set.sample(frac=1, random_state=42)
+        # train_set.drop(columns=['day'],inplace=True)
+        # test_set.drop(columns=['day'],inplace=True)
+
+        return train_set.reset_index(drop=True), test_set.reset_index(drop=True)
+    except Exception as e:
+        raise CustomException(e,sys)
+    
 
 def evaluate_models(X_train, y_train,X_test,y_test,models,param):
     try:
