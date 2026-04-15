@@ -15,11 +15,11 @@ from IDS_Pipeline.entity.config_entity import DataIngestionConfig
 from IDS_Pipeline.entity.artifact_entity import DataIngestionArtifact
 from IDS_Pipeline.entity.config_entity import TrainingPipelineConfig
 from IDS_Pipeline.constant.training_pipeline import TARGET_COLUMN
+from IDS_Pipeline.utils.main_utils.utils import custom_train_test_split
 
 from dotenv import load_dotenv
 load_dotenv()
 
-ORIGINAL_MD5_CODE = os.getenv('ORIGINAL_MD5_CODE')
 
 
 class DataIngestion:
@@ -30,17 +30,18 @@ class DataIngestion:
             raise CustomException(e,sys)
         
         
-    def check_raw_data_integrity(self, original_md5_code):
+    def check_raw_data_integrity(self):
         try:
             raw_data_file_path = self.data_ingestion_config.raw_data_file_path
             status = False
+            ORIGINAL_MD5_CODE = os.getenv('ORIGINAL_MD5_CODE')   # Fix - only fetches the variable when the function is actively called.
             
             logging.info("Checking for Data Integrity")
             with open(raw_data_file_path, "rb") as f:
                 digest = hashlib.file_digest(f, "md5")
-            print(digest.hexdigest())
+            logging.info(f"Calculated MD5 Hash: {digest.hexdigest()}")
 
-            if digest.hexdigest() == original_md5_code:
+            if digest.hexdigest() == ORIGINAL_MD5_CODE:
                 logging.info('Raw Data Integrity Checked')
             else:
                 raise Exception("Corrupted File Detected!") 
@@ -71,10 +72,18 @@ class DataIngestion:
                 concated_list = []
                 for csv_file in csv_files:
                     with zip_ref.open(csv_file,mode='r') as df_file:
-                        concated_list.append(pd.read_csv(df_file))
+                        df = pd.read_csv(df_file)
+                        
+                        # Fix - extracting day names(monday, tuesday, etc.) by using csv file name
+                        df['day'] = os.path.basename(csv_file).split("-")[0].lower()
+                        concated_list.append(df)
             
             #Concatinating all the csv files into one CSV file from a list            
-            master_dataset = pd.concat(concated_list)
+            master_dataset = pd.concat(concated_list,ignore_index=True)   #Fix - This forces Pandas to seamlessly number the massive dataset from 0 to 1.8 Million saving RAM.
+            
+            # Fix - Shuffling the dataset. When we concat the data of different files, the data is still in sequential form, which cannot be purely resolved during train_test_split(using stratify method), which will lead to splitting of sequential rows into train and test df(which should not haoppen in case of network data bcoz rows are interdependent of each other[like in ddos attack]) this can lead model to overfit and memorize data
+            master_dataset = master_dataset.sample(frac=1, random_state=42).reset_index(drop=True)
+            
             logging.info(f"Shape of Master Dataset: {master_dataset.shape}")
             return master_dataset
                 
@@ -87,7 +96,7 @@ class DataIngestion:
         try:
             #Saving Master Data into local storage(feature store)
             feature_store_file_path = self.data_ingestion_config.feature_store_file_path
-            target_column = TARGET_COLUMN
+            # target_column = TARGET_COLUMN
             random_state = self.data_ingestion_config.random_state
             
             dir_path = os.path.dirname(feature_store_file_path)
@@ -96,14 +105,10 @@ class DataIngestion:
             logging.info(f"Master Dataset stored at file path: {feature_store_file_path}")  
             
             #Splitting Master data into train and test data
-            train_set, test_set = train_test_split(
-                master_dataset,
-                test_size=self.data_ingestion_config.train_test_split_ratio,
-                stratify=master_dataset[target_column],
-                random_state=random_state
-            )
+            # Major Fix - Splitting data with help of days and taking a part of friday.csv as our test data to check the model ability on completely predict new data.Before we were splitting the same data into train and test (eg. friday data was in train df also and test df also). As previously data was also sequential, it lead same type of data to split into train and test, which lead to model memorizing the data and predicting the same data in test as attack
+            train_set, test_set = custom_train_test_split(master_df=master_dataset,random_state=random_state)
 
-            logging.info("Performed train test split on the dataframe")
+            logging.info("Performed custom flow-based + temporal train-test split")
             
             logging.info(f"Train set shape: {train_set.shape} and Test set shape: {test_set.shape}")
             dir_path = os.path.dirname(self.data_ingestion_config.training_file_path)
@@ -122,7 +127,7 @@ class DataIngestion:
         try:
             logging.info("*******************Starting Data Ingestion Stage*******************")
             
-            self.check_raw_data_integrity(ORIGINAL_MD5_CODE)
+            self.check_raw_data_integrity()
             df = self.zip_file_extractor()
             self.save_and_split_data(df)
             
