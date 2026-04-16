@@ -81,3 +81,4 @@ pkt_per_s: float64
 src_addr: object
 src_port: int64
 timestamp: int64
+day: object
