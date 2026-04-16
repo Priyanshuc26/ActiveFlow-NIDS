@@ -159,6 +159,9 @@ if __name__ == "__main__":
 
 
 
-## Upgrades to be done in upcoming version:
-#  * Missing Values (Null) Check -> (Rejecting Column which contains na values more than threshold level)
-#  *  Value range check -> (For example: destination_port cannot mathematically be a negative number, and it cannot be greater than 65535)
+## Upgrades to be done in upcoming versions:
+#  1. Missing Values (Null) Check -> (Rejecting Column which contains na values more than threshold level)
+#  2. Value range check -> (For example: destination_port cannot mathematically be a negative number, and it cannot be greater than 65535)
+#  3. Stict, but more robust(Handle missing values properly without crashing)
+#  4. Make inference validation stage
+#  5. Improve logical structures

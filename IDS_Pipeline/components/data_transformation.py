@@ -142,7 +142,7 @@ class DataTransformation:
             logging.info(f"  Under sampling done.X_under_sampled shape: {X_under_sampled.shape},y_under_sampled shape: {y_under_sampled.shape}")
             
             # Fix - Previously we were creating too much synthetic data(300k for each label), which may have lead to distorted pattern and not train model properly on the real life class imbalance, so this time we will apply Smotetomek in controlled manner to avoid overfitting and preventing high synthetic data. We will increase the number of minority significantly but not to the level of majority.
-            over_sampler = SMOTETomek(sampling_strategy=ST_SAMPLER_PARAMS)
+            over_sampler = SMOTETomek(sampling_strategy=ST_SAMPLER_PARAMS,random_state=42,n_jobs=-1)
             X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
             logging.info(f"  SMOTETomek applied. X_resampled shape: {X_resampled.shape}, y_resampled shape: {y_resampled.shape}")
             

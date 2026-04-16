@@ -39,11 +39,11 @@ class ModelTrainer:
         try:
             dagshub.init(repo_owner='Priyanshuc26', repo_name='ActiveFlow_IDS', mlflow=True)
             with mlflow.start_run():
-                f1_score = classification_metric.f1_score
+                false_positive_rate = classification_metric.false_positive_rate
                 precision = classification_metric.precision_score
                 recall = classification_metric.recall_score
 
-                mlflow.log_metric("f1_score", f1_score)
+                mlflow.log_metric("false_positive_rate", false_positive_rate)
                 mlflow.log_metric("precision", precision)
                 mlflow.log_metric("recall", recall)
                 mlflow.sklearn.log_model(best_model, "model")

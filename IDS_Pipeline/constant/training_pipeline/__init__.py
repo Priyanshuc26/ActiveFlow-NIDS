@@ -69,20 +69,30 @@ UNDER_SAMPLER_PARAMS:dict = {
     0 : 300000
 }
 
+ST_SAMPLER_PARAMS:dict = {
+    0 : 300000,
+    1 : 110000,
+    2 : 94000,
+    3 : 82000,
+    4 : 40000,
+    5 : 14000,
+    6 : 6000
+    }
+
 LABEL_MAPPING_DICT:dict = {
     'benign': 0,
-    'ddos': 1,
+    'dos_hulk': 1,
+    'dos_goldeneye': 1,
+    'dos_slowloris': 1,
+    'dos_slowhttptest': 1,
     'portscan': 2,
-    'dos_hulk': 3,
-    'dos_goldeneye': 3,
-    'dos_slowloris': 3,
-    'dos_slowhttptest': 3,
+    'ddos': 3,
     'ftp_patator': 4,
     'ssh_patator': 4,
-    'bot': 5,
-    'webattack_bruteforce': 6,
-    'webattack_xss': 6,
-    'webattack_sql_injection': 6,
+    'webattack_bruteforce': 5,
+    'webattack_xss': 5,
+    'webattack_sql_injection': 5,
+    'bot': 6,
     'heartbleed': np.nan
 }
 
