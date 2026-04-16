@@ -66,13 +66,13 @@ DATA_TRANSFORMATION_IMPUTER_PARAMS:dict = {"missing_values": np.nan,
                                         "strategy": "median" }
 
 UNDER_SAMPLER_PARAMS:dict = {
-    0 : 300000
+    0 : 350000
 }
 
 ST_SAMPLER_PARAMS:dict = {
-    0 : 300000,
-    1 : 110000,
-    2 : 94000,
+    0 : 350000,
+    1 : 176293,
+    2 : 104073,
     3 : 82000,
     4 : 40000,
     5 : 14000,

@@ -41,11 +41,13 @@ class ModelTrainer:
             with mlflow.start_run():
                 false_positive_rate = classification_metric.false_positive_rate
                 precision = classification_metric.precision_score
-                recall = classification_metric.recall_score
+                # recall = classification_metric.recall_score
+                # confusion_matrix = classification_metric.confusion_matrix
 
                 mlflow.log_metric("false_positive_rate", false_positive_rate)
                 mlflow.log_metric("precision", precision)
-                mlflow.log_metric("recall", recall)
+                # mlflow.log_metric("recall", recall)
+                # mlflow.log_metric("Confusion Matrix",confusion_matrix)
                 mlflow.sklearn.log_model(best_model, "model")
         except Exception as e:
             raise CustomException(e,sys)
@@ -180,3 +182,14 @@ if __name__ == "__main__":
     
     model_trainer = ModelTrainer(model_trainer_config=model_trainer_config,data_transformation_artifact=data_transformation_artifact)
     model_trainer.initiate_model_trainer()
+    
+    
+    
+## Important Note
+#  - Currently Model is strong on: benign, portscan, ddos, bot; but performance is unknown on: dos, brute_force (FPR is very good[very low])
+#  - Reason for above conclusion is: Evaluation limited to available attack types, Test.csv only has benign, portscan, ddos, bot labels(Model evaluated on subset of attack classes due to dataset split limitations)
+#  - For now, nmodel is ready to ship, but can't be prely or blindly trusted
+
+## Upcoming updates:
+#  1. More detailed logging and more proper setup of MLflow
+#  2. A Complete Evaluation Dataset that contains all class for testing
