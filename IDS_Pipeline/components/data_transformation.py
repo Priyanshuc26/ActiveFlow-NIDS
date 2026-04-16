@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import os
 
-from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, TARGET_COLUMN, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS
+from IDS_Pipeline.constant.training_pipeline import TOP_FEATURE_SCHEMA_FILE_PATH, DATA_TRANSFORMATION_IMPUTER_PARAMS, TARGET_COLUMN, LABEL_MAPPING_DICT, UNDER_SAMPLER_PARAMS, ST_SAMPLER_PARAMS
 from IDS_Pipeline.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact
 from IDS_Pipeline.entity.config_entity import DataTransformationConfig,TrainingPipelineConfig
 from IDS_Pipeline.logging.logger import logging
@@ -141,7 +141,8 @@ class DataTransformation:
             X_under_sampled,y_under_sampled = under_sampler.fit_resample(X_train,y_train)
             logging.info(f"  Under sampling done.X_under_sampled shape: {X_under_sampled.shape},y_under_sampled shape: {y_under_sampled.shape}")
             
-            over_sampler = SMOTETomek()
+            # Fix - Previously we were creating too much synthetic data(300k for each label), which may have lead to distorted pattern and not train model properly on the real life class imbalance, so this time we will apply Smotetomek in controlled manner to avoid overfitting and preventing high synthetic data. We will increase the number of minority significantly but not to the level of majority.
+            over_sampler = SMOTETomek(sampling_strategy=ST_SAMPLER_PARAMS)
             X_resampled,y_resampled = over_sampler.fit_resample(X_under_sampled,y_under_sampled)
             logging.info(f"  SMOTETomek applied. X_resampled shape: {X_resampled.shape}, y_resampled shape: {y_resampled.shape}")
             
@@ -234,3 +235,14 @@ if __name__ == "__main__":
     
     data_transformation = DataTransformation(data_transformation_config=data_transformation_config,data_validation_artifact=data_validation_artifact) 
     data_transformation.initiate_data_transformation()
+    
+    
+    
+    
+# Upcoming updates in newer versions
+
+# 1. Instead of realying on Hybrid Sampling(Which Creates a lot of synthetic data) for handling imbalance class, we will rely on model to handle, which doesn't need to populate data, This will be done by:
+    # a. class weights
+    # b. threshold tuning
+    # c. cost-sensitive learning
+# 2. Strict + More Robust (Dosen't crashes pipeline incase of missing features - handle minor issues, fail only on major ones)
