@@ -1,0 +1,173 @@
+[ 2026-04-16 16:06:05,653 ] 96 root - INFO - 				Starting Training Pipeline				
+[ 2026-04-16 16:06:05,653 ] 36 root - INFO - Starting data ingestion
+[ 2026-04-16 16:06:05,653 ] 128 root - INFO - *******************Starting Data Ingestion Stage*******************
+[ 2026-04-16 16:06:05,654 ] 39 root - INFO - Checking for Data Integrity
+[ 2026-04-16 16:06:06,017 ] 42 root - INFO - Calculated MD5 Hash: d067d8ea5f85b0997bafc0869d8302c5
+[ 2026-04-16 16:06:06,017 ] 45 root - INFO - Raw Data Integrity Checked
+[ 2026-04-16 16:06:06,018 ] 59 root - INFO - 
+
+ --------------Raw Data All CSV file information-----------------
+[ 2026-04-16 16:06:06,018 ] 61 root - INFO - Filename: lycos-ids2017/
+[ 2026-04-16 16:06:06,020 ] 62 root - INFO - Modified: 2026-04-14 12:39:04
+[ 2026-04-16 16:06:06,020 ] 63 root - INFO - Normal size: 0 bytes
+[ 2026-04-16 16:06:06,020 ] 64 root - INFO - Compressed size: 0 bytes
+[ 2026-04-16 16:06:06,020 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,020 ] 61 root - INFO - Filename: lycos-ids2017/Friday-WorkingHours.pcap_lycos.csv
+[ 2026-04-16 16:06:06,020 ] 62 root - INFO - Modified: 2026-04-14 12:40:02
+[ 2026-04-16 16:06:06,020 ] 63 root - INFO - Normal size: 249367364 bytes
+[ 2026-04-16 16:06:06,020 ] 64 root - INFO - Compressed size: 49660101 bytes
+[ 2026-04-16 16:06:06,020 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,020 ] 61 root - INFO - Filename: lycos-ids2017/Monday-WorkingHours.pcap_lycos.csv
+[ 2026-04-16 16:06:06,021 ] 62 root - INFO - Modified: 2026-04-14 12:38:54
+[ 2026-04-16 16:06:06,021 ] 63 root - INFO - Normal size: 178374155 bytes
+[ 2026-04-16 16:06:06,021 ] 64 root - INFO - Compressed size: 46458586 bytes
+[ 2026-04-16 16:06:06,021 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,021 ] 61 root - INFO - Filename: lycos-ids2017/readme.txt
+[ 2026-04-16 16:06:06,021 ] 62 root - INFO - Modified: 2026-04-14 02:57:36
+[ 2026-04-16 16:06:06,021 ] 63 root - INFO - Normal size: 30 bytes
+[ 2026-04-16 16:06:06,021 ] 64 root - INFO - Compressed size: 32 bytes
+[ 2026-04-16 16:06:06,021 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,021 ] 61 root - INFO - Filename: lycos-ids2017/Thursday-WorkingHours.pcap_lycos.csv
+[ 2026-04-16 16:06:06,021 ] 62 root - INFO - Modified: 2026-04-14 12:39:12
+[ 2026-04-16 16:06:06,021 ] 63 root - INFO - Normal size: 54222282 bytes
+[ 2026-04-16 16:06:06,021 ] 64 root - INFO - Compressed size: 13979124 bytes
+[ 2026-04-16 16:06:06,021 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,021 ] 61 root - INFO - Filename: lycos-ids2017/Tuesday-WorkingHours.pcap_lycos.csv
+[ 2026-04-16 16:06:06,021 ] 62 root - INFO - Modified: 2026-04-14 12:38:50
+[ 2026-04-16 16:06:06,021 ] 63 root - INFO - Normal size: 154548509 bytes
+[ 2026-04-16 16:06:06,021 ] 64 root - INFO - Compressed size: 40076860 bytes
+[ 2026-04-16 16:06:06,021 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,021 ] 61 root - INFO - Filename: lycos-ids2017/Wednesday-WorkingHours.pcap_lycos.csv
+[ 2026-04-16 16:06:06,021 ] 62 root - INFO - Modified: 2026-04-14 12:39:40
+[ 2026-04-16 16:06:06,022 ] 63 root - INFO - Normal size: 248407519 bytes
+[ 2026-04-16 16:06:06,022 ] 64 root - INFO - Compressed size: 62345656 bytes
+[ 2026-04-16 16:06:06,022 ] 65 root - INFO - --------------------
+[ 2026-04-16 16:06:06,022 ] 66 root - INFO - ------------------------------------------------------------------ 
+
+
+[ 2026-04-16 16:06:32,578 ] 87 root - INFO - Shape of Master Dataset: (1837498, 84)
+[ 2026-04-16 16:08:02,553 ] 105 root - INFO - Master Dataset stored at file path: Artifacts\data_ingestion\feature_store\master_dataset.csv
+[ 2026-04-16 16:08:03,837 ] 89 root - INFO - Shape of dataframe containing days as Monday to Thursday: (1294536, 84)
+[ 2026-04-16 16:08:04,719 ] 91 root - INFO - Shape of dataframe containing days as Friday: (542962, 84)
+[ 2026-04-16 16:08:06,071 ] 95 root - INFO - flow labels:                                flow_id   label
+0    109.201.130.57-192.168.10.5-0-0-1  benign
+1    109.201.130.58-192.168.10.5-0-0-1  benign
+2   153.120.128.154-192.168.10.8-0-0-1  benign
+3       172.16.0.1-192.168.10.15-0-0-1  benign
+4        172.16.0.1-192.168.10.5-0-0-1  benign
+5  172.16.0.1-192.168.10.50-14099-80-6    ddos
+6  172.16.0.1-192.168.10.50-14100-80-6    ddos
+7  172.16.0.1-192.168.10.50-14101-80-6    ddos
+8  172.16.0.1-192.168.10.50-14102-80-6    ddos
+9  172.16.0.1-192.168.10.50-14103-80-6    ddos
+[ 2026-04-16 16:08:07,418 ] 115 root - INFO - Train friday shape: (352668, 84) and Test friday shape: (190294, 84)
+[ 2026-04-16 16:08:14,337 ] 111 root - INFO - Performed custom flow-based + temporal train-test split
+[ 2026-04-16 16:08:14,349 ] 113 root - INFO - Train set shape: (1647204, 84) and Test set shape: (190294, 84)
+[ 2026-04-16 16:08:14,360 ] 116 root - INFO - Exporting train and test file path.
+[ 2026-04-16 16:09:46,148 ] 120 root - INFO - Exported train and test file path.
+[ 2026-04-16 16:09:46,317 ] 134 root - INFO - Data ingestion final step: Storing Data Ingestion Artifact
+[ 2026-04-16 16:09:46,348 ] 39 root - INFO - Data ingestion completed and artifacts are: DataIngestionArtifact(train_file_path='Artifacts\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\data_ingestion\\ingested\\test.csv')
+[ 2026-04-16 16:09:46,352 ] 49 root - INFO - Starting data validation
+[ 2026-04-16 16:09:46,392 ] 109 root - INFO - *******************Starting Data Validation Stage*******************
+[ 2026-04-16 16:09:46,393 ] 37 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\train.csv
+[ 2026-04-16 16:09:59,469 ] 37 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\test.csv
+[ 2026-04-16 16:10:01,606 ] 44 root - INFO - Validating Column Name and Datatype of                                         flow_id       src_addr  src_port  ... bwd_tcp_init_win_bytes     label        day
+0        192.168.10.12-192.168.10.3-60185-53-17  192.168.10.12     60185  ...                     -1    benign     monday
+1         192.168.10.9-192.168.10.3-54951-53-17   192.168.10.9     54951  ...                     -1    benign     monday
+2        192.168.10.12-192.168.10.3-49068-53-17  192.168.10.12     49068  ...                     -1    benign     monday
+3         192.168.10.19-192.168.10.3-4107-53-17  192.168.10.19      4107  ...                     -1    benign   thursday
+4           172.16.0.1-192.168.10.50-54774-80-6     172.16.0.1     54774  ...                  28960  dos_hulk  wednesday
+...                                         ...            ...       ...  ...                    ...       ...        ...
+1647199   172.16.0.1-192.168.10.50-42814-6009-6     172.16.0.1     42814  ...                      0  portscan     friday
+1647200  192.168.10.17-192.168.10.3-61556-53-17  192.168.10.17     61556  ...                     -1    benign     friday
+1647201   192.168.10.8-192.168.10.3-57013-53-17   192.168.10.8     57013  ...                     -1    benign     friday
+1647202   172.16.0.1-192.168.10.50-35613-2381-6     172.16.0.1     35613  ...                      0  portscan     friday
+1647203  192.168.10.5-63.140.56.141-50676-443-6   192.168.10.5     50676  ...                   4380    benign     friday
+
+[1647204 rows x 84 columns]
+[ 2026-04-16 16:10:01,612 ] 48 root - INFO - Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful
+[ 2026-04-16 16:10:02,361 ] 44 root - INFO - Validating Column Name and Datatype of                                       flow_id      src_addr  src_port  ... bwd_tcp_init_win_bytes     label     day
+0       172.16.0.1-192.168.10.50-36448-1145-6    172.16.0.1     36448  ...                      0  portscan  friday
+1         172.16.0.1-192.168.10.50-49448-99-6    172.16.0.1     49448  ...                      0  portscan  friday
+2         172.16.0.1-192.168.10.50-29554-80-6    172.16.0.1     29554  ...                  29200      ddos  friday
+3         172.16.0.1-192.168.10.50-24264-80-6    172.16.0.1     24264  ...                  29200      ddos  friday
+4       172.16.0.1-192.168.10.50-36256-3546-6    172.16.0.1     36256  ...                      0  portscan  friday
+...                                       ...           ...       ...  ...                    ...       ...     ...
+190289    172.16.0.1-192.168.10.50-57323-80-6    172.16.0.1     57323  ...                  29200      ddos  friday
+190290  192.168.10.3-192.168.10.1-61512-53-17  192.168.10.3     61512  ...                     -1    benign  friday
+190291   172.16.0.1-192.168.10.50-46368-427-6    172.16.0.1     46368  ...                      0  portscan  friday
+190292  192.168.10.5-52.7.153.175-51352-443-6  192.168.10.5     51352  ...                  26883    benign  friday
+190293  192.168.10.3-192.168.10.1-60722-53-17  192.168.10.3     60722  ...                     -1    benign  friday
+
+[190294 rows x 84 columns]
+[ 2026-04-16 16:10:02,368 ] 48 root - INFO - Columns name and dtype of both dataframe and schema matched. Columns Validation Sucessful
+[ 2026-04-16 16:10:02,370 ] 61 root - INFO - Calculating and Detecting Data Drift
+[ 2026-04-16 16:16:45,596 ] 88 root - INFO - Drift Ocuured. Drift threshold: 0.5 and Actual drift: 0.5357142857142857.
+[ 2026-04-16 16:18:35,892 ] 129 root - INFO - Data validation final step: Storing Data validation Artifact
+[ 2026-04-16 16:18:36,102 ] 52 root - INFO - Data validation completed and artifacts are: DataValidationArtifact(validation_status=None, valid_train_file_path='Artifacts\\data_ingestion\\ingested\\train.csv', valid_test_file_path='Artifacts\\data_ingestion\\ingested\\test.csv', invalid_train_file_path=None, invalid_test_file_path=None, drift_report_file_path='Artifacts\\data_validation\\drift_report\\report.yaml')
+[ 2026-04-16 16:18:36,108 ] 62 root - INFO - Starting data transformation
+[ 2026-04-16 16:18:36,113 ] 156 root - INFO - *******************Starting Data Transformation Stage*******************
+[ 2026-04-16 16:18:36,115 ] 112 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\train.csv
+[ 2026-04-16 16:18:49,195 ] 112 root - INFO - Reading csv file from path: Artifacts\data_ingestion\ingested\test.csv
+[ 2026-04-16 16:18:50,894 ] 161 root - INFO - Preprocessing target column name
+[ 2026-04-16 16:18:50,894 ] 166 root - INFO - Splitting Train and Test Dataframe into input features(X) and target features(y)
+[ 2026-04-16 16:18:53,599 ] 121 root - INFO - Starting Data Preprocessing Pipeline
+[ 2026-04-16 16:18:53,601 ] 25 root - INFO -  Cleaning Column Name...
+[ 2026-04-16 16:18:53,605 ] 81 root - INFO -  Converting infinity values to NaN...
+[ 2026-04-16 16:18:54,335 ] 57 root - INFO -  Dropping features that are not important... Top features: ['bwd_bulk_rate_mean', 'bwd_pkt_hdr_len_min', 'bwd_pkt_per_s', 'bwd_tcp_init_win_bytes', 'bytes_per_s', 'down_up_ratio', 'dst_port', 'flag_psh', 'flag_rst', 'flag_syn', 'flow_duration', 'fwd_flag_psh', 'fwd_iat_min', 'fwd_iat_std', 'fwd_non_empty_pkt_cnt', 'fwd_pkt_cnt', 'fwd_pkt_hdr_len_min', 'fwd_pkt_len_max', 'fwd_pkt_len_mean', 'fwd_pkt_len_tot', 'fwd_pkt_per_s', 'fwd_subflow_bytes_mean', 'fwd_tcp_init_win_bytes', 'iat_max', 'iat_mean', 'pkt_len_max', 'pkt_len_var', 'pkt_per_s']
+[ 2026-04-16 16:19:07,934 ] 188 root - INFO - Preprocessing Complete.
+[ 2026-04-16 16:19:07,935 ] 137 root - INFO - Starting Hybrid Sampling
+[ 2026-04-16 16:19:08,549 ] 142 root - INFO -   Under sampling done.X_under_sampled shape: (702322, 28),y_under_sampled shape: (702322,)
+[ 2026-04-16 16:31:37,365 ] 147 root - INFO -   SMOTETomek applied. X_resampled shape: (771052, 28), y_resampled shape: (771052,)
+[ 2026-04-16 16:31:37,470 ] 196 root - INFO - final train_arr shape: (771052, 29) and final test_arr shape shape: (190294, 29)
+[ 2026-04-16 16:31:37,929 ] 61 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-16 16:31:37,938 ] 65 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-16 16:31:37,938 ] 202 root - INFO - numpy array saved
+[ 2026-04-16 16:31:37,938 ] 206 root - INFO - saving preprocessor object
+[ 2026-04-16 16:31:37,938 ] 61 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-16 16:31:37,939 ] 65 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-16 16:31:37,939 ] 212 root - INFO - Data Transformation Final Step: Preparing Data Transformation Artifacts
+[ 2026-04-16 16:31:38,503 ] 65 root - INFO - Data transformation completed and artifacts are: DataTransformationArtifact(transformed_object_file_path='Artifacts\\data_transformation\\transformed_object\\preprocessor.pkl', transformed_train_file_path='Artifacts\\data_transformation\\transformed\\train.npy', transformed_test_file_path='Artifacts\\data_transformation\\transformed\\test.npy')
+[ 2026-04-16 16:31:38,507 ] 75 root - INFO - Starting model training
+[ 2026-04-16 16:31:38,513 ] 150 root - INFO - *******************Starting Model Training and Evaluation Stage*******************
+[ 2026-04-16 16:31:38,513 ] 154 root - INFO - Loading Train and Test array
+[ 2026-04-16 16:31:38,633 ] 159 root - INFO - Dividing Train and Test array into X_train, y_train, X_test, y_test
+[ 2026-04-16 16:31:38,634 ] 56 root - INFO - Starting Model Training
+[ 2026-04-16 16:31:38,649 ] 91 root - INFO - Starting Hyperparameter Tuning
+[ 2026-04-16 16:31:38,649 ] 138 root - INFO - Running Hyperparameter Tuning for: LightGBM
+[ 2026-04-16 16:44:43,066 ] 146 root - INFO - Best Parameter for LightGBM are: LGBMClassifier(max_depth=12, min_child_samples=50, n_estimators=300, n_jobs=-1,
+               num_leaves=50, random_state=42, subsample=0.9)
+[ 2026-04-16 16:44:48,599 ] 151 root - INFO - f1_score of LightGBM is 0.9999500758242116
+[ 2026-04-16 16:44:48,600 ] 138 root - INFO - Running Hyperparameter Tuning for: XGBoost
+[ 2026-04-16 16:54:10,598 ] 146 root - INFO - Best Parameter for XGBoost are: XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=1.0, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              feature_weights=None, gamma=None, grow_policy=None,
+              importance_type=None, interaction_constraints=None,
+              learning_rate=0.1, max_bin=None, max_cat_threshold=None,
+              max_cat_to_onehot=None, max_delta_step=None, max_depth=7,
+              max_leaves=None, min_child_weight=None, missing=nan,
+              monotone_constraints=None, multi_strategy=None, n_estimators=200,
+              n_jobs=-1, num_parallel_tree=None, ...)
+[ 2026-04-16 16:54:11,423 ] 151 root - INFO - f1_score of XGBoost is 0.9999658413508935
+[ 2026-04-16 16:54:11,424 ] 102 root - INFO - Best Model is XGBoost with score 0.9999658413508935
+[ 2026-04-16 16:54:15,223 ] 107 root - INFO - Classfication metrics based on X_train: ClassificationMetricArtifact(false_positive_rate=np.float64(0.0002488337704608573), precision_score=0.9998729545261941, recall_score=0.9998729009197823)
+[ 2026-04-16 16:54:16,147 ] 112 root - INFO - Classfication metrics based on X_test: ClassificationMetricArtifact(false_positive_rate=np.float64(6.944168882187214e-05), precision_score=0.9999894893529605, recall_score=0.9999421947092394)
+[ 2026-04-16 16:54:16,147 ] 115 root - INFO - Tracking Model using MLflow
+[ 2026-04-16 16:54:19,522 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-16 16:54:19,570 ] 107 dagshub - INFO - Accessing as Priyanshuc26
+[ 2026-04-16 16:54:20,585 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/Priyanshuc26/ActiveFlow_IDS "HTTP/1.1 200 OK"
+[ 2026-04-16 16:54:21,579 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-04-16 16:54:21,592 ] 107 dagshub - INFO - Initialized MLflow to track repo "Priyanshuc26/ActiveFlow_IDS"
+[ 2026-04-16 16:54:21,594 ] 107 dagshub - INFO - Repository Priyanshuc26/ActiveFlow_IDS initialized!
+[ 2026-04-16 16:54:55,713 ] 118 root - INFO - Loading Preprocessor Object
+[ 2026-04-16 16:54:55,740 ] 123 root - INFO - Saving Preprocessor and model in NetworkModel object
+[ 2026-04-16 16:54:55,740 ] 61 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-16 16:54:55,766 ] 65 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-16 16:54:55,766 ] 130 root - INFO - Pushing final model
+[ 2026-04-16 16:54:55,767 ] 61 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-04-16 16:54:55,793 ] 65 root - INFO - Exited the save_object method of Main Utils class
+[ 2026-04-16 16:54:55,793 ] 141 root - INFO - Model Trainer Final Step. Model Trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(false_positive_rate=np.float64(0.0002488337704608573), precision_score=0.9998729545261941, recall_score=0.9998729009197823), test_metric_artifact=ClassificationMetricArtifact(false_positive_rate=np.float64(6.944168882187214e-05), precision_score=0.9999894893529605, recall_score=0.9999421947092394))
+[ 2026-04-16 16:54:55,813 ] 78 root - INFO - Model training completed and artifacts are: ModelTrainerArtifact(trained_model_file_path='Artifacts\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(false_positive_rate=np.float64(0.0002488337704608573), precision_score=0.9998729545261941, recall_score=0.9998729009197823), test_metric_artifact=ClassificationMetricArtifact(false_positive_rate=np.float64(6.944168882187214e-05), precision_score=0.9999894893529605, recall_score=0.9999421947092394))
+[ 2026-04-16 16:54:55,813 ] 101 root - INFO - Training Pipeline Completed. Time taken by whole pipeline to train: 0:48:50.159537
