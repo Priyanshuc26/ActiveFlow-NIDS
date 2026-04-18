@@ -24,6 +24,10 @@ Requires-Dist: python-multipart
 Requires-Dist: dvc
 Requires-Dist: dvc-gdrive
 Requires-Dist: evidently
+Requires-Dist: imblearn
+Requires-Dist: xgboost
+Requires-Dist: lightgbm
+Requires-Dist: streamlit
 Dynamic: author
 Dynamic: requires-dist
 Dynamic: summary

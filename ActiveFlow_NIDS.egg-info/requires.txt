@@ -19,3 +19,7 @@ python-multipart
 dvc
 dvc-gdrive
 evidently
+imblearn
+xgboost
+lightgbm
+streamlit

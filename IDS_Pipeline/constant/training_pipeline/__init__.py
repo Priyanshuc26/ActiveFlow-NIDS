@@ -15,7 +15,7 @@ TEST_FILE_NAME: str = "test.csv"
 RAW_DATA_FILE_PATH: str = "raw_data/lycos-ids2017.zip"
 PCAP_FILE_PATH: str = os.path.join("pcap_folder","Friday-WorkingHours.pcap")
 PCAP_CSV_FILE_PATH: str = os.path.join("pcap_folder","Friday-pcap.csv")
-CONNECTION_NAME:str = "Wi-Fi"
+CONNECTION_NAME:str = "eth0"
 FINAL_MODEL_DIR:str =  "final_model"
 
 SAVED_MODEL_DIR =os.path.join("saved_models")
