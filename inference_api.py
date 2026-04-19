@@ -1,7 +1,7 @@
 import os
 import sys
 import pandas as pd
-from collections import deque
+from collections import deque, Counter
 
 from fastapi import FastAPI,Request
 import uvicorn
@@ -27,9 +27,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-total_packet_processed = 0
-top_features_schema = read_yaml_file(file_path=TOP_FEATURE_SCHEMA_FILE_PATH)
-expected_columns = list(top_features_schema.keys())
+stats = {
+    "packets_processed": 0,
+    "prediction_count": {
+        "benign": 0,
+        "dos": 0,
+        "portscan": 0,
+        "ddos": 0,
+        "brute_force": 0,
+        "web_attack": 0,
+        "bots": 0
+    }
+}
 
 
 # The Memory Buffer (Holds the last 100 packets for Streamlit)
@@ -66,14 +75,20 @@ async def get_packets(request:Request):
         #Converting Back number (from predictions) to label
         prediction = NUMBER_LABEL_MAPPING_DICT[int(prediction[0])]
         
+        #Storing counts of each prediction and sending to our dashboard for visualizing
+        stats["prediction_count"][prediction] += 1   
+        #Counter almost works same as dict, with main aim of counting
+        
         # Attach the prediction to the packet data
         packet_data["prediction"] = str(prediction)
         
         # Saving to  memory buffer
         traffic_buffer.append(packet_data)
             
-        global total_packet_processed
-        total_packet_processed=total_packet_processed + 1
+            
+        # global total_packet_processed  #Using global keyword is generally considered as bad practice - coz it becomes hard to debug when code becomes huge, and function are dependent on external variable causing reproduciblity issue
+        # total_packet_processed=total_packet_processed + 1
+        stats["packets_processed"] += 1
         
         return {"status": "success", "prediction": str(prediction)}
         # return {"status": "success"}
@@ -84,8 +99,11 @@ async def get_packets(request:Request):
     
 @app.get("/metrics")
 def get_metrics():
-    return {"live_traffic": list(traffic_buffer), "total_count": total_packet_processed}
+    return {"live_traffic": list(traffic_buffer), **stats}
     
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+## Updates to be done in upcoming versions:
+#  1. Use fastapi's state for managing global state of variables and also use of Redis
