@@ -27,30 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# Mapping: { "Incoming_PyFlowMeter_Key": "TopFeature_Schema_Key" }
-mapping_dict = {
-    "psh_flag_cnt": "psh_flag_count",
-    "fwd_header_len": "fwd_header_length",
-    "tot_fwd_pkts": "total_fwd_packets",
-    "totlen_fwd_pkts": "total_length_of_fwd_packets",
-    "init_bwd_win_byts": "init_win_bytes_backward",
-    "init_fwd_win_byts": "init_win_bytes_forward",
-    "dst_port": "destination_port",
-    "flow_byts_s": "flow_bytes/s",
-    "flow_pkts_s": "flow_packets/s",
-    "bwd_pkts_s": "bwd_packets/s",
-    "ack_flag_cnt": "ack_flag_count",
-    "bwd_header_len": "bwd_header_length",
-    "bwd_pkt_len_max": "bwd_packet_length_max",
-    "bwd_pkt_len_min": "bwd_packet_length_min",
-    "fwd_pkt_len_max": "fwd_packet_length_max",
-    "fwd_pkt_len_min": "fwd_packet_length_min",
-    "pkt_len_min": "min_packet_length",
-    "flow_duration": "flow_duration",
-    "flow_iat_mean": "flow_iat_mean",
-    "flow_iat_std": "flow_iat_std"
-}
 total_packet_processed = 0
 top_features_schema = read_yaml_file(file_path=TOP_FEATURE_SCHEMA_FILE_PATH)
 expected_columns = list(top_features_schema.keys())
@@ -76,26 +52,25 @@ async def get_packets(request:Request):
         packet_data = await request.json()
         
         #Ensuring that flow is not empty
-        if not packet_data.get("flows") or len(packet_data["flows"]) == 0:
+        # if not packet_data.get("flows") or len(packet_data["flows"]) == 0:
+        if not packet_data or len(packet_data) == 0:
             raise Exception("Empty or missing flows in packet data")
         
-        extracted_flow = packet_data["flows"][0]
+        # extracted_flow = packet_data["flows"][0]
         
-        df = pd.DataFrame([extracted_flow])
-        df.rename(columns=mapping_dict, inplace=True)
+        df = pd.DataFrame([packet_data])  #json dont have index value in it, but pandas needs index to create a Dataframe, that why we are wrapping our data into list([])
         
-        df = df[expected_columns]
         # print(df.columns)
-        prediction = network_model.predict(df)[0]        
+        prediction = network_model.predict(df)        
         
         #Converting Back number (from predictions) to label
-        prediction = NUMBER_LABEL_MAPPING_DICT[int(prediction)]
+        prediction = NUMBER_LABEL_MAPPING_DICT[int(prediction[0])]
         
         # Attach the prediction to the packet data
-        extracted_flow["prediction"] = str(prediction)
+        packet_data["prediction"] = str(prediction)
         
         # Saving to  memory buffer
-        traffic_buffer.append(extracted_flow)
+        traffic_buffer.append(packet_data)
             
         global total_packet_processed
         total_packet_processed=total_packet_processed + 1
