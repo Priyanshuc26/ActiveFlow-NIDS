@@ -28,8 +28,6 @@ MANUAL_SEED = 42
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """
 
-# DATA_INGESTION_COLLECTION_NAME: str = "Network_Data"
-# DATA_INGESTION_DATABASE_NAME: str = "MY_DATABASE"
 DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
@@ -96,15 +94,6 @@ LABEL_MAPPING_DICT:dict = {
     'heartbleed': np.nan
 }
 
-NUMBER_LABEL_MAPPING_DICT = {
-    0: 'benign',
-    1: 'dos',
-    2: 'portscan',
-    3: 'ddos',
-    4: 'brute_force',
-    5: 'web_attack',
-    6: 'bots'
-}
 
 """
 Model Trainer related constant start with MODE TRAINER VAR NAME
@@ -114,3 +103,27 @@ MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
 MODEL_TRAINER_EXPECTED_SCORE: float = 0.6
 MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD: float = 0.05
+
+
+"""
+Simulation Engine related constant
+"""
+
+SIMULATION_FILE_PATH:str = "./pcap_processed_csv/Friday-WorkingHours.pcap_lycos.csv"
+API_POST_REQ_IP:str = "http://192.168.29.83:8000/predict"
+
+
+"""
+Inference API related constant
+"""
+
+NUMBER_LABEL_MAPPING_DICT:dict = {
+    0: 'benign',
+    1: 'dos',
+    2: 'portscan',
+    3: 'ddos',
+    4: 'brute_force',
+    5: 'web_attack',
+    6: 'bots'
+}
+
