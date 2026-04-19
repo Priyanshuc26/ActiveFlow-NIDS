@@ -97,13 +97,13 @@ LABEL_MAPPING_DICT:dict = {
 }
 
 NUMBER_LABEL_MAPPING_DICT = {
-    0: 'BENIGN',
-    1: 'DDoS',
-    2: 'PortScan',
-    3: 'DoS Attack',
-    4: 'Brute Force',
-    5: 'Botnet',
-    6: 'Web Attack'
+    0: 'benign',
+    1: 'dos',
+    2: 'portscan',
+    3: 'ddos',
+    4: 'brute_force',
+    5: 'web_attack',
+    6: 'bots'
 }
 
 """

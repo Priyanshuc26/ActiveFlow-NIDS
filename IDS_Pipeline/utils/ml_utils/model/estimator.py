@@ -1,4 +1,5 @@
 from IDS_Pipeline.constant.training_pipeline import SAVED_MODEL_DIR, MODEL_FILE_NAME
+from IDS_Pipeline.components.data_transformation import ColumnNameCleaner, FeatureDropper, InfinityToNanConverter
 
 import os, sys
 from IDS_Pipeline.exception.exception import CustomException
