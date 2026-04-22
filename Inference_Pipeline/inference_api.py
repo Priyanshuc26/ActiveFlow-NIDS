@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 from collections import deque, Counter
 
+
 from fastapi import FastAPI,Request
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -47,8 +48,8 @@ traffic_buffer = deque(maxlen=100)
 
 
 # Intializing our model outside of get_packets() because every time packet is received, it will again load model, which consume all the memory
-preprocessor = load_object("final_model/preprocessor.pkl")
-final_model = load_object("final_model/model.pkl")
+preprocessor = load_object("../final_model/preprocessor.pkl")
+final_model = load_object("../final_model/model.pkl")
 network_model = NetworkModel(preprocessor=preprocessor, model=final_model)
 
 @app.get("/")

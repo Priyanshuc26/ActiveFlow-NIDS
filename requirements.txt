@@ -24,5 +24,6 @@ xgboost
 lightgbm
 # pyflowmeter
 streamlit
+geoip2
 
 # -e .
