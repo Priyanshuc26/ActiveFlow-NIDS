@@ -127,3 +127,12 @@ NUMBER_LABEL_MAPPING_DICT:dict = {
     6: 'bots'
 }
 
+#  list of public IPs from around the world to test our map
+SPOOF_IPS = [
+    "8.8.8.8",        # USA
+    "212.58.244.20",  # UK 
+    "1.1.1.1",        # Australia 
+    "114.114.114.114",# China
+    "82.165.177.154", # Germany
+    "103.10.197.212"  # India
+]
