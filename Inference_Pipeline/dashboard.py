@@ -139,20 +139,29 @@ def live_dashboard():
             st.bar_chart(data=attack_count_df, x='threat', y='count', x_label='Packet Type', y_label='Prediction Count', color='threat')
         
         
-        ## Displaying Packets in form of dataframe
-        def highlight_threats(row):
-            if str(row['prediction']) != 'benign':
-                style = 'background-color: rgba(220, 38, 38, 0.15); color: #ff4b4b;'
-            else:
-                # benign rows will be transparent/default
-                style = ''
+        df_col,map_col = st.columns([1,1.05],border=True)
+        with df_col:
+            # Displaying Packets in form of dataframe
+            def highlight_threats(row):
+                if str(row['prediction']) != 'benign':
+                    style = 'background-color: rgba(220, 38, 38, 0.15); color: #ff4b4b;'
+                else:
+                    # benign rows will be transparent/default
+                    style = ''
+                
+                # Return the style applied to every column in that specific row
+                return [style] * len(row)
             
-            # Return the style applied to every column in that specific row
-            return [style] * len(row)
+            rendered_dataframe = dataframe.tail(20).loc[:,['timestamp','src_addr','dst_addr','dst_port','ip_prot','prediction']]
+            styled_dataframe = rendered_dataframe.style.apply(highlight_threats, axis=1)    #Applying Style to rows that contain packets with attack labels
+            st.dataframe(data=rendered_dataframe)
         
-        rendered_dataframe = dataframe.tail(20).loc[:,['timestamp','src_addr','dst_addr','dst_port','ip_prot','prediction']]
-        styled_dataframe = rendered_dataframe.style.apply(highlight_threats, axis=1)    #Applying Style to rows that contain packets with attack labels
-        st.dataframe(data=styled_dataframe, use_container_width=True)
+        with map_col:
+            map_data = dataframe.dropna(subset=['latitude','longitude'])  
+            st.map(data=map_data,latitude='latitude',longitude='longitude')
+            
+            
+            
 
 # Call the fragment to initialize the loop
 live_dashboard()
