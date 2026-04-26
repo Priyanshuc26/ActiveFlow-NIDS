@@ -99,25 +99,28 @@ async def get_packets(request:Request):
         df = pd.DataFrame([packet_data])  #json dont have index value in it, but pandas needs index to create a Dataframe, that why we are wrapping our data into list([])
         
         # print(df.columns)
-        prediction = network_model.predict(df)        
+        prediction = network_model.predict(df,explain=False) 
+        
+        ## Extracting Shap Values
+        # class_index = int(prediction[0])
+        # shap_dict = shap_values.values[0,:,class_index]
+        # packet_data["shap_values"] = shap_dict     #appending shape values to packet data
         
         #Converting Back number (from predictions) to label
         prediction = NUMBER_LABEL_MAPPING_DICT[int(prediction[0])]
         
-        #Storing counts of each prediction and sending to our dashboard for visualizing
-        stats["prediction_count"][prediction] += 1   
-        #Counter almost works same as dict, with main aim of counting
-        
         # Attach the prediction to the packet data
         packet_data["prediction"] = str(prediction)
         
-        # Saving to  memory buffer
-        traffic_buffer.append(packet_data)
-            
-            
+        
         # global total_packet_processed  #Using global keyword is generally considered as bad practice - coz it becomes hard to debug when code becomes huge, and function are dependent on external variable causing reproduciblity issue
         # total_packet_processed=total_packet_processed + 1
         stats["packets_processed"] += 1
+        
+        
+        #Storing counts of each prediction and sending to our dashboard for visualizing
+        stats["prediction_count"][prediction] += 1   
+        #Counter almost works same as dict, with main aim of counting
         
         
         #-------  GEO-SPOOFING Injection Starts(needed to do because Simulation file contains private IP "192.168.x.x" and private IP is missing from mmdb)
@@ -135,6 +138,8 @@ async def get_packets(request:Request):
         geographical_info = get_geographical_info(src_ip)
         packet_data.update(geographical_info)
         
+        # Saving to  memory buffer
+        traffic_buffer.append(packet_data)
         
         return {"status": "success", "prediction": str(prediction)}
         # return {"status": "success"}

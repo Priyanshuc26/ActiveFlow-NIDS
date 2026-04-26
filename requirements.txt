@@ -25,5 +25,6 @@ lightgbm
 # pyflowmeter
 streamlit
 geoip2
+shap
 
 # -e .
