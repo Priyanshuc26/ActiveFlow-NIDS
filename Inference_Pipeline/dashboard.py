@@ -14,7 +14,17 @@ st.set_page_config(page_title='ActiveFlow NIDS', layout='wide')
 hide_streamlit_style = """
 <style>
     /* Hides the Top Header Bar */
-    header {visibility: hidden;}
+    header {
+        visibility: hidden;
+        }
+    
+    /* Removing Extra Space from Main Container */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
 </style>
 """
 
@@ -41,12 +51,26 @@ def fetch_data():
         df = pd.DataFrame()
         return [system_status, df, 0, {"benign": 0,"dos": 0,"portscan": 0,"ddos": 0,"brute_force": 0,"web_attack": 0,"bots": 0}]
 
+if "previous_packet_count" not in st.session_state:
+    st.session_state.previous_packet_count = None
+    st.session_state.previous_packet_arrival_time = None
+    
+if "previous_throughput" not in st.session_state:
+    st.session_state.previous_throughput = 0
+    
+if "previous_network_health_score" not in st.session_state:
+    st.session_state.previous_network_health_score = 0
+    
+if "previous_alert_df" not in st.session_state:
+    st.session_state.previous_alert_df = pd.DataFrame()
 
 @st.fragment(run_every=1)        #st.fragment only rerun the specfic fragment of app, whereas rerun func runs whole app every time(Leading to render whole page every second)
 def live_dashboard():
     status, dataframe, packet_processed, attack_count = fetch_data() 
+    current_packet_count = packet_processed
+    current_packet_arrival_time= datetime.now()
 
-    ## Handling Session State for displaying Time Series Data, as API only sends only sends a buffer of 100 rows. But we need more rows to be stored according to there time thats why were storing data in session_state that stores the data during whole seesion
+    ## Handling Session State for displaying Time Series Data, as API only sends only sends a buffer of 100 rows. But we need more rows to be stored according to there time thats why we are storing data in session_state that stores the data during whole seesion
     attack_count['timestamp'] = datetime.now()
     if 'historical_metrics' not in st.session_state:
         st.session_state.historical_metrics = pd.DataFrame([attack_count])
@@ -61,70 +85,113 @@ def live_dashboard():
     else:
         network_health_score = 0
         
-    #Checking Security Status of the System
-    if network_health_score >= 95:
-        security_status_symbol = ":green-badge[:material/house_with_shield:]"
+    ## Checking Security Status of the System
+    if status != "connected":
+        security_status = ":orange-badge[:material/desktop_access_disabled: Security Status: System not connected to Network]"
+    elif status == "connected" and packet_processed == 0:
+        security_status = ":gray-badge[:material/desktop_access_disabled: Security Status: Zero Flow Detected]"
+    elif network_health_score >= 95:
+        security_status = ":green-badge[:material/house_with_shield: Security Status: System is Secured]"
     elif network_health_score >=80 and network_health_score < 95:
-        security_status_symbol = ":yellow-badge[:material/warning:]"
-        security_status = "Warning: Elevated Threat Detected" 
+        security_status = ":yellow-badge[:material/warning: Security Status: Warning(Elevated Threat Detected)]"
     else:
-        security_status_symbol = ":red-badge[:material/e911_emergency:]"
-        security_status = "Critical: System Under Attack"
+        security_status = ":red-badge[:material/e911_emergency: Critical(System Under Attack)]"
 
 
     ### Dashboard
     with st.container(width="stretch"):
         
+        st.title("ActiveFlow NIDS Live Dashboard")
         ## Header
-        header_col1, header_col2 = st.columns([3, 1],vertical_alignment="center",width='stretch')   
+        header_col1, header_col2, header_col3 = st.columns(3,vertical_alignment="center",width='stretch')   
         with header_col1:
-            st.header("ActiveFlow NIDS Live Dashboard")
-        with header_col2:
             if status == "connected":
-                st.write("")
-                st.markdown(":green-badge[:material/monitor_heart: System Status: Monitoring]")
+                st.markdown(":green-badge[:material/monitor_heart: NIDS Status: Monitoring]")
             else:
-                st.write("")
-                st.markdown(":red-badge[:material/monitor_heart: System Status: Offline]")
-              
+                st.markdown(":red-badge[:material/monitor_heart: NIDS Status: Not Monitoring]")
+        with header_col2:
+            st.markdown(security_status)
+        with header_col3:
+            st.markdown(f'''**Time:** {datetime.now().strftime("%H:%M:%S")}, {datetime.now().strftime("%d-%m-%Y")}({datetime.now().strftime("%A")})''')
+        st.space("small")
+             
               
         ## KPI  
         # KPI's First Row
-        total_packets_analyzed_col, benign_count_col, network_health_score_col, security_status_col = st.columns(4,border=True)
+        total_packets_analyzed_col, benign_count_col, malicious_packets_count_col, network_health_score_col, throughput_col= st.columns([1,1,1,1.5,1],border=True)
         
         with total_packets_analyzed_col:
             st.metric(label="Total Packets Analyzed",value=packet_processed)
         with benign_count_col:
             st.metric(label="Benign Packets Count",value=attack_count['benign'])
+        with malicious_packets_count_col:
+            st.metric(label="Malicious Packets Count", value=packet_processed-attack_count['benign'])
         with network_health_score_col:
-            st.metric(label="Network Health Score",value=f"{network_health_score}%")
-        with security_status_col:
-            st.markdown(security_status_symbol,text_alignment='center',unsafe_allow_html=True)
+            nhs_delta = network_health_score - st.session_state.previous_network_health_score
+            st.metric(label="**Network Health Score**",value=f"{network_health_score}%", delta=f'{round(nhs_delta,2)}%')
+            st.session_state.previous_network_health_score = network_health_score
+        with throughput_col:
+            # Throughput Calculation
+            if st.session_state.previous_packet_count is None:
+                throughput = 0
+            else:
+                time_diff = (current_packet_arrival_time - st.session_state.previous_packet_arrival_time).total_seconds()
+                if time_diff > 0:
+                    throughput = (current_packet_count - st.session_state.previous_packet_count) / time_diff
+                else:
+                    throughput = 0
 
+            if throughput == 0:
+                throughput = st.session_state.previous_throughput
+            throughput_delta = throughput - st.session_state.previous_throughput
+            st.metric(label="Throughput (packets/sec)", value=round(throughput), delta=round(throughput_delta,1))
+
+        # Update previous values
+        st.session_state.previous_packet_count = current_packet_count
+        st.session_state.previous_packet_arrival_time = current_packet_arrival_time
+        st.session_state.previous_throughput = throughput
+        
 
         # KPI's Second Row (Malicious Packets Count)
-        with st.container(border=True, width="stretch"):
-            st.subheader("Malicious Packets Count", divider="red", width="stretch", text_alignment="center")
+        with st.container():
             
-            dos_count_col, portscan_count_col, ddos_count_col, brute_force_count_col, web_attack_count_col, bots_count =st.columns(6,border=True)
-
-            with dos_count_col:
-                st.metric(label="DoS",value=attack_count['dos'])
-            with portscan_count_col:
-                st.metric(label="PortScan",value=attack_count['portscan'])
-            with ddos_count_col:
-                st.metric(label="DDoS",value=attack_count['ddos'])
-            with brute_force_count_col:
-                st.metric(label="Brute Force",value=attack_count['brute_force'])
-            with web_attack_count_col:
-                st.metric(label="Web Attack",value=attack_count['web_attack'])
-            with bots_count:
-                st.metric(label="Bots",value=attack_count['bots'])
+            malicious_breakdown_col, live_alert_panel_col =st.columns([1,1.5],border=True)
             
+            with malicious_breakdown_col:
+                st.subheader(body="Malicious Traffic Breakdown", divider="gray",text_alignment="center")
+                ddos_count_col,dos_count_col,portscan_count_col = st.columns(3)
+                with ddos_count_col:
+                    st.metric(label="DDoS",value=attack_count['ddos'], width="content")
+                with dos_count_col:
+                    st.metric(label="DoS",value=attack_count['dos'], width="content")
+                with portscan_count_col:
+                    st.metric(label="PortScan",value=attack_count['portscan'], width="content")
+              
+                brute_force_count_col,web_attack_count_col,bots_count = st.columns(3)
+                with brute_force_count_col:
+                    st.metric(label="Brute Force",value=attack_count['brute_force'], width="content")
+                with web_attack_count_col:
+                    st.metric(label="Web Attack",value=attack_count['web_attack'], width="content")
+                with bots_count:
+                    st.metric(label="Bots",value=attack_count['bots'], width="content")
+            
+            alert_df:pd.DataFrame = dataframe[dataframe['prediction'] != 'benign'].reset_index(drop=True)
+            alert_df.sort_values(by='timestamp', ascending=False, inplace=True)
+            alert_df = alert_df.tail(5).loc[:,['prediction','src_addr','dst_addr','timestamp']]
+            if alert_df.shape[0] == 0:
+                alert_df = st.session_state.previous_alert_df
+            with live_alert_panel_col:
+                st.subheader(body="LIVE ALERT PANEL",divider="gray",text_alignment="center")
+                st.dataframe(data=alert_df, hide_index=True)
+            st.session_state.previous_alert_df = alert_df
+                
+            
+        st.space("small")
             
         ## Analytical Layer(Visualization)
-        line_chart_col,bar_chart_col = st.columns([1.3,1],border=True)
+        line_chart_col, _ = st.columns([1.4,1],border=True)
         with line_chart_col:
+            st.subheader(body="Attack Trend Over Time", divider="gray", text_alignment='center')
             st.line_chart(data=st.session_state.historical_metrics, x='timestamp', x_label='Time Stamp', y_label='Volume of Packets',width="stretch")
         
         # with donut_chart_col:
@@ -133,14 +200,17 @@ def live_dashboard():
         #     chart = alt.Chart(attack_count_df).mark_arc(innerRadius=60,stroke="#111111",strokeWidth=1).encode(theta='count',color='threat',tooltip=['threat', 'count'])
         #     st.altair_chart(chart)
         
-        with bar_chart_col:
-            del attack_count['timestamp']
-            attack_count_df = pd.DataFrame({"threat":list(attack_count.keys()), "count":list(attack_count.values())})
-            st.bar_chart(data=attack_count_df, x='threat', y='count', x_label='Packet Type', y_label='Prediction Count', color='threat')
+        # with bar_chart_col:
+        #     del attack_count['timestamp']
+        #     attack_count_df = pd.DataFrame({"threat":list(attack_count.keys()), "count":list(attack_count.values())})
+        #     st.bar_chart(data=attack_count_df, x='threat', y='count', x_label='Packet Type', y_label='Prediction Count', color='threat')
         
         
-        df_col,map_col = st.columns([1,1.05],border=True)
+        
+        st.space("small")
+        df_col,map_col = st.columns([1.4,1],border=True)
         with df_col:
+            st.subheader(body="Network Logs", divider="gray",text_alignment="center")
             # Displaying Packets in form of dataframe
             def highlight_threats(row):
                 if str(row['prediction']) != 'benign':

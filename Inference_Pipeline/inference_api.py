@@ -5,6 +5,7 @@ from collections import deque, Counter
 import geoip2.database
 import ipaddress
 import random
+from datetime import datetime
 
 from fastapi import FastAPI,Request
 import uvicorn
@@ -122,6 +123,7 @@ async def get_packets(request:Request):
         stats["prediction_count"][prediction] += 1   
         #Counter almost works same as dict, with main aim of counting
         
+        packet_data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         #-------  GEO-SPOOFING Injection Starts(needed to do because Simulation file contains private IP "192.168.x.x" and private IP is missing from mmdb)
         src_ip = packet_data.get('src_addr', '127.0.0.1')
@@ -137,6 +139,7 @@ async def get_packets(request:Request):
         #Adding geographical data(extracted using src_addr) directly to packet data
         geographical_info = get_geographical_info(src_ip)
         packet_data.update(geographical_info)
+        
         
         # Saving to  memory buffer
         traffic_buffer.append(packet_data)
