@@ -1,0 +1,941 @@
+metrics:
+- config:
+    drift_share: 0.5
+    type: evidently:metric_v2:DriftedColumnsCount
+  id: 15e89f895b482f9b84ba7274ed18a106
+  metric_name: DriftedColumnsCount(drift_share=0.5)
+  value:
+    count: 0.0
+    share: 0.0
+- config:
+    column: src_port
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 849eb99ccc1c4c6f210c925432110cf7
+  metric_name: ValueDrift(column=src_port,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - &id001 !!python/object/apply:numpy.dtype
+    args:
+    - f8
+    - false
+    - true
+    state: !!python/tuple
+    - 3
+    - <
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - !!binary |
+    I7ET5IVMVD8=
+- config:
+    column: dst_port
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 43d31515758cb59a125494020214b94f
+  metric_name: ValueDrift(column=dst_port,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    iEsyeg95WD8=
+- config:
+    column: timestamp
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 08d4e91f9440d2c064ac28ea5afee0b2
+  metric_name: ValueDrift(column=timestamp,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GwPNW2yTYD8=
+- config:
+    column: flow_duration
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: cd2f455c0cfea47fab482e68ac3e1581
+  metric_name: ValueDrift(column=flow_duration,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    dtUCms6/UT8=
+- config:
+    column: down_up_ratio
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 90d821c5827ed9d337045b4ba5a151ce
+  metric_name: ValueDrift(column=down_up_ratio,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    lWe6aQnsXT8=
+- config:
+    column: pkt_len_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 25b75d4c73cba6940d0463eff7dfc133
+  metric_name: ValueDrift(column=pkt_len_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    O/5B1RjnUT8=
+- config:
+    column: pkt_len_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: f0cbd0d185cd12600b7d533ac25cae6b
+  metric_name: ValueDrift(column=pkt_len_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    gS3mYYCNVz8=
+- config:
+    column: pkt_len_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: aa15488414f6c405a0f0e2edec4d24ea
+  metric_name: ValueDrift(column=pkt_len_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    4QcJd9HATz8=
+- config:
+    column: pkt_len_var
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: b7d9366e8a24f3b53c7c4c0679d8b8b6
+  metric_name: ValueDrift(column=pkt_len_var,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    bqiJRq+AUT8=
+- config:
+    column: pkt_len_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c0510cb1dbd83159177f713b82a589b6
+  metric_name: ValueDrift(column=pkt_len_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    8lFfVirRUT8=
+- config:
+    column: bytes_per_s
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: a62b8f80c286efca4987a56e071d4249
+  metric_name: ValueDrift(column=bytes_per_s,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    vBlj7sBgXj8=
+- config:
+    column: pkt_per_s
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 02b91802034aded4450f605590b5a3c6
+  metric_name: ValueDrift(column=pkt_per_s,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    JJ/vyALHST8=
+- config:
+    column: fwd_pkt_per_s
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c8ed56e0863fe6f011fdafc8f840b70a
+  metric_name: ValueDrift(column=fwd_pkt_per_s,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    xlGc3cPyRj8=
+- config:
+    column: bwd_pkt_per_s
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 032b43f7740f1149682e0979345430e5
+  metric_name: ValueDrift(column=bwd_pkt_per_s,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GWnivJNhTz8=
+- config:
+    column: fwd_pkt_cnt
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 3e5f155d252ac8e45cbaf42cf4cc3b80
+  metric_name: ValueDrift(column=fwd_pkt_cnt,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Fafga+WiYD8=
+- config:
+    column: fwd_pkt_len_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: bf1862ddaa20ee4a9b8262f011b00fd3
+  metric_name: ValueDrift(column=fwd_pkt_len_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    1K+c6xcDYD8=
+- config:
+    column: fwd_pkt_len_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 7f19893942ff722b40b1e80a32222cd8
+  metric_name: ValueDrift(column=fwd_pkt_len_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    ZeltinKjYz8=
+- config:
+    column: fwd_pkt_len_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 8dd651c15a5658ceef6a3ce2dde4cd27
+  metric_name: ValueDrift(column=fwd_pkt_len_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    3mZ2eubaaD8=
+- config:
+    column: fwd_pkt_len_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 6d3118fee3b50b7a6751e07bc55615a8
+  metric_name: ValueDrift(column=fwd_pkt_len_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    vcTMcExjVT8=
+- config:
+    column: fwd_pkt_len_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 5e9c784b844350dd0e9eeee8ef2723b8
+  metric_name: ValueDrift(column=fwd_pkt_len_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    F3t91sbeXj8=
+- config:
+    column: fwd_pkt_hdr_len_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 4a68e7d7cab69a1659f60d9229480669
+  metric_name: ValueDrift(column=fwd_pkt_hdr_len_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GdrIgwEIYT8=
+- config:
+    column: fwd_non_empty_pkt_cnt
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: a860176322b5088fe18b0e655909a783
+  metric_name: ValueDrift(column=fwd_non_empty_pkt_cnt,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GMeQaXy4Xz8=
+- config:
+    column: bwd_pkt_cnt
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 21902c276fca84104a8a39438634adea
+  metric_name: ValueDrift(column=bwd_pkt_cnt,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    FapSMApbYT8=
+- config:
+    column: bwd_pkt_len_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: b64aee4249a73984dd4788bfb9436096
+  metric_name: ValueDrift(column=bwd_pkt_len_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    0N9vZig+YD8=
+- config:
+    column: bwd_pkt_len_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 552a747a1adab75d58b5029130eb0e3d
+  metric_name: ValueDrift(column=bwd_pkt_len_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    m9aJ9VI/UT8=
+- config:
+    column: bwd_pkt_len_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 22877876f6822c0dd6a3d253e7c8573b
+  metric_name: ValueDrift(column=bwd_pkt_len_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    5XlMj5jkZD8=
+- config:
+    column: bwd_pkt_len_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 3cae071c54bfd8119472ce214ab2054f
+  metric_name: ValueDrift(column=bwd_pkt_len_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Ed3ZibxpUT8=
+- config:
+    column: bwd_pkt_len_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 8e0c2d65dbbf80169f6a6c8456c45a41
+  metric_name: ValueDrift(column=bwd_pkt_len_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    RKyB9IPyUD8=
+- config:
+    column: bwd_pkt_hdr_len_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 86cb906e35421a7df88ecfb220cb4b6e
+  metric_name: ValueDrift(column=bwd_pkt_hdr_len_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Xjj9So+HYT8=
+- config:
+    column: bwd_non_empty_pkt_cnt
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 56bc1364d6e11df599fcc716b1a48182
+  metric_name: ValueDrift(column=bwd_non_empty_pkt_cnt,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    4dmlrfheYT8=
+- config:
+    column: iat_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: cdf7ce1934ab29d7721e76d4170776cd
+  metric_name: ValueDrift(column=iat_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    g5+aCvB7WD8=
+- config:
+    column: iat_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 15fb61a2d53f03b15c978ca1046db8fa
+  metric_name: ValueDrift(column=iat_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    WqaWzo1XYT8=
+- config:
+    column: iat_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 1f96d2f31fe121e53b2662657de1846c
+  metric_name: ValueDrift(column=iat_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    CgwIU2SHUT8=
+- config:
+    column: iat_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 5a5e68c507ee640a6b5281a33e7c13a3
+  metric_name: ValueDrift(column=iat_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    H68poEI3Uz8=
+- config:
+    column: fwd_iat_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: b7f2d41cd54e02f7740ea5c945fe4bcf
+  metric_name: ValueDrift(column=fwd_iat_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AJ2ExAMpVD8=
+- config:
+    column: fwd_iat_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 70e7a313fc70363dd52d516984849447
+  metric_name: ValueDrift(column=fwd_iat_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    bAaePRvWWj8=
+- config:
+    column: fwd_iat_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 3facc8c7b7929ec05ebb7186b0390b4c
+  metric_name: ValueDrift(column=fwd_iat_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    xcfYMWM2Tj8=
+- config:
+    column: fwd_iat_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: f34cb40c621b48e8fe09e91962aaa4a1
+  metric_name: ValueDrift(column=fwd_iat_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    ML+LIpqTUD8=
+- config:
+    column: fwd_iat_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: d2b2efe39bd7eac3355bba8b125a985c
+  metric_name: ValueDrift(column=fwd_iat_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    LcxZaTdDWD8=
+- config:
+    column: bwd_iat_tot
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c54477736ac6bdccae3c9e6352abe2fb
+  metric_name: ValueDrift(column=bwd_iat_tot,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    k7rnmym+SD8=
+- config:
+    column: bwd_iat_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 5550c6247eeaa85509dedf5b93b37c2c
+  metric_name: ValueDrift(column=bwd_iat_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    BF7QmvwEUD8=
+- config:
+    column: bwd_iat_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 72a8debbabe3db9e0602629e8304734c
+  metric_name: ValueDrift(column=bwd_iat_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    ERzVYpV0SD8=
+- config:
+    column: bwd_iat_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 8035121c634dd32f491c7722185474f8
+  metric_name: ValueDrift(column=bwd_iat_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Qsfp+HuNRz8=
+- config:
+    column: bwd_iat_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 0a6fed44f1ca82b8b26dafcda6b2bfd4
+  metric_name: ValueDrift(column=bwd_iat_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GEHwZVABUz8=
+- config:
+    column: active_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 0a5739d6e019604445ec096f4e0c347b
+  metric_name: ValueDrift(column=active_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    n6p+GqQiZT8=
+- config:
+    column: active_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c49652e507609cbb0c5e69b308049496
+  metric_name: ValueDrift(column=active_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    KOyHk+8nWD8=
+- config:
+    column: active_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 6102a4d78da5d24408d8c48ad06d161c
+  metric_name: ValueDrift(column=active_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AqTEZsgeWD8=
+- config:
+    column: active_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 77a59aad1d1f77f58f2e3c895b133173
+  metric_name: ValueDrift(column=active_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    zY5QhIu8Yz8=
+- config:
+    column: idle_max
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 9b6714c681d4bd6893bc12c49e7e2395
+  metric_name: ValueDrift(column=idle_max,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    CjlKPIQeVD8=
+- config:
+    column: idle_min
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 076ffa10edb30e703e8f9934280da221
+  metric_name: ValueDrift(column=idle_min,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    WZsmaiL1Vj8=
+- config:
+    column: idle_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: b13b18f059f3777cba59f49ffc4bbc4d
+  metric_name: ValueDrift(column=idle_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    mz3LRndyVD8=
+- config:
+    column: idle_std
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 9570ad096757135c6719bf941bdfde95
+  metric_name: ValueDrift(column=idle_std,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    sqUAjUHbYz8=
+- config:
+    column: flag_SYN
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 9dc7e1df740841221db4fab1f2621456
+  metric_name: ValueDrift(column=flag_SYN,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    RfS9/4FuRD8=
+- config:
+    column: flag_ack
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: e2da619bb7b0ba73d590e9e279eb033b
+  metric_name: ValueDrift(column=flag_ack,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    BMQzcOsFYT8=
+- config:
+    column: flag_psh
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 380bebef0d28f130bc94c177d084612b
+  metric_name: ValueDrift(column=flag_psh,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    zgteJGfgYj8=
+- config:
+    column: fwd_flag_psh
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: a8f6abcc819d4572f3d6c64aa97a5634
+  metric_name: ValueDrift(column=fwd_flag_psh,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    tMK2LQ3xWj8=
+- config:
+    column: bwd_flag_psh
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 1275172c35b5673c7247a3ba09e93151
+  metric_name: ValueDrift(column=bwd_flag_psh,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Nplc3nj9Yj8=
+- config:
+    column: fwd_bulk_bytes_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 1f448d6da8268d5da8d0b6b375c0cbbd
+  metric_name: ValueDrift(column=fwd_bulk_bytes_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    iX0cTdyqZT8=
+- config:
+    column: fwd_bulk_pkt_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: b2c7e8f193ec045d366545f31cc63a4b
+  metric_name: ValueDrift(column=fwd_bulk_pkt_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    NRf9byejZz8=
+- config:
+    column: fwd_bulk_rate_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 661fc6d764cdf9059e4f4d6da7a03273
+  metric_name: ValueDrift(column=fwd_bulk_rate_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    WmHF72dhYD8=
+- config:
+    column: bwd_bulk_bytes_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 4034b48d00ce0caaf6c276714dcab240
+  metric_name: ValueDrift(column=bwd_bulk_bytes_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    hFDd18lwXz8=
+- config:
+    column: bwd_bulk_pkt_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 427abeff7cdc1c2bde11b23514a630f8
+  metric_name: ValueDrift(column=bwd_bulk_pkt_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    hN6Z7YQvXj8=
+- config:
+    column: bwd_bulk_rate_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c4b790b543f642d695f7fab7f358b23d
+  metric_name: ValueDrift(column=bwd_bulk_rate_mean,method=Wasserstein distance (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    XAa5g6heZD8=
+- config:
+    column: fwd_subflow_bytes_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: c4622f3012baf24a240d2315af3207f2
+  metric_name: ValueDrift(column=fwd_subflow_bytes_mean,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    1/56YNuUYD8=
+- config:
+    column: fwd_subflow_pkt_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 23f0aee689186fe0b7a7f0eb44772303
+  metric_name: ValueDrift(column=fwd_subflow_pkt_mean,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    ma8P2rXwaD8=
+- config:
+    column: bwd_subflow_bytes_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: be72be76049bdb08a83abc1ddb735b18
+  metric_name: ValueDrift(column=bwd_subflow_bytes_mean,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    ZxGcd2LJZz8=
+- config:
+    column: bwd_subflow_pkt_mean
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 135ad5c4b2be8b26c7db63073fc86a09
+  metric_name: ValueDrift(column=bwd_subflow_pkt_mean,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    usWp02FLaT8=
+- config:
+    column: fwd_tcp_init_win_bytes
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 0d0df7e2239611c88a32c7b746ff185c
+  metric_name: ValueDrift(column=fwd_tcp_init_win_bytes,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    nsMul6U1Xz8=
+- config:
+    column: bwd_tcp_init_win_bytes
+    method: Wasserstein distance (normed)
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: ff5a072c712d27ee920525cba89e15db
+  metric_name: ValueDrift(column=bwd_tcp_init_win_bytes,method=Wasserstein distance
+    (normed),threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    P0ryKDCyVD8=
+- config:
+    column: src_addr
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: db2cd6c47d02488332e88cb6925ee88f
+  metric_name: ValueDrift(column=src_addr,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    6e00cQGUhT8=
+- config:
+    column: dst_addr
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 95c443918a7da25c2b8b857805ee7454
+  metric_name: ValueDrift(column=dst_addr,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    KquwZ80ntj8=
+- config:
+    column: ip_prot
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 440b672155a0dffb7766cbee677f0ead
+  metric_name: ValueDrift(column=ip_prot,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    7k4jWjX7Rj8=
+- config:
+    column: fwd_pkt_hdr_len_min
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 09273e71e1abd9da505a1215e961c20a
+  metric_name: ValueDrift(column=fwd_pkt_hdr_len_min,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    pIZNbgNgWD8=
+- config:
+    column: bwd_pkt_hdr_len_min
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: a3e195d0e44d43ce635e399c52a44398
+  metric_name: ValueDrift(column=bwd_pkt_hdr_len_min,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    GwIiEmbqVD8=
+- config:
+    column: flag_fin
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 93240b01fe78dacc0f9a842502393166
+  metric_name: ValueDrift(column=flag_fin,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    CaYM5c7iFT8=
+- config:
+    column: flag_rst
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: ea052e5b6b8099455db131bc1e07a09a
+  metric_name: ValueDrift(column=flag_rst,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    4hKzWIow5T4=
+- config:
+    column: flag_urg
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 7eab7bc0f438541f10c5fd14e45697ad
+  metric_name: ValueDrift(column=flag_urg,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AAAAAAAAAAA=
+- config:
+    column: fwd_flag_urg
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: d9f8afc5596e4cdd27fe75abe7b25934
+  metric_name: ValueDrift(column=fwd_flag_urg,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AAAAAAAAAAA=
+- config:
+    column: bwd_flag_urg
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 9b08188d6b117e1b2df8858ef0a4dccd
+  metric_name: ValueDrift(column=bwd_flag_urg,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AAAAAAAAAAA=
+- config:
+    column: flag_cwr
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 3483a03cd73960f4be6b9b0076f5fc4e
+  metric_name: ValueDrift(column=flag_cwr,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    Xmx73JrfWz8=
+- config:
+    column: flag_ece
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 45d56b2a8c2e6047fe84833455314e6c
+  metric_name: ValueDrift(column=flag_ece,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    psJdYXmzUz8=
+- config:
+    column: label
+    method: Jensen-Shannon distance
+    threshold: 0.1
+    type: evidently:metric_v2:ValueDrift
+  id: 754b38856758563c9550821c9e5ebc11
+  metric_name: ValueDrift(column=label,method=Jensen-Shannon distance,threshold=0.1)
+  value: !!python/object/apply:numpy._core.multiarray.scalar
+  - *id001
+  - !!binary |
+    QoY3oYXeGz8=
+- config:
+    column: flow_id
+    method: Absolute text content drift
+    threshold: 0.55
+    type: evidently:metric_v2:ValueDrift
+  id: 681054f897cd012558c4ba366bf39078
+  metric_name: ValueDrift(column=flow_id,method=Absolute text content drift,threshold=0.55)
+  value: 0.4999449146059042
+tests: []
