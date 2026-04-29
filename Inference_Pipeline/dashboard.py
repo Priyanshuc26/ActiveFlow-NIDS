@@ -51,6 +51,13 @@ def fetch_data():
         df = pd.DataFrame()
         return [system_status, df, 0, {"benign": 0,"dos": 0,"portscan": 0,"ddos": 0,"brute_force": 0,"web_attack": 0,"bots": 0}]
 
+
+if 'historical_metrics' not in st.session_state:
+    st.session_state.historical_metrics = pd.DataFrame()
+    
+if 'system_health_trend' not in st.session_state:
+        st.session_state.system_health_trend = pd.DataFrame()
+
 if "previous_packet_count" not in st.session_state:
     st.session_state.previous_packet_count = None
     st.session_state.previous_packet_arrival_time = None
@@ -72,9 +79,6 @@ def live_dashboard():
 
     ## Handling Session State for displaying Time Series Data, as API only sends only sends a buffer of 100 rows. But we need more rows to be stored according to there time thats why we are storing data in session_state that stores the data during whole seesion
     attack_count['timestamp'] = datetime.now()
-    if 'historical_metrics' not in st.session_state:
-        st.session_state.historical_metrics = pd.DataFrame([attack_count])
-
     st.session_state.historical_metrics = pd.concat([st.session_state.historical_metrics, pd.DataFrame([attack_count])])    #pd.concat strictly requires a single iterable containing the objects to concatenate, thats why we add both dataframe into list
     st.session_state.historical_metrics = st.session_state.historical_metrics.tail(500)    #Storing only last 500 values in session state because sending too many values to browser can lead to crash or freezing
 
@@ -97,6 +101,9 @@ def live_dashboard():
     else:
         security_status = ":red-badge[:material/e911_emergency: Critical(System Under Attack)]"
 
+    # Saving Information for plotting System Health Score Trend over time Graph
+    st.session_state.system_health_trend = pd.concat([st.session_state.system_health_trend, pd.DataFrame([{'system_health_score':network_health_score, 'timestamp':datetime.now()}])])    
+    st.session_state.system_health_trend = st.session_state.system_health_trend.tail(40)
 
     ### Dashboard
     with st.container(width="stretch"):
@@ -175,35 +182,32 @@ def live_dashboard():
                 with bots_count:
                     st.metric(label="Bots",value=attack_count['bots'], width="content")
             
-            alert_df:pd.DataFrame = dataframe[dataframe['prediction'] != 'benign'].reset_index(drop=True)
-            alert_df.sort_values(by='timestamp', ascending=False, inplace=True)
-            alert_df = alert_df.tail(5).loc[:,['prediction','src_addr','dst_addr','timestamp']]
-            if alert_df.shape[0] == 0:
-                alert_df = st.session_state.previous_alert_df
             with live_alert_panel_col:
                 st.subheader(body="LIVE ALERT PANEL",divider="gray",text_alignment="center")
-                st.dataframe(data=alert_df, hide_index=True)
-            st.session_state.previous_alert_df = alert_df
+                if dataframe.empty:           # Preventing Crash of Dashboard when no flow is occuring(dataframe will be empty)
+                    st.markdown("Waiting for traffic...")
+                else:
+                    alert_df:pd.DataFrame = dataframe[dataframe['prediction'] != 'benign'].reset_index(drop=True)
+                    alert_df.sort_values(by='timestamp', ascending=False, inplace=True)
+                    alert_df = alert_df.tail(5).loc[:,['prediction','src_addr','dst_addr','timestamp']]
+                    if alert_df.shape[0] == 0:
+                        alert_df = st.session_state.previous_alert_df
+                        
+                    st.dataframe(data=alert_df, hide_index=True)
+                    st.session_state.previous_alert_df = alert_df
                 
             
         st.space("small")
             
         ## Analytical Layer(Visualization)
-        line_chart_col, _ = st.columns([1.4,1],border=True)
+        line_chart_col, system_health_trend_col = st.columns([1.2,1],border=True)
         with line_chart_col:
             st.subheader(body="Attack Trend Over Time", divider="gray", text_alignment='center')
             st.line_chart(data=st.session_state.historical_metrics, x='timestamp', x_label='Time Stamp', y_label='Volume of Packets',width="stretch")
+        with system_health_trend_col:
+            st.subheader(body="System Health Trend Over Time", divider="gray", text_alignment='center')
+            st.line_chart(data=st.session_state.system_health_trend, x='timestamp', x_label='Time Stamp', y_label='System Health Score(in %)',width="stretch")
         
-        # with donut_chart_col:
-        #     del attack_count['timestamp']
-        #     attack_count_df = pd.DataFrame({"threat":list(attack_count.keys()), "count":list(attack_count.values())})
-        #     chart = alt.Chart(attack_count_df).mark_arc(innerRadius=60,stroke="#111111",strokeWidth=1).encode(theta='count',color='threat',tooltip=['threat', 'count'])
-        #     st.altair_chart(chart)
-        
-        # with bar_chart_col:
-        #     del attack_count['timestamp']
-        #     attack_count_df = pd.DataFrame({"threat":list(attack_count.keys()), "count":list(attack_count.values())})
-        #     st.bar_chart(data=attack_count_df, x='threat', y='count', x_label='Packet Type', y_label='Prediction Count', color='threat')
         
         
         
@@ -211,24 +215,30 @@ def live_dashboard():
         df_col,map_col = st.columns([1.4,1],border=True)
         with df_col:
             st.subheader(body="Network Logs", divider="gray",text_alignment="center")
-            # Displaying Packets in form of dataframe
-            def highlight_threats(row):
-                if str(row['prediction']) != 'benign':
-                    style = 'background-color: rgba(220, 38, 38, 0.15); color: #ff4b4b;'
-                else:
-                    # benign rows will be transparent/default
-                    style = ''
+            if dataframe.empty:
+                    st.markdown("Waiting for traffic...")
+            else:
+                # Displaying Packets in form of dataframe
+                def highlight_threats(row):
+                    if str(row['prediction']) != 'benign':
+                        style = 'background-color: rgba(220, 38, 38, 0.15); color: #ff4b4b;'
+                    else:
+                        # benign rows will be transparent/default
+                        style = ''
+                    
+                    # Return the style applied to every column in that specific row
+                    return [style] * len(row)
                 
-                # Return the style applied to every column in that specific row
-                return [style] * len(row)
-            
-            rendered_dataframe = dataframe.tail(20).loc[:,['timestamp','src_addr','dst_addr','dst_port','ip_prot','prediction']]
-            styled_dataframe = rendered_dataframe.style.apply(highlight_threats, axis=1)    #Applying Style to rows that contain packets with attack labels
-            st.dataframe(data=rendered_dataframe)
+                rendered_dataframe = dataframe.tail(20).loc[:,['timestamp','src_addr','dst_addr','dst_port','ip_prot','prediction']]
+                styled_dataframe = rendered_dataframe.style.apply(highlight_threats, axis=1)    #Applying Style to rows that contain packets with attack labels
+                st.dataframe(data=rendered_dataframe)
         
         with map_col:
-            map_data = dataframe.dropna(subset=['latitude','longitude'])  
-            st.map(data=map_data,latitude='latitude',longitude='longitude')
+            if dataframe.empty:
+                    st.markdown("Waiting for traffic...")
+            else:
+                map_data = dataframe.dropna(subset=['latitude','longitude'])  
+                st.map(data=map_data,latitude='latitude',longitude='longitude')
             
             
             

@@ -1,12 +1,7 @@
 venv
-.env
 sniffer_env
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-/raw_data
-/pcap_folder
 
-/Artifacts  
-/simulation_file
+.env
+
+__pycache__/
+*.py[cod]
