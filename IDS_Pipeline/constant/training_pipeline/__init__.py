@@ -109,7 +109,7 @@ MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD: float = 0.05
 Simulation Engine related constant
 """
 
-SIMULATION_FILE_PATH:str = os.path.join("simulation_file","Friday-WorkingHours.pcap_lycos.csv")
+SIMULATION_FILE_PATH:str = os.path.join("Inference_Pipeline","simulation_file","Friday-WorkingHours.pcap_lycos.csv")
 API_POST_REQ_IP:str = "http://192.168.29.83:8000/predict"
 
 
