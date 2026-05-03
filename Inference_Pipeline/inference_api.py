@@ -81,7 +81,7 @@ def get_geographical_info(src_ip):
 
 
 
-@app.get("/")
+@app.get("/health")
 def health_check():
     return {"status": "IDS Server is live and watching."}
 
