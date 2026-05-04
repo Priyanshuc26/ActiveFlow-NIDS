@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+WORKDIR /dashboard
+
+
+COPY Inference_Pipeline/dashboard.py /dashboard/
+# Copying our dependencies to image's file path(/api or .)
+COPY IDS_Pipeline/ /dashboard/IDS_Pipeline/
+COPY requirements.txt /dashboard/
+
+
+RUN pip install -r requirements.txt
+
+CMD ["streamlit","run", "dashboard.py"]
+
+# docker run -d -p 8501:8501 dashboard

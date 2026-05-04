@@ -1,0 +1,19 @@
+FROM python:3.10-slim
+
+WORKDIR /api
+
+
+COPY Inference_Pipeline/inference_api.py /api/
+# Copying our dependencies to image's file path(/api or .)
+COPY IDS_Pipeline/ /api/IDS_Pipeline/
+COPY final_model/ /api/final_model/
+COPY requirements.txt /api/
+COPY data_schema/ /api/data_schema/
+COPY Inference_Pipeline/GeoLite2-City.mmdb /api/Inference_Pipeline/
+
+
+RUN pip install -r requirements.txt
+
+CMD ["python", "inference_api.py"]
+
+# docker run -d -p 8000:8000 api

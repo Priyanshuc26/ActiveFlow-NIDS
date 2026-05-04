@@ -1,0 +1,15 @@
+FROM python:3.10-slim
+
+WORKDIR /simulation
+
+
+COPY Inference_Pipeline/simulation_engine.py /simulation/
+# Copying our dependencies to image's file path(/api or .)
+COPY IDS_Pipeline/ /simulation/IDS_Pipeline/
+COPY requirements.txt /simulation/
+COPY Inference_Pipeline/simulation_file/Friday-WorkingHours.pcap_lycos.csv /simulation/Inference_Pipeline/simulation_file/
+
+
+RUN pip install -r requirements.txt
+
+CMD ["python", "simulation_engine.py"]
