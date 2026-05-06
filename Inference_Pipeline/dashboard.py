@@ -8,6 +8,7 @@ import altair as alt
 
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
+from IDS_Pipeline.constant.training_pipeline import API_GET_REQ_IP
 
 st.set_page_config(page_title='ActiveFlow NIDS', layout='wide')
 # Hiding unnecssary buttons
@@ -38,7 +39,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 @st.cache_data(ttl=1)         # prevents redundant API calls if Streamlit triggers multiple reruns within the same second.
 def fetch_data():
     try: 
-        response = requests.get("http://127.0.0.1:8000/metrics")
+        response = requests.get(API_GET_REQ_IP)
         system_status = "connected"
         data = response.json()
         packets_processed = data['packets_processed']

@@ -3,6 +3,10 @@ import sys
 import numpy as np
 import pandas as pd
 
+from dotenv import load_dotenv
+load_dotenv()
+
+
 """
 defining common constant variable for training pipeline
 """
@@ -110,7 +114,10 @@ Simulation Engine related constant
 """
 
 SIMULATION_FILE_PATH:str = os.path.join("Inference_Pipeline","simulation_file","Friday-WorkingHours.pcap_lycos.csv")
-API_POST_REQ_IP:str = "http://192.168.29.83:8000/predict"
+API_GET_REQ_HEALTH_IP:str = os.getenv("API_GET_HEALTH_URL", "http://127.0.0.1:8000/health")
+API_POST_REQ_IP:str = os.getenv("API_POST_URL", "http://192.168.29.83:8000/predict")
+
+API_GET_REQ_IP:str = os.getenv("API_GET_URL", "http://127.0.0.1:8000/metrics")
 
 
 """

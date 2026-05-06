@@ -5,7 +5,7 @@ import requests
 
 from IDS_Pipeline.logging.logger import logging
 from IDS_Pipeline.exception.exception import CustomException
-from IDS_Pipeline.constant.training_pipeline import SIMULATION_FILE_PATH,API_POST_REQ_IP
+from IDS_Pipeline.constant.training_pipeline import SIMULATION_FILE_PATH,API_POST_REQ_IP, API_GET_REQ_HEALTH_IP
 
 try:
     df = pd.read_csv(SIMULATION_FILE_PATH) 
@@ -17,7 +17,7 @@ try:
     ## Checking if Inference API is live(Since Simulation Engine sends a post request to API and if API is not live it will give ConnectionError)
     while True:
         try:
-            if requests.get("http://127.0.0.1:8000/health").ok:
+            if requests.get(API_GET_REQ_HEALTH_IP).ok:
                 logging.info("API ready, starting simulation...")
                 break
         except:

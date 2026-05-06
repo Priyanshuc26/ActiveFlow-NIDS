@@ -3,7 +3,7 @@ from IDS_Pipeline.components.data_transformation import ColumnNameCleaner, Featu
 from IDS_Pipeline.utils.main_utils.utils import read_yaml_file
 
 import os, sys
-import shap
+# import shap
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
 
@@ -14,7 +14,7 @@ class NetworkModel:
         try:
             self.preprocessor = preprocessor
             self.model = model
-            self.explainer = shap.TreeExplainer(model=model, feature_names=top_features_list)
+            # self.explainer = shap.TreeExplainer(model=model, feature_names=top_features_list)
         except Exception as e:
             raise CustomException(e,sys)
 
@@ -24,9 +24,9 @@ class NetworkModel:
             x_transform = self.preprocessor.transform(x)
             y_hat = self.model.predict(x_transform)
             
-            if explain:
-                shap_values = self.explainer(X=x_transform)
-                return y_hat,shap_values
+            # if explain:
+            #     shap_values = self.explainer(X=x_transform)
+            #     return y_hat,shap_values
                 
             return y_hat
 

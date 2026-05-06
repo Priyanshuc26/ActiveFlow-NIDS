@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile.inference_api
+    ports:
+      - "8000:8000"
+
+  simulation:
+    build:
+      context: .
+      dockerfile: docker/simulation/Dockerfile.simulation_engine
+    depends_on:
+      - api
+    environment:
+      API_GET_HEALTH_URL: http://api:8000/health
+      API_POST_URL: http://api:8000/predict
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard/Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    environment:
+      API_GET_URL: http://api:8000/metrics
