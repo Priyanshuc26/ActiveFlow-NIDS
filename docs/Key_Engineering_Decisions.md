@@ -4,11 +4,11 @@ The original CIC-IDS2017 dataset and CICFlowMeter tool have documented labeling 
 
 **Why custom sklearn transformers?**
 
-`ColumnNameCleaner`, `FeatureDropper`, and `InfinityToNanConverter` are implemented as `BaseEstimator`/`TransformerMixin` subclasses so they serialize correctly with pickle — ensuring mathematically identical preprocessing at training time and inference time. Without explicit imports of these classes, pickle cannot deserialize the preprocessor object.
+`ColumnNameCleaner`, `FeatureDropper`, and `InfinityToNanConverter` are implemented as `BaseEstimator`/`TransformerMixin` subclasses so they serialize correctly with pickle, ensuring mathematically identical preprocessing at training time and inference time. Without explicit imports of these classes, pickle cannot deserialize the preprocessor object.
 
 **Why hybrid sampling (RandomUnderSampler + SMOTETomek)?**
 
-Pure SMOTETomek oversample based on majority class size — computationally expensive when the majority class contains millions of samples. RandomUnderSampler first reduces the majority class to a manageable size, then SMOTETomek balances minority classes. This reduced training time from 2h 9m to 13 minutes for the sampling stage alone.
+Pure SMOTETomek oversample based on majority class size - computationally expensive when the majority class contains millions of samples. RandomUnderSampler first reduces the majority class to a manageable size, then SMOTETomek balances minority classes. This reduced training time from 2h 9m to 13 minutes for the sampling stage alone.
 
 **Why RobustScaler over StandardScaler?**
 
