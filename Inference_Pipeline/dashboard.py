@@ -5,10 +5,12 @@ import sys
 import time
 from datetime import datetime
 import altair as alt
+import plotly.graph_objects as go
 
 from IDS_Pipeline.exception.exception import CustomException
 from IDS_Pipeline.logging.logger import logging
-from IDS_Pipeline.constant.training_pipeline import API_GET_REQ_IP
+from IDS_Pipeline.constant.training_pipeline import API_GET_REQ_IP, TOP_FEATURE_SCHEMA_FILE_PATH
+from IDS_Pipeline.utils.main_utils.utils import read_yaml_file
 
 st.set_page_config(page_title='ActiveFlow NIDS', layout='wide')
 # Hiding unnecssary buttons
@@ -33,7 +35,7 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
-
+feature_names = list((read_yaml_file(file_path=TOP_FEATURE_SCHEMA_FILE_PATH)).keys())
 
 #Fetching data from our inference engine through get request
 @st.cache_data(ttl=1)         # prevents redundant API calls if Streamlit triggers multiple reruns within the same second.
@@ -44,13 +46,14 @@ def fetch_data():
         data = response.json()
         packets_processed = data['packets_processed']
         attack_count_dict = data['prediction_count']
+        shap_dict = data['shap_means']
         data = data['live_traffic']
         df = pd.DataFrame(data)
-        return [system_status, df, packets_processed, attack_count_dict]
+        return [system_status, df, packets_processed, attack_count_dict, shap_dict]
     except:
         system_status = "offline"
         df = pd.DataFrame()
-        return [system_status, df, 0, {"benign": 0,"dos": 0,"portscan": 0,"ddos": 0,"brute_force": 0,"web_attack": 0,"bots": 0}]
+        return [system_status, df, 0, {"benign": 0,"dos": 0,"portscan": 0,"ddos": 0,"brute_force": 0,"web_attack": 0,"bots": 0},{}]
 
 
 if 'historical_metrics' not in st.session_state:
@@ -71,10 +74,48 @@ if "previous_network_health_score" not in st.session_state:
     
 if "previous_alert_df" not in st.session_state:
     st.session_state.previous_alert_df = pd.DataFrame()
+    
+if "previous_shap_values" not in st.session_state:
+    st.session_state.previous_shap_values = pd.DataFrame()
+
+
+def plot_shap_waterfall(shap_values, feature_names, predicted_class):
+    
+    paired = list(zip(shap_values, feature_names))
+    
+    top_positive = sorted(paired, key=lambda x: x[0], reverse=True)[:5]
+    top_negative = sorted(paired, key=lambda x: x[0])[:5]
+    
+    combined = top_positive + top_negative
+    
+    values = [x[0] for x in combined]
+    names  = [x[1] for x in combined]
+    colors = ["#ef4444" if v > 0 else "#3b82f6" for v in values]
+
+    fig = go.Figure(go.Bar(
+        x=values,
+        y=names,
+        orientation="h",
+        marker_color=colors,
+    ))
+
+    fig.update_layout(
+        title=f"Why classified as: {predicted_class}",
+        xaxis_title="SHAP Value",
+        xaxis=dict(zeroline=True, zerolinecolor="#666666", zerolinewidth=1),
+        yaxis=dict(autorange="reversed"),
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#ffffff"),
+        height=420,
+    )
+
+    return fig
+
 
 @st.fragment(run_every=1)        #st.fragment only rerun the specfic fragment of app, whereas rerun func runs whole app every time(Leading to render whole page every second)
 def live_dashboard():
-    status, dataframe, packet_processed, attack_count = fetch_data() 
+    status, dataframe, packet_processed, attack_count, shap_dict= fetch_data() 
     current_packet_count = packet_processed
     current_packet_arrival_time= datetime.now()
 
@@ -240,7 +281,23 @@ def live_dashboard():
             else:
                 map_data = dataframe.dropna(subset=['latitude','longitude'])  
                 st.map(data=map_data,latitude='latitude',longitude='longitude')
-            
+                
+                
+        shap_value_col = st.container(border=True)
+        # shap_values_df = pd.DataFrame(data=dataframe['shap_values'],columns=feature_names)
+        with shap_value_col:
+            if dataframe.empty:
+                st.markdown("Waiting for traffic...")
+            else:
+                for label,shap_values in shap_dict.items():
+                    with st.expander(label):
+                        fig = plot_shap_waterfall(
+                                shap_values=shap_values,
+                                feature_names=feature_names,
+                                predicted_class=label
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+                
             
             
 
