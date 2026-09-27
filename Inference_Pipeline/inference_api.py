@@ -1,6 +1,7 @@
 import os
 import sys
 import pandas as pd
+import numpy as np
 from collections import deque, Counter
 import geoip2.database
 import ipaddress
@@ -41,8 +42,17 @@ stats = {
         "brute_force": 0,
         "web_attack": 0,
         "bots": 0
-    }
+    },
 }
+
+shap_accumulator = {
+        "dos": deque(maxlen=200),
+        "portscan": deque(maxlen=200),
+        "ddos": deque(maxlen=200),
+        "brute_force": deque(maxlen=200),
+        "web_attack": deque(maxlen=200),
+        "bots": deque(maxlen=200)
+    }
 
 
 # The Memory Buffer (Holds the last 100 packets for Streamlit)
@@ -100,11 +110,12 @@ async def get_packets(request:Request):
         df = pd.DataFrame([packet_data])  #json dont have index value in it, but pandas needs index to create a Dataframe, that why we are wrapping our data into list([])
         
         # print(df.columns)
-        prediction = network_model.predict(df,explain=False) 
+        prediction,shap_values = network_model.predict(df,explain=True) 
+        # print(prediction)
         
         ## Extracting Shap Values
-        # class_index = int(prediction[0])
-        # shap_dict = shap_values.values[0,:,class_index]
+        class_index = int(prediction[0])
+        shap_dict = shap_values[0,:,class_index].tolist()  #When FastAPI sends data through API it sends data in json format, but since shap_value is in form of numpy array(which is not json serializeable) in value, FastAPI try to see it as Dict. Which cause error thats why we convert it to list
         # packet_data["shap_values"] = shap_dict     #appending shape values to packet data
         
         #Converting Back number (from predictions) to label
@@ -121,6 +132,12 @@ async def get_packets(request:Request):
         
         #Storing counts of each prediction and sending to our dashboard for visualizing
         stats["prediction_count"][prediction] += 1   
+        
+        #Storing shap values for each prediction label seperately
+        if prediction != 'benign':
+            shap_accumulator[prediction].append(shap_dict)
+        # stats["shap_accumulator"][prediction] = np.array(stats["shap_accumulator"][prediction]).mean(axis=0) 
+        
         #Counter almost works same as dict, with main aim of counting
         
         packet_data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -153,7 +170,11 @@ async def get_packets(request:Request):
     
 @app.get("/metrics")
 def get_metrics():
-    return {"live_traffic": list(traffic_buffer), **stats}
+    shap_means = {}
+    for attack_class, shap_deque in shap_accumulator.items():
+        if len(shap_deque) > 0:
+            shap_means[attack_class] = np.array(shap_deque).mean(axis=0).tolist()
+    return {"live_traffic": list(traffic_buffer), **stats, "shap_means": shap_means}
     
 
 if __name__ == "__main__":

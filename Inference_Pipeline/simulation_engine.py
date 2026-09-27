@@ -10,7 +10,7 @@ from IDS_Pipeline.constant.training_pipeline import SIMULATION_FILE_PATH,API_POS
 try:
     df = pd.read_csv(SIMULATION_FILE_PATH) 
     df.drop(columns=['flow_id','label'],inplace=True)
-    df = df.iloc[100000:]
+    df = df.iloc[350000:]
     # 1,50,000
     # 3,50,000
     
